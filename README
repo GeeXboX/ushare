@@ -1,0 +1,184 @@
+GeeXboX uShare - Introduction
+=============================
+
+GeeXboX uShare is a UPnP (TM) A/V Media Server. It implements the server
+component that provides UPnP media devices with information on available
+multimedia files. uShare uses the built-in http server of libupnp to
+stream the files to clients.
+
+GeeXboX uShare is a fork from the GMediaServer (UPnP AV Audio Media Server)
+from Oskar Liljeblad. It has been stripped down for GeeXboX purpose in
+order to be a lighweight multimedia media server.
+
+By opposition to GMediaServer, it does _NOT_ grab any information from
+audio files (like ID3 tags) but is _NOT_ limited to audio files.
+GeeXboX uShare is able to provide access to both images, videos, music
+or playlists files (see below for a complete file format support list).
+It does not act as an UPnP Media Adaptor and thus, can't transcode
+streams to fit the client requirements.
+
+uShare is written in C by Benjamin Zores for the GeeXboX project (see
+http://www.geexbox.org/). It is designed to provide access to multimedia
+contents to GeeXboX but can of course be used by any other UPnP client device.
+It should compile and run on any modern POSIX compatible system such as Linux.
+
+GeeXboX uShare is free software - it is licensed under the terms of the GNU
+General Public License (GPL).
+
+Copyright and License
+=====================
+
+GeeXboX uShare is copyright (C) 2005 Benjamin Zores.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc., 51
+Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+Note that uShare links with libupnp, which is licensed under the
+terms of a modified BSD license (i.e. the original BSD license without the
+advertising clause). This license is compatible with the GNU GPL.
+
+Homepage
+========
+
+Web site and file area for uShare is hosted on GeeXboX server :
+
+   http://ushare.geexbox.org/
+
+The latest version of uShare should always be available on this site.
+
+Requirements
+============
+
+The following programs are required to build uShare:
+
+ * GNU C Compiler (gcc), 2.95 or later.
+
+   The GNU C Compiler is part of the GNU Compiler Collection which can be
+   downloaded from http://gcc.gnu.org/.
+
+The following UPnP library is required to build and run uShare :
+
+ * Linux SDK for UPnP Devices (libupnp), 1.2.1 or later
+
+   The libupnp library is used to communicate using the UPnP protocol.
+   libupnp can be downloaded from http://upnp.sourceforge.net/.
+
+   Debian packages for libupnp are currently available in testing (and
+   unstable). The runtime package is called libupnp0, and the package
+   required when building libupnp-dev. Packages for stable (woody) can be
+   downloaded from http://detroit.ddo.jp/debian/woody/. The runtime package
+   is called libupnp1, and the development package libupnp1-dev.
+
+Building and Installation
+=========================
+
+Compile uShare by running configure and then make. This should
+produce an executable ushare in the src subdirectory, which can be
+used right away. No extra files need to be installed.
+
+You can pass the CFLAGS you want to configure including -DDEBUG in order
+to activate support for debug messages in uShare.
+
+Example :
+
+CFLAGS="-Os -DDEBUG" ./configure --prefix=/usr
+make
+
+If you want to install uShare on your system, run :
+
+make install-strip
+
+This will copy the executable and manual page into their appropriate
+directories (/usr/bin and /usr/man/man1 in this example).
+
+For more information regarding configure and make, see the INSTALL document.
+
+Usage
+=====
+
+uShare runs from the console only. It supports the usual --help option
+which displays usage and option information.
+
+Options :
+-n :    Set UPnP Friendly Name (default is uShare)
+-i :    Set Network Interface (default is eth0)
+-c :    Set the content directory to be shared (default is ./)
+-h :    Display this help
+
+uShare expects a directory argument (-c argument), specifying where
+multimedia files are stored. You should probably also use the -i option
+to specify which interface uShare should listen on.
+
+   ushare -c /shares
+
+See the manual page for more details :
+
+   man ushare
+
+Supported File Formats List
+===========================
+
+- Video files : asf, avi, divx, wmv, mpeg, mpg, mpe, vob, m1v, m2v, m4v,
+                ts, ogm, mkv, rmvb, mov, qt
+
+- Audio files : mp2, mp3, mp4, mpa, ogg, wav, wma, mka, ra, rm, ram
+
+- Images files : bmp, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm
+
+- Playlist files : pls, m3u, asx
+
+If you want uShare to support more file formats, simply add its properties
+in the src/mime.c table. Do not forget to send a patch to update uShare.
+
+Feedback
+========
+
+The author of uShare and this document, Benjamin Zores, can be
+contacted by e-mail on the following address:
+
+   ben@geexbox.org
+
+Please send bug reports, suggestions, ideas, comments or patches to :
+
+   ushare@geexbox.org
+
+Known bugs and limitations
+==========================
+
+If you need to listen on more than one interface, you will have to start
+multiple instances of the media server.
+
+uShare keeps some information on files in memory.
+If your multimedia collection is huge, this might be a problem.
+
+Thanks
+======
+
+Many thanks to Oskar Liljeblad for its original work on GMediaServer
+(which is much more functionnal in terms of UPnP A/V features that
+uShare will ever be).
+
+References
+==========
+
+Note that this list of references is not complete.
+
+ * UPnP(TM) Standards (http://www.upnp.org/standardizeddcps/default.asp)
+
+Trademarks
+==========
+
+UPnP(TM) is a trademark of the UPnP(TM) Implementers Corporation.
+
+-

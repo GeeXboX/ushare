@@ -1,0 +1,68 @@
+.\"                                      -*- nroff -*-
+.\" ushare.1 - Manual page for GeeXboX uShare.
+.\"
+.\" Copyright (C) 2005 Benjamin Zores
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU Library General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License along
+.\" with this program; if not, write to the Free Software Foundation,
+.\" Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+.\"
+.TH USHARE 1 "October 25, 2005"
+.SH NAME
+GeeXboX uShare \- a lightweight UPnP Media Server
+.SH SYNOPSIS
+.B ushare
+[\f--n name\fR] [\f--i interface\fR] [\f--c directory\fR]
+.SH DESCRIPTION
+\fBGeeXboX uShare\fP is a free UPnP multimedia files Media Server.
+It implements the server component that provides UPnP media devices with
+information on available multimedia files. uShare uses the built-in http
+server of libupnp to stream the files to clients.
+
+.SH OPTIONS
+This program follow the usual GNU command line syntax.
+.TP
+\fB\-n\fR \fINAME\fR
+Set UPnP Friendly Name (display name of the media server).
+Default is 'uShare'.
+.TP
+\fB\-i\fR \fIINTERFACE\fR
+Set Network interface to listen on.
+Default is 'uShare'.
+.TP
+\fB\-c\fR \fIDIRECTORY\fR
+Set directory to scan for multimedia files.
+Default is './' (current directory).
+.SH "FILE TYPES"
+The following file formats (extensions) are supported :
+.TP
+.B Video
+asf, avi, divx, wmv, mpeg, mpg, mpe, vob, m1v, m2v, m4v, ts, ogm, mkv, rmvb, mov, qt
+.TP
+.B Audio
+mp2, mp3, mp4, mpa, ogg, wav, wma, mka, ra, rm, ram
+.TP
+.B Images
+bmp, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm
+.TP
+.B Playlist
+pls, m3u, asx
+.SH "REPORTING BUGS"
+Report bugs to <\fIushare@geexbox.org\fP>.
+.SH AUTHOR
+uShare was written by Benjamin Zores <ben@geexbox.org>.
+.SH COPYRIGHT
+Copyright \(co 2005 Benjamin Zores
+
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
