@@ -160,7 +160,7 @@
 
 #define CMS_LOCATION "/web/cms.xml"
 
-#define CMS_SERVICE_ID "urn:schemas-upnp-org:service:ConnectionManager"
+#define CMS_SERVICE_ID "urn:upnp-org:serviceId:ConnectionManager"
 #define CMS_SERVICE_TYPE "urn:schemas-upnp-org:service:ConnectionManager:1"
 
 #endif /* CMS_H_ */

@@ -48,14 +48,14 @@
 "    <serviceList>" \
 "      <service>" \
 "        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>" \
-"        <serviceId>urn:schemas-upnp-org:service:ConnectionManager</serviceId>" \
+"        <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>" \
 "        <SCPDURL>/web/cms.xml</SCPDURL>" \
 "        <controlURL>/web/cms_control</controlURL>" \
 "        <eventSubURL>/web/cms_event</eventSubURL>" \
 "      </service>" \
 "      <service>" \
 "        <serviceType>urn:schemas-upnp-org:service:ContentDirectory:1</serviceType>" \
-"        <serviceId>urn:schemas-upnp-org:service:ContentDirectory</serviceId>" \
+"        <serviceId>urn:upnp-org:serviceId:ContentDirectory</serviceId>" \
 "        <SCPDURL>/web/cds.xml</SCPDURL>" \
 "        <controlURL>/web/cds_control</controlURL>" \
 "        <eventSubURL>/web/cds_event</eventSubURL>" \
