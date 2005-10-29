@@ -1,0 +1,25 @@
+This package was debianized by Alexis Saettler (asbin ;-]) <alexis@saettler.org> on
+Sat, 29 Oct 2005 17:56:07 +0200.
+
+It was downloaded from http://ushare.geexbox.org/releases/geexbox-ushare-0.9.0.tar.bz2
+
+Upstream Authors: Benjamin Zores <ben@geexbox.org>
+
+Copyright:
+
+   This package is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; version 2 dated June, 1991.
+
+   This package is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this package; if not, write to the Free Software
+   Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+   MA 02110-1301, USA.
+
+On Debian systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL'.

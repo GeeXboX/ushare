@@ -1,0 +1,22 @@
+Source: ushare
+Section: devel
+Priority: optional
+Maintainer: Alexis Saettler (asbin ;-]) <alexis@saettler.org>
+Build-Depends: debhelper (>= 4.0.0), cdbs, build-essential, libupnp-dev
+Standards-Version: 3.6.2.1
+
+Package: ushare
+Architecture: any
+Depends: ${shlibs:Depends}
+Suggests: geexbox-generator
+Description: lightweight UPnP A/V Media Server
+ GeeXboX uShare is a UPnP (TM) A/V Media Server. It implements the server
+ component that provides UPnP media devices with information on available
+ multimedia files. uShare uses the built-in http server of libupnp to stream
+ the files to clients.
+ .
+ uShare is written in C for the GeeXboX project. It is designed to provide
+ access to multimedia contents to GeeXboX but can of course be used by any
+ other UPnP client device.
+ .
+ More informations on http://ushare.geexbox.org
