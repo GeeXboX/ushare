@@ -74,12 +74,6 @@ The following UPnP library is required to build and run uShare :
    The libupnp library is used to communicate using the UPnP protocol.
    libupnp can be downloaded from http://upnp.sourceforge.net/.
 
-   Debian packages for libupnp are currently available in testing (and
-   unstable). The runtime package is called libupnp0, and the package
-   required when building libupnp-dev. Packages for stable (woody) can be
-   downloaded from http://detroit.ddo.jp/debian/woody/. The runtime package
-   is called libupnp1, and the development package libupnp1-dev.
-
 Building and Installation
 =========================
 
