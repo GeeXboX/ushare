@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- media (screen | print) -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+  <!--
+      This web site is (c) 2005 Zores Benjamin
+      HomePage for the GeeXboX uShare UPnP Media Server Project (http://ushare.geexbox.org/)
+      Feel free to get inspiration from this site, as long as you leave this comment here.
+    -->
+  <head>
+    <title>GeeXboX uShare UPnP A/V Media Server HomePage</title>
+    <meta http-equiv="Content-language" content="en"/>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1"/>
+    <meta name="description" content="GeeXboX uShare Homepage : a free software UPnP A/V Media Server Linux"/>
+
+    <meta name="dc.description" content="GeeXboX uShare Homepage : a free software UPnP A/V Media Server for Linux"/>
+    <meta name="dc.subject" content="GeeXboX uShare Homepage : a free software UPnP A/V Media Server for Linux"/>
+    <meta name="dc.title" content="GeeXboX uShare Homepage"/>
+    <meta name="author" content="Benjamin Zores"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="keywords" content="computer, OS, Linux, UPnP, MediaServer, A/V, DLNA, embedded, multimedia, HTPC, home, theater, movie, audio, video, media, standalone, free, software, open, source, mpeg, mp3, divx, xvid, matroska, ogg, vorbis, PC, ushare, geexbox, geexbox.org"/>
+  </head>
+  <body>
+    <div id="page">
+    <h1 align="center">
+      <tt>GeeXboX uShare</tt><br/>
+      A free UPnP A/V Media Server for Linux
+    </h1>
+    <br/>
+    <br/>
+    <h2>Introduction</h2>
+      GeeXboX uShare is a UPnP (TM) A/V Media Server. It implements the server component that provides UPnP media devices with information on available multimedia files. uShare uses the built-in http server of libupnp to stream the files to clients.<br/>
+      <br/>
+      GeeXboX uShare is a fork from the <i><a href="http://www.nongnu.org/gmediaserver/">GMediaServer</a></i> (UPnP Audio Media Server) from <i>Oskar Liljeblad</i>. It has been stripped down for GeeXboX purpose in order to be a lighweight multimedia media server.<br/>
+      <br/>
+      By opposition to GMediaServer, it does _NOT_ grab any information from audio files (like ID3 tags) but is _NOT_ limited to audio files. GeeXboX uShare is able to provide access to both images, videos, music or playlists files (see below for a complete file format support list). It does not act as an UPnP Media Adaptor and thus, can't transcode streams to fit the client requirements.<br/>
+      <br/>
+      uShare is written in C by Benjamin Zores for the <a href="http://www.geexbox.org/">GeeXboX</a> project. It is designed to provide access to multimedia contents to GeeXboX but can of course be used by any other UPnP client device. It should compile and run on any modern POSIX compatible system such as Linux.<br/>
+      <br/>
+      GeeXboX uShare is free software - it is licensed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (GPL).
+      
+      <h2>Copyright and License</h2>
+      GeeXboX uShare is copyright (C) 2005 Benjamin Zores.<br/>
+      <br/>
+      This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.<br/>
+      <br/>
+      This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.<br/>
+      <br/>
+      You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. Note that uShare links with libupnp, which is licensed under the terms of a modified BSD license (i.e. the original BSD license without the advertising clause). This license is compatible with the GNU GPL.
+
+      <h2>Requirements</h2>
+      The following programs are required to build uShare:<br/>
+      <br/>
+      <b>* GNU C Compiler (gcc), 2.95 or later.</b><br/>
+      <br/>
+      The GNU C Compiler is part of the GNU Compiler Collection which can be downloaded from <a href="http://gcc.gnu.org/">http://gcc.gnu.org/</a>.<br/>
+      <br/>
+      The following UPnP library is required to build and run uShare :<br/>
+      <br/>
+      <b>* Linux SDK for UPnP Devices (libupnp), 1.2.1 or later</b><br/>
+      <br/>
+      The libupnp library is used to communicate using the UPnP protocol. libupnp can be downloaded from <a href="http://upnp.sourceforge.net/">http://upnp.sourceforge.net/</a>.<br/>
+
+      <h2>Building and Installation</h2>
+      Compile uShare by running configure and then make. This should produce an executable ushare in the src subdirectory, which can be used right away. No extra files need to be installed.<br/>
+      <br/>
+      You can pass the CFLAGS you want to configure including -DDEBUG in order to activate support for debug messages in uShare.
+
+      <h3>Example :</h3>
+      <pre style="background-color: rgb(220, 220, 220)">
+      CFLAGS="-Os -DDEBUG" ./configure --prefix=/usr
+      make
+      </pre>
+      If you want to install uShare on your system, run :<br/>
+      <pre style="background-color: rgb(220, 220, 220)">
+      make install-strip
+      </pre>
+      This will copy the executable and manual page into their appropriate directories (/usr/bin and /usr/man/man1 in this example).<br/>
+      For more information regarding configure and make, see the INSTALL document. 
+
+      <h2>Usage</h2>
+      uShare runs from the console only. It supports the usual --help option which displays usage and option information.
+      <pre style="background-color: rgb(220, 220, 220)">
+      Options :
+      -n :    Set UPnP Friendly Name (default is uShare)
+      -i :    Set Network Interface (default is eth0)
+      -c :    Set the content directory to be shared (default is ./)
+      -h :    Display this help
+      </pre>
+      uShare expects a directory argument (-c argument), specifying where multimedia files are stored. You should probably also use the -i option to specify which interface uShare should listen on.
+      <pre style="background-color: rgb(220, 220, 220)">
+      ushare -c /shares
+      </pre>
+      See the manual page for more details :
+      <pre style="background-color: rgb(220, 220, 220)">
+      man ushare
+      </pre>
+
+      <h2>Supported File Formats List</h2>
+      <b>- Video files</b> : <i>asf, avi, divx, wmv, mpeg, mpg, mpe, vob, m1v, m2v, m4v, ts, ogm, mkv, rmvb, mov, qt</i><br/>
+      <b>- Audio files</b> : <i>mp2, mp3, mp4, mpa, ogg, wav, wma, mka, ra, rm, ram</i><br/>
+      <b>- Images files</b> : <i>bmp, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm</i><br/>
+      <b>- Playlist files</b> : <i>pls, m3u, asx</i><br/>
+      <br/>
+      If you want uShare to support more file formats, simply add its properties in the <i>src/mime.c</i> table. Do not forget to send a patch to update uShare.
+
+      <h2>Download</h2>
+      The currently available uShare release is 0.9.0.<br/>
+      Sources can be downloaded <a href="http://ushare.geexbox.org/releases/geexbox-ushare-0.9.0.tar.bz2">here</a>.  
+      <br/>
+      <h3>Debian Package</h3>
+      If you're using Debian GNU/Linux distribution, you can also grab the <a href="http://geexbox.org/debian/pool/main/ushare/ushare_0.9.0-1_i386.deb">binary for i386</a>.<br/>
+      GeeXboX uShare is also available through <b>apt-get</b>. Simply add the following line to your <i>/etc/apt/sources.list</i> file :
+      <pre style="background-color: rgb(220, 220, 220)">
+      deb http://www.geexbox.org/debian/ unstable main
+      </pre>
+      <h3>Development Tree</h3>
+      The latest uShare development tree can be grabbed using <a href="http://www.gnu.org/software/gnu-arch/">GNU Arch</a>, a revision control system, similar in purpose to tools such as CVS, SCCS, and Subversion. It is used to keep track of the changes made to a source tree and to help programmers combine and otherwise manipulate changes made by multiple people or at different times.<br/>
+      <br/>
+      There are currently 2 ways of accessing the Arch tree : via command-line or Web-Arch (to just have a look to some changes on a specific file, for example). You can directly access to the Web-Arch with your browser from :<br/>
+      <br/>
+      <a href="http://www.geexbox.org/archzoom/devel@geexbox.org--2004/ushare--main--0">uShare Web-Arch</a><br/>
+      <br/>
+      In order to access to Arch via command line, create and enter a new directory and do the following (be sure that you have installed the TLA package) :
+      <pre style="background-color: rgb(220, 220, 220)">
+      * <b>tla register-archive devel@geexbox.org--2004 http://www.geexbox.org/arch</b> - <i>To register with the GeeXboX's Arch repository</i>.
+      * <b>tla get -A devel@geexbox.org--2004 ushare--main--0</b> - <i>To fetch all the files from the directory geexbox</i>.
+      * <b>tla update</b> - <i>To update your local copy of the Arch, synchronizing with our server</i>.
+      </pre>
+
+      <h2>Feedback</h2>
+      The author of uShare and this document, <i>Benjamin Zores</i>, can be contacted by <a href="mailto:ben@geexbox.org">e-mail</a>.<br/>
+      <br/>
+      Please send bug reports, suggestions, ideas, comments or patches to :<br/>
+      <br/>
+      <a href="mailto:ushare@geexbox.org">ushare@geexbox.org</a>
+
+      <h2>Known bugs and limitations</h2>
+      If you need to listen on more than one interface, you will have to start
+multiple instances of the media server.<br/>
+      <br/>
+      uShare keeps some information on files in memory. If your multimedia collection is huge, this might be a problem.
+
+      <h2>Thanks</h2>
+      Many thanks to <i>Oskar Liljeblad</i> for its original work on <i>GMediaServer</i> (which is much more functionnal in terms of UPnP A/V features that uShare will ever be).
+     </div>
+  </body>
+</html>
