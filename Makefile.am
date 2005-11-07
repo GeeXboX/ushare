@@ -1,4 +1,4 @@
-SUBDIRS=src intl po
+SUBDIRS=debian intl po src
 
 EXTRA_DIST = autogen.sh
 

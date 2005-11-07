@@ -28,6 +28,7 @@ fi
 
 AC_CONFIG_FILES([
         Makefile
+        debian/Makefile
         src/Makefile
         intl/Makefile
         po/Makefile.in
