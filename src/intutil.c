@@ -45,7 +45,7 @@ parse_int32 (const char *instr, int32_t *outint)
 
   if (!instr || !outint)
     return false;
-    
+
   if (*instr == '-')
   {
     if (instr[1] == '\0') /* FIXME: this should be done on all!!! */
@@ -94,7 +94,7 @@ parse_uint32 (const char *instr, uint32_t *outint)
 
   if (!instr || !outint)
     return false;
-  
+
   for (; *instr != '\0'; instr++)
   {
     int8_t c = *instr - '0';

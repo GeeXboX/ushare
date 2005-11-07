@@ -73,7 +73,7 @@ struct mime_type_t MIME_Type_List[] = {
     "http-get:*:image/x-portable-anymap:*"},
   { "ppm", "object.item.imageItem.photo",
     "http-get:*:image/x-portable-pixmap:*"},
-  
+
   /* Playlist files */
   { "pls", "object.item.playlistItem", "http-get:*:audio/x-scpls:*"},
   { "m3u", "object.item.playlistItem", "http-get:*:audio/mpegurl:*"},

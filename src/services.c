@@ -58,7 +58,7 @@ find_service_action (struct Upnp_Action_Request *request,
 
   if (!request || !request->ActionName)
     return false;
-  
+
   for (c = 0; services[c].id != NULL; c++)
     if (!strcmp (services[c].id, request->ServiceID))
     {
@@ -111,7 +111,7 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
 
   if (!request || !request->ActionRequest || !key)
     return NULL;
-  
+
   node = (IXML_Node *) request->ActionRequest;
   if (!node)
   {
@@ -143,7 +143,7 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
 #ifdef DEBUG
   printf ("Missing action request argument (%s)", key);
 #endif /* DEBUG */
-  
+
   return NULL;
 }
 
@@ -152,16 +152,16 @@ upnp_get_ui4 (struct Upnp_Action_Request *request, const char *key)
 {
   char *value;
   int val;
-  
+
   if (!request || !key)
     return 0;
-  
+
   value = upnp_get_string (request, key);
   if (!value)
     return 0;
 
   val = atoi (value);
   free (value);
-  
+
   return val;
 }

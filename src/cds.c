@@ -265,7 +265,7 @@ cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
 
   if (!entry)
     return -1;
-      
+
   if (entry->child_count == -1) /* item : file */
   {
     didl_add_header (out);
@@ -274,7 +274,7 @@ cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
                    entry->title, entry->protocol, -1, entry->url);
     didl_add_footer (out);
 
-    for (c = index; c < MIN (index + count, entry->child_count); c++) 
+    for (c = index; c < MIN (index + count, entry->child_count); c++)
       result_count++;
 
     upnp_add_response (event, SERVICE_CDS_DIDL_RESULT,
@@ -289,10 +289,10 @@ cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
                         ? entry->parent->id : -1, entry->child_count,
                         "true", "true", entry->title, entry->class);
     didl_add_footer (out);
-	
+
     for (c = index; c < MIN (index + count, entry->child_count); c++)
-      result_count++; 
-		
+      result_count++;
+
     upnp_add_response (event, SERVICE_CDS_DIDL_RESULT,
                        strbuf_buffer (out));
     upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED,
@@ -311,8 +311,8 @@ cds_browse_directchildren (struct action_event_t *event,
 {
   struct upnp_entry_t **childs;
   int s, result_count = 0;
-	
-  if (entry->child_count == -1) /* item : file */ 
+
+  if (entry->child_count == -1) /* item : file */
     return -1;
 
   didl_add_header (out);
@@ -367,7 +367,7 @@ cds_browse (struct action_event_t *event)
 
   if (!event)
     return false;
-  
+
   /* Check for status */
   if (!event->status)
     return false;
@@ -375,7 +375,7 @@ cds_browse (struct action_event_t *event)
   /* Retrieve Browse arguments */
   index = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_START_INDEX);
   count = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_REQUEST_COUNT);
-  id = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_OBJECT_ID); 
+  id = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_OBJECT_ID);
   flag = upnp_get_string (event->request, SERVICE_CDS_ARG_BROWSE_FLAG);
   sort_criteria = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_SORT_CRIT);
 

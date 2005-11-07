@@ -57,7 +57,7 @@ getExtension (char *filename)
 
   if (!filename)
     return NULL;
-  
+
   str = strdup (filename);
   token = strtok (str, delimiter);
   extension = strdup (token);
@@ -74,7 +74,7 @@ getExtension (char *filename)
   }
 
   free (str);
-  
+
   return extension;
 }
 
@@ -87,7 +87,7 @@ getUpnpClass (char *filename)
 
   if (!filename)
     return NULL;
-  
+
   extension = getExtension (filename);
   if (!extension)
     return NULL;
@@ -118,11 +118,11 @@ getUpnpProtocol (char *filename)
 
   if (!filename)
     return NULL;
-  
+
   extension = getExtension (filename);
   if (!extension)
     return NULL;
-  
+
   list = MIME_Type_List;
 
   while (list->extension)
@@ -166,7 +166,7 @@ is_valid_extension (char *filename)
   }
 
   free (extension);
-  
+
   return 0;
 }
 
@@ -191,7 +191,7 @@ upnp_entry_new (char *name, char *fullpath,
 
   if (!name)
     return NULL;
-  
+
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
   entry->id = nr_entries++;
@@ -210,7 +210,7 @@ upnp_entry_new (char *name, char *fullpath,
       entry->url = (char *) malloc (1024 * sizeof (char));
       sprintf (entry->url, "http://%s:%d%s/%d",
                UpnpGetServerIpAddress (), UpnpGetServerPort(),
-               VIRTUAL_DIR, entry->id);  
+               VIRTUAL_DIR, entry->id);
     }
   else /* container */
     {
@@ -259,7 +259,7 @@ upnp_entry_free (struct upnp_entry_t *entry)
   for (childs = entry->childs; *childs; *childs++)
     upnp_entry_free (*childs);
   free (entry->childs);
-  
+
   free (entry);
 }
 
@@ -268,7 +268,7 @@ upnp_entry_add_child (struct upnp_entry_t *entry, struct upnp_entry_t *child)
 {
   struct upnp_entry_t **childs;
   int n;
-  
+
   if (!entry || !child)
     return;
 
@@ -313,10 +313,10 @@ metadata_add_file (struct upnp_entry_t *entry, char *file, char *name)
 
   if (!entry || !file || !name)
     return;
-  
+
   if (stat (file, &st) < 0)
     return;
-  
+
   if (is_valid_extension (file))
   {
     struct upnp_entry_t *child = NULL;
@@ -335,14 +335,14 @@ metadata_add_container (struct upnp_entry_t *entry, char *container)
 
   if (!entry || !container)
     return;
-  
+
   n = scandir (container, &namelist, 0, alphasort);
   if (n < 0)
     perror ("scandir");
   else
   {
     int i;
-    
+
     for (i = 0; i < n; i++)
     {
       struct stat st;
@@ -358,10 +358,10 @@ metadata_add_container (struct upnp_entry_t *entry, char *container)
         malloc (strlen (container) + strlen (namelist[i]->d_name) + 2);
       sprintf (fullpath, "%s/%s", container, namelist[i]->d_name);
 
-#ifdef DEBUG      
+#ifdef DEBUG
       printf ("%s\n", fullpath);
 #endif /* DEBUG */
-      
+
       if (stat (fullpath, &st) < 0)
       {
         free (namelist[i]);

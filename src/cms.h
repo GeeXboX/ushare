@@ -156,7 +156,7 @@
 "  </serviceStateTable>" \
 "</scpd>"
 
-#define CMS_DESCRIPTION_LEN strlen (CMS_DESCRIPTION) 
+#define CMS_DESCRIPTION_LEN strlen (CMS_DESCRIPTION)
 
 #define CMS_LOCATION "/web/cms.xml"
 

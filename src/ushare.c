@@ -67,7 +67,7 @@ handle_action_request (struct Upnp_Action_Request *request)
 
   if (!request)
     return;
-  
+
   if (request->ErrCode != UPNP_E_SUCCESS)
     return;
 
@@ -79,12 +79,12 @@ handle_action_request (struct Upnp_Action_Request *request)
   ip = ntohl (ip);
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
-  
+
   printf ("ServiceID : %s\n", request->ServiceID);
   printf ("actionName : %s\n", request->ActionName);
   printf ("CtrlPtIP : %s\n", val);
 #endif /* DEBUG */
-  
+
   if (find_service_action (request, &service, &action))
     {
       struct action_event_t event;
@@ -101,7 +101,7 @@ handle_action_request (struct Upnp_Action_Request *request)
 
   if (service) /* Invalid Action name */
     strcpy (request->ErrStr, "Unknown Service Action");
-  else /* Invalid Service name */ 
+  else /* Invalid Service name */
     strcpy (request->ErrStr, "Unknown Service ID");
 
   request->ActionResult = NULL;
@@ -146,18 +146,18 @@ init_upnp (char *name, char *udn, char *ip)
 {
   char *description = NULL;
   int len, res;
-  
+
   if (!name || !udn || !ip)
     return -1;
 
   deviceUDN = strdup (udn);
   if (!deviceUDN)
     return -1;
-  
+
   len = strlen (UPNP_DESCRIPTION) + strlen (name) + strlen (udn) + 1;
   description = (char *) malloc (len * sizeof (char));
   bzero (description, len);
-  sprintf (description, UPNP_DESCRIPTION, name, udn);  
+  sprintf (description, UPNP_DESCRIPTION, name, udn);
 
   printf (_("Initializing UPnP subsystem ...\n"));
   res = UpnpInit (ip, 0);
@@ -166,10 +166,10 @@ init_upnp (char *name, char *udn, char *ip)
     printf (_("Cannot initialize UPnP subsystem\n"));
     return -1;
   }
-    
+
   printf (_("UPnP MediaServer listening on %s:%d\n"),
           UpnpGetServerIpAddress (), UpnpGetServerPort());
-  
+
   UpnpEnableWebserver (TRUE);
 
   res = UpnpSetVirtualDirCallbacks (&virtual_dir_callbacks);
@@ -179,7 +179,7 @@ init_upnp (char *name, char *udn, char *ip)
     free (description);
     return -1;
   }
-    
+
   res = UpnpAddVirtualDir (VIRTUAL_DIR);
   if (res != UPNP_E_SUCCESS)
   {
@@ -196,7 +196,7 @@ init_upnp (char *name, char *udn, char *ip)
     free (description);
     return -1;
   }
-  
+
   res = UpnpUnRegisterRootDevice (dev);
   if (res != UPNP_E_SUCCESS)
   {
@@ -213,10 +213,10 @@ init_upnp (char *name, char *udn, char *ip)
     free (description);
     return -1;
   }
-    
+
   printf (_("Sending UPnP advertisement for device ...\n"));
   UpnpSendAdvertisement (dev, 1800);
-    
+
   printf (_("Listening for control point connections ...\n"));
 
   if (description)
@@ -228,7 +228,7 @@ init_upnp (char *name, char *udn, char *ip)
 char *
 create_udn (char *interface)
 {
-  int sock; 
+  int sock;
   struct ifreq ifr;
   char *buf;
   unsigned char *ptr;
@@ -243,16 +243,16 @@ create_udn (char *interface)
     perror ("socket");
     exit (-1);
   }
-  
+
   strcpy (ifr.ifr_name, interface);
   strcpy (ifr.ifr_hwaddr.sa_data, "");
-  
+
   if (ioctl (sock, SIOCGIFHWADDR, &ifr) < 0)
   {
     perror ("ioctl");
     exit (-1);
   }
-  
+
   buf = (char *) malloc (64 * sizeof (char));
   bzero (buf, 64);
   ptr = (unsigned char *) ifr.ifr_hwaddr.sa_data;
@@ -267,13 +267,13 @@ create_udn (char *interface)
 char *
 get_iface_address (char *interface)
 {
-  int sock, ip; 
+  int sock, ip;
   struct ifreq ifr;
   char *val;
 
   if (!interface)
     return NULL;
-  
+
   /* determine UDN according to MAC address */
   sock = socket (AF_INET, SOCK_STREAM, 0);
   if (sock < 0)
@@ -290,7 +290,7 @@ get_iface_address (char *interface)
     perror ("ioctl");
     exit (-1);
   }
-  
+
   val = (char *) malloc (16);
   ip = ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr;
   ip = ntohl (ip);
@@ -305,7 +305,7 @@ UPnPBreak (int s __attribute__ ((unused)))
 {
   finish_upnp ();
   free_metadata_list ();
-  
+
   exit (0);
 }
 
@@ -327,7 +327,7 @@ display_usage (void)
   printf (_("   -i, --interface :\tSet Network Interface (default is 'eth0')\n"));
   printf (_("   -c, --content :\tSet the content directory to be shared (default is './')\n"));
   printf (_("   -h, --help :\t\tDisplay this help\n"));
-  
+
   exit (0);
 }
 
@@ -356,10 +356,10 @@ main (int argc, char **argv)
     {"content", required_argument, 0, 'c' },
     {0, 0, 0, 0 }
   };
-  
+
   setup_i18n();
-  
-  /* command line argument processing */	
+
+  /* command line argument processing */
   while (1)
     {
       c = getopt_long(argc, argv, short_options, long_options, &index);
@@ -417,7 +417,7 @@ main (int argc, char **argv)
     free (interface);
     return -1;
   }
-  
+
   ip = get_iface_address (interface);
   if (!ip)
   {
@@ -427,7 +427,7 @@ main (int argc, char **argv)
     free (udn);
     return -1;
   }
-  
+
   signal (SIGINT, UPnPBreak);
 
   display_headers ();
@@ -441,12 +441,12 @@ main (int argc, char **argv)
     free (ip);
     return -1;
   }
-  
+
   build_metadata_list (content);
-  
+
   while (1)
     sleep (1000000);
-  
+
   /* it should never be executed */
   return 0;
 }

@@ -66,7 +66,7 @@ http_get_info (const char *filename, struct File_Info *info)
 
   if (!filename || !info)
     return -1;
-  
+
 #ifdef DEBUG
   printf ("http_get_info, filename : %s\n", filename);
 #endif /* DEBUG */
@@ -171,7 +171,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
 #ifdef DEBUG
   printf ("Fullpath : %s\n", entry->fullpath);
 #endif /* DEBUG */
-  
+
   fd = open (entry->fullpath, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
   if (fd < 0)
     return NULL;
@@ -195,7 +195,7 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
 #ifdef DEBUG
   printf ("http_read\n");
 #endif /* DEBUG */
-  
+
   if (!file)
     return -1;
 
@@ -227,7 +227,7 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
 #ifdef DEBUG
   printf ("Read %d bytes.\n", len);
 #endif /* DEBUG */
-  
+
   return len;
 }
 
@@ -239,7 +239,7 @@ http_write (UpnpWebFileHandle fh __attribute__((unused)),
 #ifdef DEBUG
   printf ("http write\n");
 #endif /* DEBUG */
-  
+
   return 0;
 }
 
@@ -248,7 +248,7 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
 {
   struct web_file_t *file = (struct web_file_t *) fh;
   long newpos = -1;
-  
+
 #ifdef DEBUG
   printf ("http_seek\n");
 #endif /* DEBUG */
@@ -306,7 +306,7 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
 #endif /* DEBUG */
       return -1;
     }
-    
+
     /* Don't seek with origin as specified above, as file may have
        changed in size since our last stat. */
     if (lseek (file->detail.local.fd, newpos, SEEK_SET) == -1)
@@ -341,10 +341,10 @@ http_close (UpnpWebFileHandle fh)
 #ifdef DEBUG
   printf ("http_close\n");
 #endif /* DEBUG */
-  
+
   if (!file)
     return -1;
-  
+
   switch (file->type)
   {
   case FILE_LOCAL:

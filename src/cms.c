@@ -88,7 +88,7 @@ cms_get_protocol_info (struct action_event_t *event)
 
   if (!event)
     return false;
-  
+
   while (list->extension)
   {
     upnp_add_response (event, SERVICE_CMS_ARG_SOURCE, (*list).protocol);
@@ -105,7 +105,7 @@ cms_get_current_connection_ids (struct action_event_t *event)
 {
   if (!event)
     return false;
-  
+
   upnp_add_response (event, SERVICE_CMS_ARG_CONNECTION_IDS, "");
 
   return event->status;
@@ -119,7 +119,7 @@ cms_get_current_connection_info (struct action_event_t *event)
 
   if (!event)
     return false;
-  
+
   upnp_add_response (event, SERVICE_CMS_ARG_CONNECTION_ID,
                      SERVICE_CMS_DEFAULT_CON_ID);
   upnp_add_response (event, SERVICE_CMS_ARG_RCS_ID, SERVICE_CMS_UNKNOW_ID);
@@ -137,7 +137,7 @@ cms_get_current_connection_info (struct action_event_t *event)
                      SERVICE_CMS_UNKNOW_ID);
   upnp_add_response (event, SERVICE_CMS_ARG_DIRECTION, SERVICE_CMS_OUTPUT);
   upnp_add_response (event, SERVICE_CMS_ARG_STATUS, SERVICE_CMS_STATUS_OK);
-  
+
   return event->status;
 }
 

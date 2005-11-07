@@ -37,7 +37,7 @@ normalize_strbuf_pos (struct strbuf_t *sb, int32_t pos)
 {
   if (!sb)
     return 0;
-  
+
   if (pos >= (int32_t) sb->len)
     return sb->len;
   if (pos >= 0)
@@ -53,7 +53,7 @@ normalize_str_pos (const char *str, int32_t pos)
 {
   if (!str)
     return 0;
-  
+
   if (pos >= 0)
     return strnlen (str, pos);
   pos += 1 + strlen (str);
@@ -68,7 +68,7 @@ strbuf_buffer (struct strbuf_t *sb)
 {
   if (!sb)
     return NULL;
-  
+
   return sb->buf;
 }
 
@@ -98,7 +98,7 @@ strbuf_free (struct strbuf_t *sb)
 {
   if (!sb)
     return;
-  
+
   if (sb->buf)
     free (sb->buf);
   free (sb);
@@ -112,7 +112,7 @@ strbuf_replace_data_n (struct strbuf_t *sb, int32_t sp, int32_t ep,
 
   if (!sb)
     return;
-  
+
   sp = normalize_strbuf_pos (sb, sp);
   ep = normalize_strbuf_pos (sb, ep);
 
@@ -147,7 +147,7 @@ strbuf_replace_substring_n (struct strbuf_t *sb, int32_t sp, int32_t ep,
 
   subsp = normalize_str_pos (substr, subsp);
   subep = normalize_str_pos (substr, subep);
- 
+
   if (subsp > subep)
     SWAP_INT32 (subsp, subep);
 
@@ -177,7 +177,7 @@ strbuf_vreplacef_n (struct strbuf_t *sb, int32_t sp, int32_t ep,
 
   if (!sb || !fmt)
     return -1;
-  
+
   sp = normalize_strbuf_pos (sb, sp);
   ep = normalize_strbuf_pos (sb, ep);
   if (sp > ep)
@@ -196,7 +196,7 @@ strbuf_ensure_capacity (struct strbuf_t *sb, uint32_t min_capacity)
 {
   if (!sb)
     return;
-  
+
   if (min_capacity > sb->capacity)
   {
     sb->capacity = MAX (min_capacity, sb->len * 2 + 2); /* XXX: MAX -> max */
