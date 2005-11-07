@@ -8,6 +8,14 @@ AC_CONFIG_HEADER([config.h])
 AC_PROG_CC
 AC_PROG_MAKE_SET
 
+AM_GNU_GETTEXT
+AM_GNU_GETTEXT_VERSION(0.14.5)
+
+LOCALEDIR="${datadir}/locale"
+eval LOCALEPATH="$LOCALEDIR"
+AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEPATH",[Path where catalog files will be.])
+AC_SUBST(LOCALEDIR)
+
 AC_CHECK_HEADER([upnp/upnp.h], [], [exit])
 AC_CHECK_HEADER([upnp/upnptools.h], [], [exit])
 
@@ -21,5 +29,7 @@ fi
 AC_CONFIG_FILES([
         Makefile
         src/Makefile
+        intl/Makefile
+        po/Makefile.in
         ])
 AC_OUTPUT

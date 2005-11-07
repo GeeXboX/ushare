@@ -33,6 +33,13 @@
 #include "mime.h"
 #include "metadata.h"
 
+#ifdef ENABLE_NLS
+# define _(string) gettext (string)
+#else
+# define _(string) string
+#endif
+#include "gettext.h"
+
 struct upnp_entry_t *root_entry = NULL;
 int nr_entries = 0;
 
@@ -387,8 +394,8 @@ free_metadata_list (void)
 void
 build_metadata_list (char *contentdir)
 {
-  printf ("Building Metadata List ...\n");
-  printf ("Looking for files in content directory : %s\n", contentdir);
+  printf (_("Building Metadata List ...\n"));
+  printf (_("Looking for files in content directory : %s\n"), contentdir);
 
   /* build root entry */
   if (!root_entry)
@@ -397,5 +404,5 @@ build_metadata_list (char *contentdir)
   /* add files from content directory */
   metadata_add_container (root_entry, contentdir);
 
-  printf ("Found %d files and subdirectories.\n", nr_entries);
+  printf (_("Found %d files and subdirectories.\n"), nr_entries);
 }

@@ -29,6 +29,7 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <locale.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -43,6 +44,13 @@
 #include "services.h"
 #include "http.h"
 #include "metadata.h"
+
+#ifdef ENABLE_NLS
+# define _(string) gettext (string)
+#else
+# define _(string) string
+#endif
+#include "gettext.h"
 
 static UpnpDevice_Handle dev;
 static char *deviceUDN;
@@ -123,7 +131,7 @@ device_callback_event_handler (Upnp_EventType type, void *event,
 int
 finish_upnp (void)
 {
-  printf ("Stopping UPnP Service ...\n");
+  printf (_("Stopping UPnP Service ...\n"));
   UpnpUnRegisterRootDevice (dev);
   UpnpFinish ();
 
@@ -151,15 +159,15 @@ init_upnp (char *name, char *udn, char *ip)
   bzero (description, len);
   sprintf (description, UPNP_DESCRIPTION, name, udn);  
 
-  printf ("Initializing UPnP subsystem ...\n");
+  printf (_("Initializing UPnP subsystem ...\n"));
   res = UpnpInit (ip, 0);
   if (res != UPNP_E_SUCCESS)
   {
-    printf ("Cannot initialize UPnP subsystem\n");
+    printf (_("Cannot initialize UPnP subsystem\n"));
     return -1;
   }
     
-  printf ("UPnP MediaServer listening on %s:%d\n",
+  printf (_("UPnP MediaServer listening on %s:%d\n"),
           UpnpGetServerIpAddress (), UpnpGetServerPort());
   
   UpnpEnableWebserver (TRUE);
@@ -167,7 +175,7 @@ init_upnp (char *name, char *udn, char *ip)
   res = UpnpSetVirtualDirCallbacks (&virtual_dir_callbacks);
   if (res != UPNP_E_SUCCESS)
   {
-    printf ("Cannot set virtual directory callbacks\n");
+    printf (_("Cannot set virtual directory callbacks\n"));
     free (description);
     return -1;
   }
@@ -175,7 +183,7 @@ init_upnp (char *name, char *udn, char *ip)
   res = UpnpAddVirtualDir (VIRTUAL_DIR);
   if (res != UPNP_E_SUCCESS)
   {
-    printf ("Cannot add virtual directory for web server\n");
+    printf (_("Cannot add virtual directory for web server\n"));
     free (description);
     return -1;
   }
@@ -184,7 +192,7 @@ init_upnp (char *name, char *udn, char *ip)
                                  device_callback_event_handler, NULL, &dev);
   if (res != UPNP_E_SUCCESS)
   {
-    printf ("Cannot register UPnP device\n");
+    printf (_("Cannot register UPnP device\n"));
     free (description);
     return -1;
   }
@@ -192,7 +200,7 @@ init_upnp (char *name, char *udn, char *ip)
   res = UpnpUnRegisterRootDevice (dev);
   if (res != UPNP_E_SUCCESS)
   {
-    printf ("Cannot unregister UPnP device\n");
+    printf (_("Cannot unregister UPnP device\n"));
     free (description);
     return -1;
   }
@@ -201,15 +209,15 @@ init_upnp (char *name, char *udn, char *ip)
                                  device_callback_event_handler, NULL, &dev);
   if (res != UPNP_E_SUCCESS)
   {
-    printf ("Cannot register UPnP device\n");
+    printf (_("Cannot register UPnP device\n"));
     free (description);
     return -1;
   }
     
-  printf ("Sending UPnP advertisement for device ...\n");
+  printf (_("Sending UPnP advertisement for device ...\n"));
   UpnpSendAdvertisement (dev, 1800);
     
-  printf ("Listening for control point connections ...\n");
+  printf (_("Listening for control point connections ...\n"));
 
   if (description)
     free (description);
@@ -314,13 +322,23 @@ static void
 display_usage (void)
 {
   display_headers ();
-  printf ("Options :\n");
-  printf ("   -n, --name :\t\tSet UPnP Friendly Name (default is 'uShare')\n");
-  printf ("   -i, --interface :\tSet Network Interface (default is 'eth0')\n");
-  printf ("   -c, --content :\tSet the content directory to be shared (default is './')\n");
-  printf ("   -h, --help :\t\tDisplay this help\n");
+  printf (_("Options :\n"));
+  printf (_("   -n, --name :\t\tSet UPnP Friendly Name (default is 'uShare')\n"));
+  printf (_("   -i, --interface :\tSet Network Interface (default is 'eth0')\n"));
+  printf (_("   -c, --content :\tSet the content directory to be shared (default is './')\n"));
+  printf (_("   -h, --help :\t\tDisplay this help\n"));
   
   exit (0);
+}
+
+void
+setup_i18n(void)
+{
+#ifdef ENABLE_NLS
+  setlocale (LC_ALL, "");
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  textdomain (PACKAGE);
+#endif
 }
 
 int
@@ -338,6 +356,8 @@ main (int argc, char **argv)
     {"content", required_argument, 0, 'c' },
     {0, 0, 0, 0 }
   };
+  
+  setup_i18n();
   
   /* command line argument processing */	
   while (1)
