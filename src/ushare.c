@@ -315,17 +315,18 @@ display_headers (void)
   printf ("%s (version %s), a lightweight UPnP Media Server.\n",
           PACKAGE_NAME, VERSION);
   printf ("Benjamin Zores (C) 2005, for GeeXboX Team.\n");
-  printf ("See http://ushare.geexbox.org/ for updates.\n\n");
+  printf ("See http://ushare.geexbox.org/ for updates.\n");
 }
 
 static void
 display_usage (void)
 {
   display_headers ();
-  printf (_("Options :\n"));
+  printf (_("\nOptions :\n"));
   printf (_("   -n, --name :\t\tSet UPnP Friendly Name (default is 'uShare')\n"));
   printf (_("   -i, --interface :\tSet Network Interface (default is 'eth0')\n"));
   printf (_("   -c, --content :\tSet the content directory to be shared (default is './')\n"));
+  printf (_("   -v, --version :\tDisplay the version of uShare and exit.\n"));
   printf (_("   -h, --help :\t\tDisplay this help\n"));
 
   exit (0);
@@ -348,8 +349,9 @@ main (int argc, char **argv)
   char *name = NULL, *interface = NULL;
   char *content = NULL;
   int c,index;
-  char short_options[] = "hn:i:c:";
+  char short_options[] = "vhn:i:c:";
   struct option long_options [] = {
+    {"version", no_argument, 0, 'v' },
     {"help", no_argument, 0, 'h' },
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
@@ -377,6 +379,10 @@ main (int argc, char **argv)
         case ':':
         case 'h':
           display_usage ();
+          return 0;
+
+        case 'v':
+          display_headers ();
           return 0;
 
         case 'n':
