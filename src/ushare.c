@@ -29,7 +29,6 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <locale.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -47,10 +46,11 @@
 
 #ifdef ENABLE_NLS
 # define _(string) gettext (string)
+# include "gettext.h"
+# include <locale.h>
 #else
 # define _(string) string
 #endif
-#include "gettext.h"
 
 static UpnpDevice_Handle dev;
 static char *deviceUDN;

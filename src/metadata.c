@@ -33,12 +33,18 @@
 #include "mime.h"
 #include "metadata.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#else
+#error "Missing config.h file : run configure again"
+#endif
+
 #ifdef ENABLE_NLS
 # define _(string) gettext (string)
+# include "gettext.h"
 #else
 # define _(string) string
 #endif
-#include "gettext.h"
 
 struct upnp_entry_t *root_entry = NULL;
 int nr_entries = 0;
