@@ -315,10 +315,10 @@ display_usage (void)
 {
   display_headers ();
   printf ("Options :\n");
-  printf ("-n :\tSet UPnP Friendly Name (default is 'uShare')\n");
-  printf ("-i :\tSet Network Interface (default is 'eth0')\n");
-  printf ("-c :\tSet the content directory to be shared (default is './')\n");
-  printf ("-h :\tDisplay this help\n");
+  printf ("   -n, --name :\t\tSet UPnP Friendly Name (default is 'uShare')\n");
+  printf ("   -i, --interface :\tSet Network Interface (default is 'eth0')\n");
+  printf ("   -c, --content :\tSet the content directory to be shared (default is './')\n");
+  printf ("   -h, --help :\t\tDisplay this help\n");
   
   exit (0);
 }
@@ -329,18 +329,32 @@ main (int argc, char **argv)
   char *udn = NULL, *ip = NULL;
   char *name = NULL, *interface = NULL;
   char *content = NULL;
-  int c;
+  int c,index;
+  char short_options[] = "hn:i:c:";
+  struct option long_options [] = {
+    {"help", no_argument, 0, 'h' },
+    {"name", required_argument, 0, 'n' },
+    {"interface", required_argument, 0, 'i' },
+    {"content", required_argument, 0, 'c' },
+    {0, 0, 0, 0 }
+  };
   
   /* command line argument processing */	
   while (1)
     {
-      c = getopt (argc, argv, "hn:i:c:");
+      c = getopt_long(argc, argv, short_options, long_options, &index);
 
-      if (c == -1)
+      if (c == EOF)
         break;
 
       switch (c)
         {
+        case 0:
+          /* opt = long_options[index].name; */
+          break;
+
+        case '?':
+        case ':':
         case 'h':
           display_usage ();
           return 0;
