@@ -2,7 +2,7 @@
 
 AC_PREREQ(2.59)
 AC_INIT(GeeXboX uShare, 0.9.0, ushare@geexbox.org)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([dist-bzip2 no-dist-gzip])
 AC_CONFIG_HEADER([config.h])
 
 AC_PROG_CC
