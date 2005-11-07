@@ -1,1 +1,3 @@
 SUBDIRS=src intl po
+
+ACLOCAL_AMFLAGS = -I m4
