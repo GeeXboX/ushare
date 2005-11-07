@@ -156,7 +156,7 @@ init_upnp (char *name, char *udn, char *ip)
 
   len = strlen (UPNP_DESCRIPTION) + strlen (name) + strlen (udn) + 1;
   description = (char *) malloc (len * sizeof (char));
-  bzero (description, len);
+  memset (description, 0, len);
   sprintf (description, UPNP_DESCRIPTION, name, udn);
 
   printf (_("Initializing UPnP subsystem ...\n"));
@@ -254,7 +254,7 @@ create_udn (char *interface)
   }
 
   buf = (char *) malloc (64 * sizeof (char));
-  bzero (buf, 64);
+  memset (buf, 0, 64);
   ptr = (unsigned char *) ifr.ifr_hwaddr.sa_data;
 
   snprintf (buf, 64, "%02X:%02X:%02X:%02X:%02X:%02X",
