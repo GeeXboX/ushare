@@ -22,8 +22,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <langinfo.h>
-# include <iconv.h>
 # include <errno.h>
 
 #ifdef HAVE_CONFIG_H
@@ -32,20 +30,24 @@
 #error "Missing config.h file : run configure again"
 #endif
 
-#include "gettext.h"
-#define _(string) gettext (string)
-
 #include "util_iconv.h"
 
-#ifdef ENABLE_NLS
+#if HAVE_ICONV
+# include <iconv.h>
 static iconv_t cd = 0;
+#endif
+
+#if HAVE_LANGINFO_CODESET
+# include <langinfo.h>
 #endif
 
 void
 setup_iconv( void )
 {
-#ifdef ENABLE_NLS
+#if HAVE_ICONV
+#if HAVE_LANGINFO_CODESET
   char *mycodeset = nl_langinfo( CODESET );
+#endif
 
   /**
    * Setup conversion descriptor if user's console is non-UTF-8. Otherwise
@@ -66,7 +68,7 @@ setup_iconv( void )
 void
 finish_iconv( void )
 {
-#ifdef ENABLE_NLS
+#if HAVE_ICONV
   if( !cd )
     return;
   if ( iconv_close(cd) < 0 )
@@ -81,7 +83,7 @@ finish_iconv( void )
 char *
 iconv_convert(const char *input)
 {
-#ifdef ENABLE_NLS
+#if HAVE_ICONV
   size_t inputsize = strlen(input) + 1;
   size_t dummy = 0;
   size_t length = 0;
