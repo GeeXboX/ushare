@@ -219,7 +219,7 @@ upnp_entry_new (const char *name, const char *fullpath,
   title = iconv_convert (name);
   x = strrchr (title, '.');
   if (x)  /* avoid displaying file extension */
-    title[strlen (title) - strlen (x)] = '\0';
+    *x = '\0';
   entry->title = title;
 
   entry->size = size;
