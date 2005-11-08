@@ -220,8 +220,7 @@ upnp_entry_new (char *name, char *fullpath,
   x = strrchr (title, '.');
   if (x)  /* avoid displaying file extension */
     title[strlen (title) - strlen (x)] = '\0';
-  entry->title = strdup (title);
-  free (title);
+  entry->title = title;
 
   entry->size = size;
   entry->fd = -1;
