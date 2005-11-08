@@ -47,7 +47,7 @@ struct upnp_entry_t *root_entry = NULL;
 int nr_entries = 0;
 
 static char *
-getExtension (char *filename)
+getExtension (const char *filename)
 {
   char *delimiter =".";
   char *str, *token, *extension;
@@ -76,7 +76,7 @@ getExtension (char *filename)
 }
 
 static char *
-getUpnpClass (char *filename)
+getUpnpClass (const char *filename)
 {
   extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list;
@@ -107,7 +107,7 @@ getUpnpClass (char *filename)
 }
 
 static char *
-getUpnpProtocol (char *filename)
+getUpnpProtocol (const char *filename)
 {
   extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list;
@@ -138,7 +138,7 @@ getUpnpProtocol (char *filename)
 }
 
 static int
-is_valid_extension (char *filename)
+is_valid_extension (const char *filename)
 {
   extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list;
@@ -180,7 +180,7 @@ get_list_length (void *list)
 }
 
 static struct upnp_entry_t *
-upnp_entry_new (char *name, char *fullpath,
+upnp_entry_new (const char *name, const char *fullpath,
                 struct upnp_entry_t *parent, int size, int dir)
 {
   struct upnp_entry_t *entry = NULL;
@@ -303,7 +303,7 @@ upnp_get_entry (struct upnp_entry_t *entry, int id)
 }
 
 static void
-metadata_add_file (struct upnp_entry_t *entry, char *file, char *name)
+metadata_add_file (struct upnp_entry_t *entry, const char *file, const char *name)
 {
   struct stat st;
 
@@ -324,7 +324,7 @@ metadata_add_file (struct upnp_entry_t *entry, char *file, char *name)
 }
 
 static void
-metadata_add_container (struct upnp_entry_t *entry, char *container)
+metadata_add_container (struct upnp_entry_t *entry, const char *container)
 {
   struct dirent **namelist;
   int n;
@@ -394,7 +394,7 @@ free_metadata_list (void)
 }
 
 void
-build_metadata_list (char *contentdir)
+build_metadata_list (const char *contentdir)
 {
   printf (_("Building Metadata List ...\n"));
   printf (_("Looking for files in content directory : %s\n"), contentdir);
