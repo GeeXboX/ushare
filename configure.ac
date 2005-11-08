@@ -16,6 +16,8 @@ eval LOCALEPATH="$LOCALEDIR"
 AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEPATH",[Path where catalog files will be.])
 AC_SUBST(LOCALEDIR)
 
+AM_ICONV
+
 AC_CHECK_HEADER([upnp/upnp.h], [], [exit])
 AC_CHECK_HEADER([upnp/upnptools.h], [], [exit])
 

@@ -43,6 +43,7 @@
 #include "services.h"
 #include "http.h"
 #include "metadata.h"
+#include "util_iconv.h"
 
 #ifdef ENABLE_NLS
 # define _(string) gettext (string)
@@ -305,6 +306,7 @@ UPnPBreak (int s __attribute__ ((unused)))
 {
   finish_upnp ();
   free_metadata_list ();
+  finish_iconv();
 
   exit (0);
 }
@@ -312,10 +314,10 @@ UPnPBreak (int s __attribute__ ((unused)))
 static void
 display_headers (void)
 {
-  printf ("%s (version %s), a lightweight UPnP Media Server.\n",
+  printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
           PACKAGE_NAME, VERSION);
-  printf ("Benjamin Zores (C) 2005, for GeeXboX Team.\n");
-  printf ("See http://ushare.geexbox.org/ for updates.\n");
+  printf (_("Benjamin Zores (C) 2005, for GeeXboX Team.\n"));
+  printf (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
 static void
@@ -360,6 +362,7 @@ main (int argc, char **argv)
   };
 
   setup_i18n();
+  setup_iconv();
 
   /* command line argument processing */
   while (1)

@@ -32,6 +32,7 @@
 
 #include "mime.h"
 #include "metadata.h"
+#include "util_iconv.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -219,11 +220,11 @@ upnp_entry_new (char *name, char *fullpath,
       entry->url = NULL;
     }
 
-  title = strdup (name);
+  title = iconv_convert (name);
   x = strrchr (title, '.');
   if (x)  /* avoid displaying file extension */
     title[strlen (title) - strlen (x)] = '\0';
-  entry->title = strdup (title);;
+  entry->title = strdup (title);
   free (title);
 
   entry->size = size;

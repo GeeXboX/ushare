@@ -1,3 +1,9 @@
+2005-11-08  Alexis Saettler  <asbin@asbin.org>
+
+	* Prepare uShare for internationalization
+	* Add French localization
+	* Add support of iconv, for UTF-8 filnames conversions
+
 2005-10-25  Benjamin Zores  <ben@geexbox.org>
 
 	* First public release (Version 0.9.0)

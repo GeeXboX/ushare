@@ -9,6 +9,7 @@ ushare_SOURCES= \
 	minmax.h \
 	services.h services.c \
 	strbuf.h strbuf.c \
+	util_iconv.h util_iconv.c \
 	ushare.h ushare.c
 
 man_MANS = ushare.1
