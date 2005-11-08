@@ -150,6 +150,7 @@ iconv_convert(const char *input)
         else
         {
           perror("error iconv");
+          free(result);
           return NULL;
         }
       }
@@ -157,6 +158,7 @@ iconv_convert(const char *input)
     if( iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t)(-1))
     {
       perror("error iconv");
+      free(result);
       return NULL;
     }
 
