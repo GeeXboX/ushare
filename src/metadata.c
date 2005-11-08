@@ -40,12 +40,8 @@
 #error "Missing config.h file : run configure again"
 #endif
 
-#ifdef ENABLE_NLS
-# define _(string) gettext (string)
-# include "gettext.h"
-#else
-# define _(string) string
-#endif
+#include "gettext.h"
+#define _(string) gettext (string)
 
 struct upnp_entry_t *root_entry = NULL;
 int nr_entries = 0;

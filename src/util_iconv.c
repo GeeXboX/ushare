@@ -32,13 +32,8 @@
 #error "Missing config.h file : run configure again"
 #endif
 
-#ifdef ENABLE_NLS
-# define _(string) gettext (string)
-# include "gettext.h"
-# include <locale.h>
-#else
-# define _(string) string
-#endif
+#include "gettext.h"
+#define _(string) gettext (string)
 
 #include "util_iconv.h"
 

@@ -45,13 +45,12 @@
 #include "metadata.h"
 #include "util_iconv.h"
 
-#ifdef ENABLE_NLS
-# define _(string) gettext (string)
-# include "gettext.h"
+#if HAVE_SETLOCALE && ENABLE_NLS
 # include <locale.h>
-#else
-# define _(string) string
 #endif
+
+#include "gettext.h"
+#define _(string) gettext (string)
 
 static UpnpDevice_Handle dev;
 static char *deviceUDN;
@@ -337,11 +336,11 @@ display_usage (void)
 void
 setup_i18n(void)
 {
-#ifdef ENABLE_NLS
+#if HAVE_SETLOCALE && ENABLE_NLS
   setlocale (LC_ALL, "");
+#endif
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
-#endif
 }
 
 int
