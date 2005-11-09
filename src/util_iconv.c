@@ -43,10 +43,8 @@ static iconv_t cd = 0;
 void
 setup_iconv( void )
 {
-#if HAVE_ICONV
-#if HAVE_LANGINFO_CODESET
+#if HAVE_ICONV && HAVE_LANGINFO_CODESET
   char *mycodeset = nl_langinfo( CODESET );
-#endif
 
   /**
    * Setup conversion descriptor if user's console is non-UTF-8. Otherwise
