@@ -46,6 +46,8 @@
 struct upnp_entry_t *root_entry = NULL;
 int nr_entries = 0;
 
+static void upnp_entry_free (struct upnp_entry_t *entry);
+
 static char *
 getExtension (const char *filename)
 {
@@ -184,7 +186,7 @@ upnp_entry_new (const char *name, const char *fullpath,
                 struct upnp_entry_t *parent, int size, int dir)
 {
   struct upnp_entry_t *entry = NULL;
-  char *x, *title = NULL;
+  char *title = NULL;
 
   if (!name)
     return NULL;
@@ -195,7 +197,8 @@ upnp_entry_new (const char *name, const char *fullpath,
   entry->fullpath = fullpath ? strdup (fullpath) : NULL;
   entry->parent = parent;
   entry->child_count =  dir ? 0 : -1;
-
+  entry->title = NULL;
+  
   entry->childs = (struct upnp_entry_t **)
     malloc (sizeof (struct upnp_entry_t *));
   *(entry->childs) = NULL;
@@ -217,10 +220,19 @@ upnp_entry_new (const char *name, const char *fullpath,
     }
 
   title = iconv_convert (name);
-  x = strrchr (title, '.');
-  if (x)  /* avoid displaying file extension */
-    *x = '\0';
-  entry->title = title;
+  if (title)
+  {
+    char *x = NULL;
+    x = strrchr (title, '.');
+    if (x)  /* avoid displaying file extension */
+      *x = '\0';
+    entry->title = title;
+  }
+  else
+  {
+    upnp_entry_free (entry);
+    return NULL;
+  }
 
   entry->size = size;
   entry->fd = -1;
