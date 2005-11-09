@@ -18,10 +18,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -32,30 +32,30 @@
 #include "util_iconv.h"
 
 #if HAVE_ICONV
-# include <iconv.h>
+#include <iconv.h>
 static iconv_t cd = 0;
 #endif
 
 #if HAVE_LANGINFO_CODESET
-# include <langinfo.h>
+#include <langinfo.h>
 #endif
 
 void
-setup_iconv( void )
+setup_iconv (void)
 {
 #if HAVE_ICONV && HAVE_LANGINFO_CODESET
-  char *mycodeset = nl_langinfo( CODESET );
+  char *mycodeset = nl_langinfo (CODESET);
 
   /**
    * Setup conversion descriptor if user's console is non-UTF-8. Otherwise
    * we can just leave cd as NULL
    */
-  if( strcmp( mycodeset, UTF8 ) )
+  if (strcmp (mycodeset, UTF8))
   {
-    cd = iconv_open( UTF8, mycodeset );
-    if( cd == (iconv_t) (-1) )
+    cd = iconv_open (UTF8, mycodeset);
+    if (cd == (iconv_t) (-1))
     {
-      perror("iconv_open");
+      perror ("iconv_open");
       cd = 0;
     }
   }
@@ -63,13 +63,13 @@ setup_iconv( void )
 }
 
 void
-finish_iconv( void )
+finish_iconv (void)
 {
 #if HAVE_ICONV
-  if( !cd )
+  if (!cd)
     return;
-  if ( iconv_close(cd) < 0 )
-    perror("iconv_close");
+  if (iconv_close (cd) < 0)
+    perror ("iconv_close");
 #endif
 }
 
@@ -78,18 +78,18 @@ finish_iconv( void )
  * return: a malloc'd string with the converted result
  */
 char *
-iconv_convert(const char *input)
+iconv_convert (const char *input)
 {
 #if HAVE_ICONV
-  size_t inputsize = strlen(input) + 1;
+  size_t inputsize = strlen (input) + 1;
   size_t dummy = 0;
   size_t length = 0;
   char *result;
 
   /* conversion not neccecary. save our time. */
-  if( !cd )
+  if (!cd)
   {
-    return strdup(input);
+    return strdup (input);
   }
 
   /* Determine the length we need. */
@@ -102,13 +102,13 @@ iconv_convert(const char *input)
     {
       char *outptr = tmpbuf;
       size_t outsize = BUFSIZ;
-      if( iconv (cd, &inptr, &insize, &outptr, &outsize) == (size_t)(-1))
+      if (iconv (cd, &inptr, &insize, &outptr, &outsize) == (size_t) (-1))
       {
         if (errno == EINVAL)
           break;
         else
         {
-          perror("error iconv");
+          perror ("error iconv");
           return NULL;
         }
       }
@@ -117,18 +117,18 @@ iconv_convert(const char *input)
     {
       char *outptr = tmpbuf;
       size_t outsize = BUFSIZ;
-      if ( iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t)(-1))
+      if (iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t) (-1))
       {
-        perror("error iconv");
+        perror ("error iconv");
         return NULL;
       }
       length += outptr - tmpbuf;
     }
   }
 
-  if( (result = (char*) malloc(length * sizeof(char))) == NULL)
+  if ((result = (char*) malloc (length * sizeof (char))) == NULL)
   {
-    perror("error malloc");
+    perror ("error malloc");
     return NULL;
   }
   /* Do the conversion for real. */
@@ -140,22 +140,22 @@ iconv_convert(const char *input)
     size_t outsize = length;
     while (insize > 0)
     {
-      if( iconv(cd, &inptr, &insize, &outptr, &outsize) == (size_t)(-1))
+      if (iconv (cd, &inptr, &insize, &outptr, &outsize) == (size_t) (-1))
       {
         if (errno == EINVAL)
           break;
         else
         {
-          perror("error iconv");
-          free(result);
+          perror ("error iconv");
+          free (result);
           return NULL;
         }
       }
     }
-    if( iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t)(-1))
+    if (iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t) (-1))
     {
-      perror("error iconv");
-      free(result);
+      perror ("error iconv");
+      free (result);
       return NULL;
     }
 
@@ -165,6 +165,6 @@ iconv_convert(const char *input)
 
   return result;
 #else
-  return strdup(input);
+  return strdup (input);
 #endif
 }

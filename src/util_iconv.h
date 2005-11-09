@@ -21,9 +21,9 @@
 #ifndef _UTIL_ICONV_H_
 #define _UTIL_ICONV_H_
 
-void setup_iconv( void );
-void finish_iconv( void );
-char *iconv_convert(const char *inbuf);
+void setup_iconv (void);
+void finish_iconv (void);
+char *iconv_convert (const char *inbuf);
 
 #define UTF8 "UTF-8"
 
