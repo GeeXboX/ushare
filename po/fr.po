@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: geexbox-ushare 0.90\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-11-10 00:02+0100\n"
+"POT-Creation-Date: 2005-11-10 00:25+0100\n"
 "PO-Revision-Date: 2005-11-07 14:39+0100\n"
 "Last-Translator: Alexis Saettler <asbin@asbin.org>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -120,17 +120,17 @@ msgstr ""
 msgid "   -h, --help :\t\tDisplay this help\n"
 msgstr "   -h, --help :\t\tAffiche cette aide\n"
 
-#: src/metadata.c:399
+#: src/metadata.c:411
 #, c-format
 msgid "Building Metadata List ...\n"
 msgstr "Création de la liste de données\n"
 
-#: src/metadata.c:400
+#: src/metadata.c:412
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr "Recherche des fichiers dans le répertoire de contenus : %s\n"
 
-#: src/metadata.c:409
+#: src/metadata.c:421
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr "%d fichiers et sous-répertoires trouvés.\n"
