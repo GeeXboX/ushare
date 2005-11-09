@@ -8,7 +8,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CC
 AC_PROG_MAKE_SET
 
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.14.5)
 ALL_LINGUAS="fr"
 
@@ -34,7 +34,6 @@ AC_CONFIG_FILES([
         Makefile
         debian/Makefile
         src/Makefile
-        intl/Makefile
         po/Makefile.in
         ])
 AC_OUTPUT
