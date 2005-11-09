@@ -90,11 +90,9 @@ iconv_convert (const char *input)
   size_t length = 0;
   char *result;
 
-  /* conversion not neccecary. save our time. */
+  /* conversion not nececary. save our time. */
   if (!cd)
-  {
     return strdup (input);
-  }
 
   /* Determine the length we need. */
   iconv (cd, NULL, NULL, NULL, &dummy);
