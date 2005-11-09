@@ -1,0 +1,2 @@
+precious ^(\.deps)$
+precious ^(.*\.o)$
