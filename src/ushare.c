@@ -449,8 +449,13 @@ main (int argc, char **argv)
     free (ip);
     return -1;
   }
+  free (name);
+  free (interface);
+  free (udn);
+  free (ip);
 
   build_metadata_list (content);
+  free (content);
 
   while (1)
     sleep (1000000);
