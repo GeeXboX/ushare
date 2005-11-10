@@ -74,6 +74,7 @@ finish_iconv (void)
     return;
   if (iconv_close (cd) < 0)
     perror ("iconv_close");
+  cd = 0;
 #endif
 }
 
@@ -89,26 +90,30 @@ iconv_convert (const char *input)
   size_t dummy = 0;
   size_t length = 0;
   char *result;
+  char *inptr, *outptr;
+  size_t insize, outsize;
 
-  /* conversion not nececary. save our time. */
+  /* conversion not necessary. save our time. */
   if (!cd)
     return strdup (input);
 
   /* Determine the length we need. */
   iconv (cd, NULL, NULL, NULL, &dummy);
   {
-    char tmpbuf[BUFSIZ];
-    char *inptr = (char*) input;
-    size_t insize = inputsize;
+    static char tmpbuf[BUFSIZ];
+    inptr = (char*) input;
+    insize = inputsize;
     while (insize > 0)
     {
-      char *outptr = tmpbuf;
-      size_t outsize = BUFSIZ;
+      outptr = tmpbuf;
+      outsize = BUFSIZ;
       if (iconv (cd, &inptr, &insize, &outptr, &outsize) == (size_t) (-1))
       {
-        if (errno == EINVAL)
-          break;
-        else
+        /**
+         * if error is EINVAL or EILSEQ, conversion must be stoped,
+         * but if it is E2BIG (not enough space in buffer), we just loop again
+         */
+        if( errno != E2BIG)
         {
           perror ("error iconv");
           return NULL;
@@ -116,37 +121,36 @@ iconv_convert (const char *input)
       }
       length += outptr - tmpbuf;
     }
+
+    outptr = tmpbuf;
+    outsize = BUFSIZ;
+    if (iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t) (-1))
     {
-      char *outptr = tmpbuf;
-      size_t outsize = BUFSIZ;
-      if (iconv (cd, NULL, NULL, &outptr, &outsize) == (size_t) (-1))
-      {
-        perror ("error iconv");
-        return NULL;
-      }
-      length += outptr - tmpbuf;
+      perror ("error iconv");
+      return NULL;
     }
+    length += outptr - tmpbuf;
   }
 
+  /* length determined, allocate result space */
   if ((result = (char*) malloc (length * sizeof (char))) == NULL)
   {
     perror ("error malloc");
     return NULL;
   }
+
   /* Do the conversion for real. */
   iconv (cd, NULL, NULL, NULL, &dummy);
   {
-    char *inptr = (char*) input;
-    size_t insize = inputsize;
-    char *outptr = result;
-    size_t outsize = length;
+    inptr = (char*) input;
+    insize = inputsize;
+    outptr = result;
+    outsize = length;
     while (insize > 0)
     {
       if (iconv (cd, &inptr, &insize, &outptr, &outsize) == (size_t) (-1))
       {
-        if (errno == EINVAL)
-          break;
-        else
+        if (errno != E2BIG)
         {
           perror ("error iconv");
           free (result);
