@@ -5,8 +5,9 @@
 	* Add support of iconv, for UTF-8 filenames conversions
 
 2005-10-29  Alexis Saettler  <asbin@asbin.org>
+
 	* Added Debian package building scripts
-	
+
 2005-10-25  Benjamin Zores  <ben@geexbox.org>
 
 	* First public release (Version 0.9.0)
