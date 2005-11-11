@@ -1,3 +1,9 @@
+2005-11-10: GeeXboX uShare 0.9.1 released.
+ uShare ready for internationalization.
+ Added French localization.
+ Support of iconv, for UTF-8 filenames conversions.
+ Added Debian package building scripts.
+
 2005-10-25: GeeXboX uShare 0.9.0 released.
   First public release.
   Tested with :
