@@ -2,7 +2,7 @@ Source: ushare
 Section: devel
 Priority: optional
 Maintainer: Alexis Saettler (asbin ;-]) <alexis@saettler.org>
-Build-Depends: debhelper (>= 4.0.0), cdbs, build-essential, libupnp-dev
+Build-Depends: debhelper (>= 4.0.0), cdbs, build-essential, libupnp-dev, gettext (>= 0.14.5-1)
 Standards-Version: 3.6.2.1
 
 Package: ushare
