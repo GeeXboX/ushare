@@ -237,7 +237,7 @@ didl_add_item (struct strbuf_t *out, int item_id,
 }
 
 static void
-didl_add_container (struct strbuf_t *out, char id, char parent_id,
+didl_add_container (struct strbuf_t *out, int id, int parent_id,
                     int child_count, char *restricted, char *searchable,
                     char *title, char *class)
 {
