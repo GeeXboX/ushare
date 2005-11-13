@@ -325,7 +325,8 @@ cds_browse_directchildren (struct action_event_t *event,
 
   for (; *childs; *childs++)
   {
-    if (result_count < count) /* only fetch the requested count number */
+    if (count == 0 || result_count < count)
+      /* only fetch the requested count number or all entries if count = 0 */
     {
       if ((*childs)->child_count >= 0) /* container */
         didl_add_container (out, (*childs)->id, (*childs)->parent ?
