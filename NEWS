@@ -1,3 +1,7 @@
+2005-11-13: GeeXboX uShare 0.9.2 released.
+ Improved UPnP compliance with Browse RequestedCount flag.
+ Fixed some UPnP Object ID sent in Browse messages (terrible mistake).
+
 2005-11-10: GeeXboX uShare 0.9.1 released.
  uShare ready for internationalization.
  Added French localization.

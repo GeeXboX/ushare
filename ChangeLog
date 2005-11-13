@@ -1,5 +1,9 @@
 2005-11-13  Benjamin Zores  <ben@geexbox.org>
 
+	* new public bug-fix release (Version 0.9.2)
+
+2005-11-13  Benjamin Zores  <ben@geexbox.org>
+
 	* improved UPnP compliance with Browse RequestedCount flag.
 	* fixed some UPnP Object ID sent in Browse messages.
 
