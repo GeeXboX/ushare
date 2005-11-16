@@ -26,6 +26,8 @@
 #include <upnp/upnptools.h>
 #include <stdbool.h>
 
+#include "content.h"
+
 #define VIRTUAL_DIR "/web"
 
 #define UPNP_DESCRIPTION \
@@ -72,5 +74,7 @@ struct action_event_t {
 
 int finish_upnp (void);
 int init_upnp (char *name, char *udn, char *ip);
+
+content_list *content;
 
 #endif /* _USHARE_H_ */

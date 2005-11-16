@@ -29,6 +29,7 @@
 #include "strbuf.h"
 #include "ushare.h"
 #include "http.h"
+#include "content.h"
 
 struct upnp_entry_t {
   int id;
@@ -45,7 +46,7 @@ struct upnp_entry_t {
 };
 
 void free_metadata_list (void);
-void build_metadata_list (const char *contentdir);
+void build_metadata_list (const content_list *contentdir);
 struct upnp_entry_t * upnp_get_entry (struct upnp_entry_t *entry, int id);
 
 #endif /* _METADATA_H_ */

@@ -44,6 +44,7 @@
 #include "http.h"
 #include "metadata.h"
 #include "util_iconv.h"
+#include "content.h"
 
 #if HAVE_SETLOCALE && ENABLE_NLS
 # include <locale.h>
@@ -305,7 +306,8 @@ UPnPBreak (int s __attribute__ ((unused)))
 {
   finish_upnp ();
   free_metadata_list ();
-  finish_iconv();
+  free_content (content);
+  finish_iconv ();
 
   exit (0);
 }
@@ -323,12 +325,14 @@ static void
 display_usage (void)
 {
   display_headers ();
-  printf (_("\nOptions :\n"));
-  printf (_("   -n, --name :\t\tSet UPnP Friendly Name (default is 'uShare')\n"));
-  printf (_("   -i, --interface :\tSet Network Interface (default is 'eth0')\n"));
-  printf (_("   -c, --content :\tSet the content directory to be shared (default is './')\n"));
-  printf (_("   -v, --version :\tDisplay the version of uShare and exit.\n"));
-  printf (_("   -h, --help :\t\tDisplay this help\n"));
+  printf ("\n");
+  printf (_("Usage: ushare [option] [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
+  printf (_("Options:\n"));
+  printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is 'uShare')\n"));
+  printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is 'eth0')\n"));
+  printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
+  printf (_("   -v, --version \t\tDisplay the version of uShare and exit\n"));
+  printf (_("   -h, --help \t\t\tDisplay this help\n"));
 
   exit (0);
 }
@@ -348,7 +352,6 @@ main (int argc, char **argv)
 {
   char *udn = NULL, *ip = NULL;
   char *name = NULL, *interface = NULL;
-  char *content = NULL;
   int c,index;
   char short_options[] = "vhn:i:c:";
   struct option long_options [] = {
@@ -362,6 +365,7 @@ main (int argc, char **argv)
 
   setup_i18n();
   setup_iconv();
+  content = NULL;
 
   /* command line argument processing */
   while (1)
@@ -402,7 +406,7 @@ main (int argc, char **argv)
         case 'c':
           if (!optarg)
             return -1;
-          content = strdup (optarg);
+          content = add_content (content, optarg);
           break;
 
         default:
@@ -411,7 +415,7 @@ main (int argc, char **argv)
     }
 
   if (!content)
-    content = strdup ("./");
+    content = add_content (content, "./");
   if (!name)
     name = strdup ("uShare");
   if (!interface)
@@ -420,7 +424,7 @@ main (int argc, char **argv)
   udn = create_udn (interface);
   if (!udn)
   {
-    free (content);
+    free_content (content);
     free (name);
     free (interface);
     return -1;
@@ -429,7 +433,7 @@ main (int argc, char **argv)
   ip = get_iface_address (interface);
   if (!ip)
   {
-    free (content);
+    free_content (content);
     free (name);
     free (interface);
     free (udn);
@@ -442,7 +446,7 @@ main (int argc, char **argv)
   if (init_upnp (name, udn, ip) < 0)
   {
     finish_upnp ();
-    free (content);
+    free_content (content);
     free (name);
     free (interface);
     free (udn);
@@ -455,7 +459,6 @@ main (int argc, char **argv)
   free (ip);
 
   build_metadata_list (content);
-  free (content);
 
   while (1)
     sleep (1000000);

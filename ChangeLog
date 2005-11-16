@@ -1,3 +1,7 @@
+2005-11-16  Alexis Saettler  <asbin@asbin.org>
+
+	* modify -c parameter habdle, to allow multiple shared directories.
+
 2005-11-13  Benjamin Zores  <ben@geexbox.org>
 
 	* new public bug-fix release (Version 0.9.2)

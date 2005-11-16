@@ -33,6 +33,7 @@
 #include "mime.h"
 #include "metadata.h"
 #include "util_iconv.h"
+#include "content.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -406,17 +407,21 @@ free_metadata_list (void)
 }
 
 void
-build_metadata_list (const char *contentdir)
+build_metadata_list (const content_list *contentdir)
 {
+  int i;
   printf (_("Building Metadata List ...\n"));
-  printf (_("Looking for files in content directory : %s\n"), contentdir);
 
   /* build root entry */
   if (!root_entry)
     root_entry = upnp_entry_new ("root", NULL, NULL, -1, 1);
 
   /* add files from content directory */
-  metadata_add_container (root_entry, contentdir);
+  for (i=0 ; i < contentdir->count ; i++)
+  {
+    printf (_("Looking for files in content directory : %s\n"), contentdir->content[i]);
+    metadata_add_container (root_entry, contentdir->content[i]);
+  }
 
   printf (_("Found %d files and subdirectories.\n"), nr_entries);
 }

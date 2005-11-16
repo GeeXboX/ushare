@@ -11,6 +11,7 @@ ushare_SOURCES= \
 	strbuf.h strbuf.c \
 	util_iconv.h util_iconv.c \
 	gettext.h \
+	content.h content.c \
 	ushare.h ushare.c
 
 man_MANS = ushare.1
