@@ -55,16 +55,15 @@
 
 static UpnpDevice_Handle dev;
 static char *deviceUDN;
+int verbose_flag;
 
 static void
 handle_action_request (struct Upnp_Action_Request *request)
 {
   struct service_t *service;
   struct service_action_t *action;
-#ifdef DEBUG
   char val[256];
   int ip;
-#endif /* DEBUG */
 
   if (!request)
     return;
@@ -75,16 +74,14 @@ handle_action_request (struct Upnp_Action_Request *request)
   if (strcmp (request->DevUDN + 5, deviceUDN))
     return;
 
-#ifdef DEBUG
   ip = request->CtrlPtIPAddr.s_addr;
   ip = ntohl (ip);
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
-  printf ("ServiceID : %s\n", request->ServiceID);
-  printf ("actionName : %s\n", request->ActionName);
-  printf ("CtrlPtIP : %s\n", val);
-#endif /* DEBUG */
+  print_info ("ServiceID : %s\n", request->ServiceID);
+  print_info ("actionName : %s\n", request->ActionName);
+  print_info ("CtrlPtIP : %s\n", val);
 
   if (find_service_action (request, &service, &action))
     {
@@ -128,6 +125,22 @@ device_callback_event_handler (Upnp_EventType type, void *event,
 
   return 0;
 }
+
+void
+print_info (const char *format, ...)
+{
+  va_list va;
+  
+  if (!format)
+    return;
+
+  if (!verbose_flag)
+    return;
+
+  va_start (va, format);
+  vfprintf (stdout, format, va);
+  va_end (va);
+}  
 
 int
 finish_upnp (void)
@@ -335,6 +348,7 @@ display_usage (void)
   printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is 'uShare')\n"));
   printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is 'eth0')\n"));
   printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
+  printf (_("   -v, --verbose \t\tSet verbose display.\n"));
   printf (_("   -V, --version \t\tDisplay the version of uShare and exit\n"));
   printf (_("   -h, --help \t\t\tDisplay this help\n"));
 
@@ -357,8 +371,9 @@ main (int argc, char **argv)
   char *udn = NULL, *ip = NULL;
   char *name = NULL, *interface = NULL;
   int c,index;
-  char short_options[] = "Vhn:i:c:";
+  char short_options[] = "vVhn:i:c:";
   struct option long_options [] = {
+    {"verbose", no_argument, 0, 'v' },
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
     {"name", required_argument, 0, 'n' },
@@ -370,7 +385,8 @@ main (int argc, char **argv)
   setup_i18n();
   setup_iconv();
   content = NULL;
-
+  verbose_flag = 0;
+  
   /* command line argument processing */
   while (1)
     {
@@ -390,6 +406,10 @@ main (int argc, char **argv)
         case 'h':
           display_usage ();
           return 0;
+
+        case 'v':
+          verbose_flag = 1;
+          break;
 
         case 'V':
           display_headers ();

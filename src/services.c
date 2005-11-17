@@ -115,18 +115,14 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
   node = (IXML_Node *) request->ActionRequest;
   if (!node)
   {
-#ifdef DEBUG
-    printf ("Invalid action request document");
-#endif /* DEBUG */
+    print_info ("Invalid action request document");
     return NULL;
   }
 
   node = ixmlNode_getFirstChild (node);
   if (!node)
   {
-#ifdef DEBUG
-    printf ("Invalid action request document");
-#endif /* DEBUG */
+    print_info ("Invalid action request document");
     return NULL;
   }
 
@@ -140,9 +136,7 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
       return strdup (ixmlNode_getNodeValue (node));
     }
 
-#ifdef DEBUG
-  printf ("Missing action request argument (%s)", key);
-#endif /* DEBUG */
+  print_info ("Missing action request argument (%s)", key);
 
   return NULL;
 }

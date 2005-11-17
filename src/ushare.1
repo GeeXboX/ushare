@@ -22,7 +22,7 @@
 GeeXboX uShare \- a lightweight UPnP Media Server
 .SH SYNOPSIS
 .B ushare
-[\f--n name\fR] [\f--i interface\fR] [\f--c directory\fR] [[\f--c directory\fR]...]
+[\f--v\fR] [\f--n name\fR] [\f--i interface\fR] [\f--c directory\fR] [[\f--c directory\fR]...]
 .SH DESCRIPTION
 \fBGeeXboX uShare\fP is a free UPnP multimedia files Media Server.
 It implements the server component that provides UPnP media devices with
@@ -31,6 +31,9 @@ server of libupnp to stream the files to clients.
 
 .SH OPTIONS
 This program follow the usual GNU command line syntax.
+.TP
+\fB\-\-verbose (\-v)\fR
+Set verbose display.
 .TP
 \fB\-\-name (\-n)\fR \fINAME\fR
 Set UPnP Friendly Name (display name of the media server).
@@ -44,7 +47,7 @@ Default is 'uShare'.
 Set directory to scan for multimedia files.
 Default is './' (current directory).
 .TP
-\fB\-\-version (\-v)\fR
+\fB\-\-version (\-V)\fR
 Display uShare version number.
 .SH "FILE TYPES"
 The following file formats (extensions) are supported :

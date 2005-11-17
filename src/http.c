@@ -67,9 +67,7 @@ http_get_info (const char *filename, struct File_Info *info)
   if (!filename || !info)
     return -1;
 
-#ifdef DEBUG
-  printf ("http_get_info, filename : %s\n", filename);
-#endif /* DEBUG */
+  print_info ("http_get_info, filename : %s\n", filename);
 
   if (!strcmp (filename, CDS_LOCATION))
   {
@@ -131,9 +129,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   if (!filename)
     return NULL;
 
-#ifdef DEBUG
-  printf ("http_open, filename : %s\n", filename);
-#endif /* DEBUG */
+  print_info ("http_open, filename : %s\n", filename);
 
   if (mode != UPNP_READ)
     return NULL;
@@ -168,9 +164,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   if (!entry->fullpath)
     return NULL;
 
-#ifdef DEBUG
-  printf ("Fullpath : %s\n", entry->fullpath);
-#endif /* DEBUG */
+  print_info ("Fullpath : %s\n", entry->fullpath);
 
   fd = open (entry->fullpath, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
   if (fd < 0)
@@ -192,9 +186,7 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
   struct web_file_t *file = (struct web_file_t *) fh;
   ssize_t len = -1;
 
-#ifdef DEBUG
-  printf ("http_read\n");
-#endif /* DEBUG */
+  print_info ("http_read\n");
 
   if (!file)
     return -1;
@@ -202,31 +194,23 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
   switch (file->type)
   {
   case FILE_LOCAL:
-#ifdef DEBUG
-    printf ("Read local file.\n");
-#endif /* DEBUG */
+    print_info ("Read local file.\n");
     len = read (file->detail.local.fd, buf, buflen);
     break;
   case FILE_MEMORY:
-#ifdef DEBUG
-    printf ("Read file from memory.\n");
-#endif /* DEBUG */
+    print_info ("Read file from memory.\n");
     len = MIN (buflen, file->detail.memory.len - file->pos);
     memcpy (buf, file->detail.memory.contents + file->pos, len);
     break;
   default:
-#ifdef DEBUG
-    printf ("Unknown file type.\n");
-#endif /* DEBUG */
+    print_info ("Unknown file type.\n");
     break;
   }
 
   if (len >= 0)
     file->pos += len;
 
-#ifdef DEBUG
-  printf ("Read %d bytes.\n", len);
-#endif /* DEBUG */
+  print_info ("Read %d bytes.\n", len);
 
   return len;
 }
@@ -236,9 +220,7 @@ http_write (UpnpWebFileHandle fh __attribute__((unused)),
             char *buf __attribute__((unused)),
             size_t buflen __attribute__((unused)))
 {
-#ifdef DEBUG
-  printf ("http write\n");
-#endif /* DEBUG */
+  print_info ("http write\n");
 
   return 0;
 }
@@ -249,9 +231,7 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
   struct web_file_t *file = (struct web_file_t *) fh;
   long newpos = -1;
 
-#ifdef DEBUG
-  printf ("http_seek\n");
-#endif /* DEBUG */
+  print_info ("http_seek\n");
 
   if (!file)
     return -1;
@@ -259,33 +239,26 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
   switch (origin)
   {
   case SEEK_SET:
-#ifdef DEBUG
-    printf ("Attempting to seek to %ld (was at %d) in %s\n",
-            offset, file->pos, file->fullpath);
-#endif /* DEBUG */
+    print_info ("Attempting to seek to %ld (was at %d) in %s\n",
+                offset, file->pos, file->fullpath);
     newpos = offset;
     break;
   case SEEK_CUR:
-#ifdef DEBUG
-    printf ("Attempting to seek by %ld from %d in %s\n",
-            offset, file->pos, file->fullpath);
-#endif /* DEBUG */
+    print_info ("Attempting to seek by %ld from %d in %s\n",
+                offset, file->pos, file->fullpath);
     newpos = file->pos + offset;
     break;
   case SEEK_END:
-#ifdef DEBUG
-    printf ("Attempting to seek by %ld from end (was at %d) in %s\n",
-            offset, file->pos, file->fullpath);
-#endif /* DEBUG */
+    print_info ("Attempting to seek by %ld from end (was at %d) in %s\n",
+                offset, file->pos, file->fullpath);
 
     if (file->type == FILE_LOCAL)
     {
       struct stat sb;
       if (stat (file->fullpath, &sb) < 0)
       {
-#ifdef DEBUG
-        printf ("%s: cannot stat: %s\n", file->fullpath, strerror (errno));
-#endif /* DEBUG */
+        print_info ("%s: cannot stat: %s\n",
+                    file->fullpath, strerror (errno));
         return -1;
       }
       newpos = sb.st_size + offset;
@@ -301,9 +274,7 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
     /* Just make sure we cannot seek before start of file. */
     if (newpos < 0)
     {
-#ifdef DEBUG
-      printf ("%s: cannot seek: %s\n", file->fullpath, strerror (EINVAL));
-#endif /* DEBUG */
+      print_info ("%s: cannot seek: %s\n", file->fullpath, strerror (EINVAL));
       return -1;
     }
 
@@ -311,18 +282,14 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
        changed in size since our last stat. */
     if (lseek (file->detail.local.fd, newpos, SEEK_SET) == -1)
     {
-#ifdef DEBUG
-      printf ("%s: cannot seek: %s\n", file->fullpath, strerror (errno));
-#endif /* DEBUG */
+      print_info ("%s: cannot seek: %s\n", file->fullpath, strerror (errno));
       return -1;
     }
     break;
   case FILE_MEMORY:
     if (newpos < 0 || newpos > (long) file->detail.memory.len)
     {
-#ifdef DEBUG
-      printf ("%s: cannot seek: %s\n", file->fullpath, strerror (EINVAL));
-#endif /* DEBUG */
+      print_info ("%s: cannot seek: %s\n", file->fullpath, strerror (EINVAL));
       return -1;
     }
     break;
@@ -338,9 +305,7 @@ http_close (UpnpWebFileHandle fh)
 {
   struct web_file_t *file = (struct web_file_t *) fh;
 
-#ifdef DEBUG
-  printf ("http_close\n");
-#endif /* DEBUG */
+  print_info ("http_close\n");
 
   if (!file)
     return -1;
@@ -356,9 +321,7 @@ http_close (UpnpWebFileHandle fh)
       free (file->detail.memory.contents);
     break;
   default:
-#ifdef DEBUG
-    printf ("Unknown file type.\n");
-#endif /* DEBUG */
+    print_info ("Unknown file type.\n");
     break;
   }
 

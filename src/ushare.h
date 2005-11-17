@@ -72,6 +72,7 @@ struct action_event_t {
   struct service_t *service;
 };
 
+void print_info (const char *format, ...);
 int finish_upnp (void);
 int init_upnp (char *name, char *udn, char *ip);
 

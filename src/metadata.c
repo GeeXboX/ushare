@@ -238,10 +238,8 @@ upnp_entry_new (const char *name, const char *fullpath,
   entry->size = size;
   entry->fd = -1;
 
-#ifdef DEBUG
   if (entry->id && entry->url)
-    printf ("Entry->URL (%d): %s\n", entry->id, entry->url);
-#endif /* DEBUG */
+    print_info ("Entry->URL (%d): %s\n", entry->id, entry->url);
 
   return entry;
 }
@@ -367,9 +365,7 @@ metadata_add_container (struct upnp_entry_t *entry, const char *container)
         malloc (strlen (container) + strlen (namelist[i]->d_name) + 2);
       sprintf (fullpath, "%s/%s", container, namelist[i]->d_name);
 
-#ifdef DEBUG
-      printf ("%s\n", fullpath);
-#endif /* DEBUG */
+      print_info ("%s\n", fullpath);
 
       if (stat (fullpath, &st) < 0)
       {
