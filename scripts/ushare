@@ -14,7 +14,7 @@ NAME=ushare
 DESC="uShare UPnP A/V Media Server"
 PIDFILE=/var/run/ushare.pid
 
-[ -r "/etc/ushare,conf" ] && . /etc/ushare.conf
+[ -r "/etc/ushare.conf" ] && . /etc/ushare.conf
 
 # abort if no executable exists
 [ -x $DAEMON ] || exit 0
