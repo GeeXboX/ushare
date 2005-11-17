@@ -1,0 +1,5 @@
+Template: ushare/share
+Type: string
+Default:
+_Description: Directories to share
+ Set the directories to share with uShare.

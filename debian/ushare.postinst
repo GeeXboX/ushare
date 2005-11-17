@@ -1,0 +1,15 @@
+#!/bin/sh
+CONFIGFILE=/etc/ushare.conf
+set -e
+
+db_get ushare/share
+USHARED_DIR="$RET"
+if [ "$USHARED_DIR" = "" ]; then
+  START=false
+else
+  START=true
+fi
+
+sed -i -e "s/^ *START=.*/START=$START/" \
+           -e "s/^ *USHARED_DIR=.*/USHARED_DIR=\"$USHARED_DIR\"/" \
+$CONFIGFILE

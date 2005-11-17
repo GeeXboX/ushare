@@ -33,8 +33,10 @@ fi
 AC_CONFIG_FILES([
         Makefile
         debian/Makefile
+        debian/po/Makefile
         src/Makefile
         intl/Makefile
         po/Makefile.in
+        scripts/Makefile
         ])
 AC_OUTPUT

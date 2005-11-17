@@ -1,0 +1,68 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Required-Start: $local_fs $syslog
+# Required-Stop:
+# Default-Start:  2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop ushare
+# Description: 
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/ushare
+NAME=ushare
+DESC="uShare UPnP server"
+PIDFILE=/var/run/ushare.pid
+
+[ -r "/etc/ushare,conf" ] && . /etc/ushare.conf
+
+# abort if no executable exists
+[ -x $DAEMON ] || exit 0
+
+set -e
+
+checkpid() {
+  [ -e $PIDFILE ] || touch $PIDFILE
+}
+
+if [ -n "$USHARE_NAME" ]; then
+  USHARE_OPTIONS=$USHARE_OPTIONS -n $USHARE_NAME
+fi
+if [ -n "$USHARE_IFACE" ]; then
+  USHARE_OPTIONS=$USHARE_OPTIONS -i $USHARE_IFACE
+fi
+if [ -n "$USHARED_DIR" ]; then
+  for dir in $(echo "$USHARED_DIR" | sed 's/,/ /g'); do
+    USHARE_OPTIONS=$USHARE_OPTIONS" -c $dir"
+  done
+fi
+
+case "$1" in
+  start)
+    echo -n "Starting $DESC: $NAME"
+    checkpid
+    start-stop-daemon --start --quiet --background --oknodo \
+      --make-pidfile --pidfile $PIDFILE \
+      --exec $DAEMON -- $USHARE_OPTIONS
+    echo "."
+  ;;
+  stop)
+    echo -n "Stopping $DESC: $NAME"
+    start-stop-daemon --stop --signal 2 --quiet --oknodo --pidfile $PIDFILE
+    echo "."
+  ;;
+#  reload|force-reload)
+#    start-stop-daemon --stop --signal 1 --quiet --oknodo --pidfile $PIDFILE --exec $DAEMON
+#  ;;
+  restart)
+    $0 stop
+    $1 start
+  ;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+    exit 2
+  ;;
+esac
+
+exit 0
