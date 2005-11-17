@@ -335,7 +335,7 @@ display_usage (void)
   printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is 'uShare')\n"));
   printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is 'eth0')\n"));
   printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
-  printf (_("   -v, --version \t\tDisplay the version of uShare and exit\n"));
+  printf (_("   -V, --version \t\tDisplay the version of uShare and exit\n"));
   printf (_("   -h, --help \t\t\tDisplay this help\n"));
 
   exit (0);
@@ -357,9 +357,9 @@ main (int argc, char **argv)
   char *udn = NULL, *ip = NULL;
   char *name = NULL, *interface = NULL;
   int c,index;
-  char short_options[] = "vhn:i:c:";
+  char short_options[] = "Vhn:i:c:";
   struct option long_options [] = {
-    {"version", no_argument, 0, 'v' },
+    {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
@@ -391,7 +391,7 @@ main (int argc, char **argv)
           display_usage ();
           return 0;
 
-        case 'v':
+        case 'V':
           display_headers ();
           return 0;
 
