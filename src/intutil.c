@@ -35,8 +35,8 @@
 /* 2^64-1 in octal is 22 chars + null byte = 23 */
 static char intstr[23];
 
-INT_STR_FUNC(uint32_str, uint32_t, PRIu32);
-INT_STR_FUNC(int32_str, int32_t, PRIi32);
+INT_STR_FUNC(uint32_str, uint32_t, PRIu32)
+INT_STR_FUNC(int32_str, int32_t, PRIi32)
 
 bool
 parse_int32 (const char *instr, int32_t *outint)

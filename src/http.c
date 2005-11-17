@@ -43,7 +43,7 @@ struct web_file_t {
   size_t pos;
   enum {
     FILE_LOCAL,
-    FILE_MEMORY,
+    FILE_MEMORY
   } type;
   union {
     struct {
