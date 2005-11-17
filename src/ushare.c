@@ -262,6 +262,8 @@ create_udn (char *interface)
             (ptr[0] & 0377), (ptr[1] & 0377), (ptr[2] & 0377),
             (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377));
 
+  close (sock);
+  
   return buf;
 }
 
@@ -298,6 +300,8 @@ get_iface_address (char *interface)
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
+  close (sock);
+  
   return val;
 }
 
