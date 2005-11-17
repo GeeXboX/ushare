@@ -1,4 +1,4 @@
-EXTRA_DIST := ushare
+EXTRA_DIST := ushare ushare.conf
 
 init_scripts := ushare
 
