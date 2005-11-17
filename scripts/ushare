@@ -11,7 +11,7 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/ushare
 NAME=ushare
-DESC="uShare UPnP server"
+DESC="uShare UPnP A/V Media Server"
 PIDFILE=/var/run/ushare.pid
 
 [ -r "/etc/ushare,conf" ] && . /etc/ushare.conf
