@@ -1,3 +1,11 @@
+ushare (0.9.2-2) unstable; urgency=low
+
+  * using debconf templates to generate conf file
+  * add misc:Depends, to handle debconf depends
+  * add automatic launch script at install
+
+ -- Alexis Saettler (asbin ;-]) <<alexis@saettler.org>>  Fri, 18 Nov 2005 13:54:06 +0100
+
 ushare (0.9.2-1) unstable; urgency=low
 
   * new upstream release

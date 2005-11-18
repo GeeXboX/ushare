@@ -7,7 +7,7 @@ Standards-Version: 3.6.2.1
 
 Package: ushare
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Suggests: geexbox-generator
 Description: lightweight UPnP A/V Media Server
  GeeXboX uShare is a UPnP (TM) A/V Media Server. It implements the server
