@@ -37,15 +37,11 @@ char *strdup_tr(const char *s);
 static ushare_config *
 ushare_config_new (void)
 {
-  ushare_config* config = (ushare_config*) malloc ( sizeof(ushare_config) );
-  if ( !config )
-  {
-    perror("error malloc");
-    exit (2);
-  }
+  ushare_config *config = (ushare_config *) malloc (sizeof (ushare_config));
   config->name = NULL;
   config->interface = NULL;
   config->content = NULL;
+
   return config;
 }
 
