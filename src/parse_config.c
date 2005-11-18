@@ -252,13 +252,13 @@ strdup_tr(const char *s)
 
   for (begin = 0 ; begin < end ; begin++)
   {
-    if ( s[begin] != ' ' && s[begin] != '	' && s[begin] != '"' )
+    if ( s[begin] != ' ' && s[begin] != '\t' && s[begin] != '"' )
       break;
   }
 
   for (; begin < end ; end--)
   {
-    if ( s[end] != ' ' && s[end] != '	' && s[end] != '"' && s[end] != '\n' )
+    if ( s[end] != ' ' && s[end] != '\t' && s[end] != '"' && s[end] != '\n' )
       break;
   }
 
