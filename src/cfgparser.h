@@ -39,26 +39,13 @@ typedef struct ushare_config
 #define DEFAULT_USHARE_NAME "uShare"
 #define DEFAULT_USHARE_IFACE "eth0"
 
+ushare_config *ushare_config_new (void);
 void ushare_config_free (ushare_config *c);
-int parse_config_file(const char *file);
-int parse_file(ushare_config *config, const char *file);
+int parse_config_file (ushare_config *config, const char *file);
 
-ushare_config *config_add_name(ushare_config *config, const char *name);
-char *config_get_name(ushare_config *config);
-ushare_config *config_add_interface(ushare_config *config, const char *iface);
-char *config_get_interface(ushare_config *config);
-ushare_config *config_add_contentdir(ushare_config *config, const char *dir);
-ushare_config *config_set_contentdir(ushare_config *config, content_list *content);
-content_list *config_get_contentdir(ushare_config *config);
-
-#define add_name(name) config_add_name(config,name)
-#define get_name() config_get_name(config)
-#define add_interface(interface) config_add_interface(config,interface)
-#define get_interface() config_get_interface(config)
-#define add_contentdir(dir) config_add_contentdir(config,dir)
-#define set_contentdir(content) config_set_contentdir(config,content)
-#define get_contentdir() config_get_contentdir(config)
-
-extern ushare_config *config;
+void config_set_name (ushare_config *config, const char *name);
+void config_set_interface (ushare_config *config, const char *iface);
+void config_add_contentdir (ushare_config *config, const char *dir);
+void config_set_contentdir (ushare_config *config, content_list *content);
 
 #endif /* _CONFIG_PARSER_H_ */

@@ -57,6 +57,7 @@
 
 static UpnpDevice_Handle dev;
 static char *deviceUDN;
+static ushare_config *config;
 int verbose_flag;
 
 static void
@@ -390,6 +391,7 @@ main (int argc, char **argv)
   setup_i18n();
   setup_iconv();
   content = NULL;
+  config = ushare_config_new ();
   verbose_flag = 0;
   
   /* command line argument processing */
@@ -449,53 +451,43 @@ main (int argc, char **argv)
         }
     }
 
-  if ( parse_config_file (conffile) < 0 )
-  {
-    if (conffile)
-      fprintf(stderr, _("Error: file \"%s\" doesn't exist, using default file\n"), conffile);
-  }
+  if (!conffile)
+    conffile = strdup (DEFAULT_CONFFILE);
+  
+  if (parse_config_file (config, conffile) < 0)
+    print_info (_("Warning: can't parse file \"%s\".\n"), conffile);
 
   if (content)
-  {
-    set_contentdir (content);
-  }
-  else if (!get_contentdir ())
+    config_set_contentdir (config, content);
+  else if (!config->content)
   {
     /* FIXME 
      *  No content dir. Is it better to share current dir
      *   or to stop for security reasons ?
      */
-    add_contentdir ("./");
+    config_add_contentdir (config, "./");
   }
 
   if (name)
   {
-    add_name (name);
+    config_set_name (config, name);
     free (name);
-  }
-  else if (!get_name ())
-  {
-    add_name (DEFAULT_USHARE_NAME);
   }
 
   if (interface)
   {
-    add_interface (interface);
+    config_set_interface (config, interface);
     free (interface);
   }
-  else if (!get_interface ())
-  {
-    add_interface (DEFAULT_USHARE_IFACE);
-  }
 
-  udn = create_udn (get_interface ());
+  udn = create_udn (config->interface);
   if (!udn)
   {
     ushare_config_free (config);
     return -1;
   }
 
-  ip = get_iface_address (get_interface ());
+  ip = get_iface_address (config->interface);
   if (!ip)
   {
     ushare_config_free (config);
@@ -506,7 +498,7 @@ main (int argc, char **argv)
   signal (SIGINT, UPnPBreak);
 
   display_headers ();
-  if (init_upnp (get_name (), udn, ip) < 0)
+  if (init_upnp (config->name, udn, ip) < 0)
   {
     finish_upnp ();
     ushare_config_free (config);
@@ -517,7 +509,7 @@ main (int argc, char **argv)
   free (udn);
   free (ip);
 
-  build_metadata_list (get_contentdir ());
+  build_metadata_list (config->content);
 
   while (1)
     sleep (1000000);
