@@ -1,5 +1,5 @@
 /*
- * config.c : GeeXboX uShare config file parser headers
+ * cfgparser.c : GeeXboX uShare config file parser headers.
  * Originally developped for the GeeXboX project.
  * Copyright (C) 2005 Alexis Saettler <asbin@asbin.org>
  *
@@ -18,8 +18,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef _CONFIG_PARSER_
-#define _CONFIG_PARSER_
+#ifndef _CONFIG_PARSER_H_
+#define _CONFIG_PARSER_H_
 
 #include "content.h"
 
@@ -63,4 +63,4 @@ content_list *config_get_contentdir(ushare_config *config);
 
 extern ushare_config *config;
 
-#endif
+#endif /* _CONFIG_PARSER_H_ */

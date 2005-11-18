@@ -12,7 +12,7 @@ ushare_SOURCES= \
 	util_iconv.h util_iconv.c \
 	gettext.h \
 	content.h content.c \
-	parse_config.h parse_config.c \
+	cfgparser.h cfgparser.c \
 	ushare.h ushare.c
 
 man_MANS = ushare.1

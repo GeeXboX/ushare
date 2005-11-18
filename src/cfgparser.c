@@ -1,5 +1,5 @@
 /*
- * config.c : GeeXboX uShare config file parser
+ * cfgparser.c : GeeXboX uShare config file parser.
  * Originally developped for the GeeXboX project.
  * Copyright (C) 2005 Alexis Saettler <asbin@asbin.org>
  *
@@ -24,7 +24,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include "parse_config.h"
+#include "cfgparser.h"
 #include "ushare.h"
 
 #define USHARED_DIR_DELIM ","

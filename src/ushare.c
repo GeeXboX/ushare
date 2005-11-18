@@ -46,7 +46,7 @@
 #include "metadata.h"
 #include "util_iconv.h"
 #include "content.h"
-#include "parse_config.h"
+#include "cfgparser.h"
 
 #if HAVE_SETLOCALE && ENABLE_NLS
 # include <locale.h>
