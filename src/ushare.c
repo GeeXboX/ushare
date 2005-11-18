@@ -133,7 +133,7 @@ void
 print_info (const char *format, ...)
 {
   va_list va;
-  
+
   if (!format)
     return;
 
@@ -279,7 +279,7 @@ create_udn (char *interface)
             (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377));
 
   close (sock);
-  
+
   return buf;
 }
 
@@ -317,7 +317,7 @@ get_iface_address (char *interface)
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
   close (sock);
-  
+
   return val;
 }
 
@@ -393,7 +393,7 @@ main (int argc, char **argv)
   content = NULL;
   config = ushare_config_new ();
   verbose_flag = 0;
-  
+
   /* command line argument processing */
   while (1)
     {
@@ -453,7 +453,7 @@ main (int argc, char **argv)
 
   if (!conffile)
     conffile = strdup (DEFAULT_CONFFILE);
-  
+
   if (parse_config_file (config, conffile) < 0)
     print_info (_("Warning: can't parse file \"%s\".\n"), conffile);
 

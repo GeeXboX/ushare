@@ -200,7 +200,7 @@ upnp_entry_new (const char *name, const char *fullpath,
   entry->parent = parent;
   entry->child_count =  dir ? 0 : -1;
   entry->title = NULL;
-  
+
   entry->childs = (struct upnp_entry_t **)
     malloc (sizeof (struct upnp_entry_t *));
   *(entry->childs) = NULL;

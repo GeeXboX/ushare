@@ -55,7 +55,7 @@ strdup_trim (const char *s)
 
   if (!s)
     return NULL;
-  
+
   end = strlen (s) - 1;
 
   for (begin = 0 ; begin < end ; begin++)
@@ -87,7 +87,7 @@ ushare_config_free (ushare_config *c)
 {
   if (!c)
     return;
-  
+
   if (c->name)
     free (c->name);
   if (c->interface)
@@ -133,7 +133,7 @@ config_add_contentdir (ushare_config *config, const char *dir)
 {
   if (!config || !dir)
     return;
-  
+
   config->content = add_content (config->content, dir);
 }
 
@@ -142,7 +142,7 @@ config_set_contentdir (ushare_config *config, content_list *content)
 {
   if (!config || !content)
     return;
-  
+
   config->content = content;
 }
 
@@ -158,10 +158,10 @@ parse_config_file (ushare_config *config, const char *file)
 
   if (!file)
     return -1;
-  
+
   if (!config)
     return -1;
- 
+
   conffile = fopen (file, "r");
   if (!conffile)
     return -1;
@@ -219,7 +219,7 @@ parse_config_file (ushare_config *config, const char *file)
   }
 
   fclose (conffile);
-  
+
   if (s)
     free (s);
   if (line)
