@@ -41,7 +41,7 @@ ignore_line (const char *line)
   len = strlen (line);
 
   for (i = 0 ; i < (int) len ; i++ )
-    if (line[i] != ' ' && line[i] != '	' && line[i] != '\n')
+    if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
       return 0;
 
   return 1;
