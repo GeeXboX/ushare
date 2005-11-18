@@ -46,6 +46,7 @@
 #include "metadata.h"
 #include "util_iconv.h"
 #include "content.h"
+#include "parse_config.h"
 
 #if HAVE_SETLOCALE && ENABLE_NLS
 # include <locale.h>
@@ -324,7 +325,7 @@ UPnPBreak (int s __attribute__ ((unused)))
 {
   finish_upnp ();
   free_metadata_list ();
-  free_content (content);
+  free_ushare_config (config);
   finish_iconv ();
 
   exit (0);
@@ -346,10 +347,11 @@ display_usage (void)
   printf ("\n");
   printf (_("Usage: ushare [option] [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
   printf (_("Options:\n"));
-  printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is 'uShare')\n"));
-  printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is 'eth0')\n"));
+  printf (_("   -C, --config=FILE \t\tUse FILE as config file (default is '%s')\n"), DEFAULT_CONFFILE);
+  printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is '%s')\n"), DEFAULT_USHARE_NAME);
+  printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
   printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
-  printf (_("   -v, --verbose \t\tSet verbose display.\n"));
+  printf (_("   -v, --verbose \t\tSet verbose display\n"));
   printf (_("   -V, --version \t\tDisplay the version of uShare and exit\n"));
   printf (_("   -h, --help \t\t\tDisplay this help\n"));
 
@@ -370,9 +372,10 @@ int
 main (int argc, char **argv)
 {
   char *udn = NULL, *ip = NULL;
-  char *name = NULL, *interface = NULL;
+  char *name = NULL, *interface = NULL, *conffile = NULL;
   int c,index;
-  char short_options[] = "vVhn:i:c:";
+  content_list *content;
+  char short_options[] = "vVhn:i:c:C:";
   struct option long_options [] = {
     {"verbose", no_argument, 0, 'v' },
     {"version", no_argument, 0, 'V' },
@@ -380,6 +383,7 @@ main (int argc, char **argv)
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
     {"content", required_argument, 0, 'c' },
+    {"config", required_argument, 0, 'C' },
     {0, 0, 0, 0 }
   };
 
@@ -434,33 +438,67 @@ main (int argc, char **argv)
           content = add_content (content, optarg);
           break;
 
+        case 'C':
+          if (!optarg)
+            return -1;
+          conffile = strdup (optarg);
+          break;
+
         default:
           return -1;
         }
     }
 
-  if (!content)
-    content = add_content (content, "./");
-  if (!name)
-    name = strdup ("uShare");
-  if (!interface)
-    interface = strdup ("eth0");
+  if ( parse_config_file (conffile) < 0 )
+  {
+    if (conffile)
+      fprintf(stderr, _("Error: file \"%s\" doesn't exist, using default file\n"), conffile);
+  }
 
-  udn = create_udn (interface);
+  if (content)
+  {
+    set_contentdir (content);
+  }
+  else if (!get_contentdir ())
+  {
+    /* FIXME 
+     *  No content dir. Is it better to share current dir
+     *   or to stop for security reasons ?
+     */
+    add_contentdir ("./");
+  }
+
+  if (name)
+  {
+    add_name (name);
+    free (name);
+  }
+  else if (!get_name ())
+  {
+    add_name (DEFAULT_USHARE_NAME);
+  }
+
+  if (interface)
+  {
+    add_interface (interface);
+    free (interface);
+  }
+  else if (!get_interface ())
+  {
+    add_interface (DEFAULT_USHARE_IFACE);
+  }
+
+  udn = create_udn (get_interface ());
   if (!udn)
   {
-    free_content (content);
-    free (name);
-    free (interface);
+    free_ushare_config (config);
     return -1;
   }
 
-  ip = get_iface_address (interface);
+  ip = get_iface_address (get_interface ());
   if (!ip)
   {
-    free_content (content);
-    free (name);
-    free (interface);
+    free_ushare_config (config);
     free (udn);
     return -1;
   }
@@ -468,22 +506,18 @@ main (int argc, char **argv)
   signal (SIGINT, UPnPBreak);
 
   display_headers ();
-  if (init_upnp (name, udn, ip) < 0)
+  if (init_upnp (get_name (), udn, ip) < 0)
   {
     finish_upnp ();
-    free_content (content);
-    free (name);
-    free (interface);
+    free_ushare_config (config);
     free (udn);
     free (ip);
     return -1;
   }
-  free (name);
-  free (interface);
   free (udn);
   free (ip);
 
-  build_metadata_list (content);
+  build_metadata_list (get_contentdir ());
 
   while (1)
     sleep (1000000);

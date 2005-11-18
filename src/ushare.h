@@ -76,6 +76,4 @@ void print_info (const char *format, ...);
 int finish_upnp (void);
 int init_upnp (char *name, char *udn, char *ip);
 
-content_list *content;
-
 #endif /* _USHARE_H_ */
