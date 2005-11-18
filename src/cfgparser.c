@@ -34,8 +34,8 @@ ushare_config *config;
 int to_ignore(const char *line);
 char *strdup_tr(const char *s);
 
-ushare_config*
-new_ushare_config( void )
+static ushare_config *
+ushare_config_new (void)
 {
   ushare_config* config = (ushare_config*) malloc ( sizeof(ushare_config) );
   if ( !config )
@@ -50,7 +50,7 @@ new_ushare_config( void )
 }
 
 void
-free_ushare_config( ushare_config *c)
+ushare_config_free (ushare_config *c)
 {
   if (c)
   {
@@ -124,7 +124,7 @@ int
 parse_config_file(const char *file)
 {
   if (!config)
-    config = new_ushare_config ();
+    config = ushare_config_new ();
   return parse_file(config, file);
 }
 

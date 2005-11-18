@@ -325,7 +325,7 @@ UPnPBreak (int s __attribute__ ((unused)))
 {
   finish_upnp ();
   free_metadata_list ();
-  free_ushare_config (config);
+  ushare_config_free (config);
   finish_iconv ();
 
   exit (0);
@@ -491,14 +491,14 @@ main (int argc, char **argv)
   udn = create_udn (get_interface ());
   if (!udn)
   {
-    free_ushare_config (config);
+    ushare_config_free (config);
     return -1;
   }
 
   ip = get_iface_address (get_interface ());
   if (!ip)
   {
-    free_ushare_config (config);
+    ushare_config_free (config);
     free (udn);
     return -1;
   }
@@ -509,7 +509,7 @@ main (int argc, char **argv)
   if (init_upnp (get_name (), udn, ip) < 0)
   {
     finish_upnp ();
-    free_ushare_config (config);
+    ushare_config_free (config);
     free (udn);
     free (ip);
     return -1;

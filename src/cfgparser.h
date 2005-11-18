@@ -39,9 +39,7 @@ typedef struct ushare_config
 #define DEFAULT_USHARE_NAME "uShare"
 #define DEFAULT_USHARE_IFACE "eth0"
 
-
-ushare_config *new_ushare_config( void );
-void free_ushare_config( ushare_config *c);
+void ushare_config_free (ushare_config *c);
 int parse_config_file(const char *file);
 int parse_file(ushare_config *config, const char *file);
 
