@@ -1,15 +1,19 @@
 #!/bin/sh
 CONFIGFILE=/etc/ushare.conf
+INITFILE=/etc/init.d/ushare
 set -e
 
 db_get ushare/share
 USHARED_DIR="$RET"
-if [ "$USHARED_DIR" = "" ]; then
-  START=false
-else
-  START=true
-fi
 
-sed -i -e "s/^ *START=.*/START=$START/" \
-           -e "s/^ *USHARED_DIR=.*/USHARED_DIR=\"$USHARED_DIR\"/" \
+sed -i -e "s/^ *USHARED_DIR=.*/USHARED_DIR=\"$USHARED_DIR\"/" \
 $CONFIGFILE
+
+if [ -x "$INITFILE" ]; then
+  update-rc.d ushare defaults >/dev/null
+  if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+    invoke-rc.d ushare start || exit 0
+  else
+    $INITFILE start || exit 0
+  fi
+fi
