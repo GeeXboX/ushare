@@ -48,16 +48,17 @@ ushare_config_new (void)
 void
 ushare_config_free (ushare_config *c)
 {
-  if (c)
-  {
-    if ( c->name )
-      free (c->name);
-    if ( c->interface )
-      free (c->interface);
-    if ( c->content )
-      free_content (c->content);
-    free (c);
-  }
+  if (!c)
+    return;
+  
+  if (c->name)
+    free (c->name);
+  if (c->interface)
+    free (c->interface);
+  if (c->content)
+    free_content (c->content);
+
+  free (c);
 }
 
 ushare_config*
