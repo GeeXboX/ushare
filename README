@@ -6,20 +6,14 @@ component that provides UPnP media devices with information on available
 multimedia files. uShare uses the built-in http server of libupnp to
 stream the files to clients.
 
-GeeXboX uShare is a fork from the GMediaServer (UPnP AV Audio Media Server)
-from Oskar Liljeblad. It has been stripped down for GeeXboX purpose in
-order to be a lighweight multimedia media server.
-
-By opposition to GMediaServer, it does _NOT_ grab any information from
-audio files (like ID3 tags) but is _NOT_ limited to audio files.
 GeeXboX uShare is able to provide access to both images, videos, music
 or playlists files (see below for a complete file format support list).
 It does not act as an UPnP Media Adaptor and thus, can't transcode
 streams to fit the client requirements.
 
-uShare is written in C by Benjamin Zores for the GeeXboX project (see
-http://www.geexbox.org/). It is designed to provide access to multimedia
-contents to GeeXboX but can of course be used by any other UPnP client device.
+uShare is written in C for the GeeXboX project (see http://www.geexbox.org/).
+It is designed to provide access to multimedia contents to GeeXboX but can of
+course be used by any other UPnP client device.
 It should compile and run on any modern POSIX compatible system such as Linux.
 
 GeeXboX uShare is free software - it is licensed under the terms of the GNU
@@ -86,7 +80,7 @@ to activate support for debug messages in uShare.
 
 Example :
 
-CFLAGS="-Os -DDEBUG" ./configure --prefix=/usr
+CFLAGS="-Os" ./configure --prefix=/usr
 make
 
 If you want to install uShare on your system, run :
@@ -104,16 +98,22 @@ Usage
 uShare runs from the console only. It supports the usual --help option
 which displays usage and option information.
 
+Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory] ...]
 Options:
-   -n, --name :         Set UPnP Friendly Name (default is 'uShare')
-   -i, --interface :    Set Network Interface (default is 'eth0')
-   -c, --content :      Set the content directory to be shared (default is './')
-   -v, --version :      Display the version of uShare and exit.
-   -h, --help :         Display this help
+ -n, --name=NAME        Set UPnP Friendly Name (default is 'uShare')
+ -i, --interface=IFACE  Use IFACE Network Interface (default is 'eth0')
+ -c, --content=DIR      Share the content of DIR directory.
+ -v, --verbose          Set verbose display
+ -D, --daemon           Run as a daemon.
+ -V, --version          Display the version of uShare and exit
+ -h, --help             Display this help
 
-uShare expects a directory argument (-c argument), specifying where
-multimedia files are stored. You should probably also use the -i option
-to specify which interface uShare should listen on.
+uShare gets its configuration from the /etc/ushare.conf file.
+You can force configuration options through command line.
+
+uShare expects one or several directory argument (-c argument),
+specifying where multimedia files are stored. You should probably also use
+the -i option to specify which interface uShare should listen on.
 
    ushare -c /shares
    ushare -c /shares1 --content=/shares2
@@ -125,12 +125,15 @@ See the manual page for more details :
 Supported File Formats List
 ===========================
 
-- Video files : asf, avi, divx, wmv, mpeg, mpg, mpe, vob, m1v, m2v, m4v,
-                ts, ogm, mkv, rmvb, mov, qt
+- Video files : asf, avi, dv, divx, wmv, mjpg, mjpeg, mpeg, mpg, mpe,
+                mp2p, vob, mp2t, m1v, m2v, m4v, m4p, mp4ps, ts, ogm, mkv,
+                rmvb, mov, qt
 
-- Audio files : mp2, mp3, mp4, mpa, ogg, wav, wma, mka, ra, rm, ram
+- Audio files : aac, ac3, aif, aiff, at3p, au, snd, dts, rmi, mp1, mp2, mp3,
+                mp4, mpa, ogg, wav, pcm, lpcm, l16, wma, mka, ra, rm, ram
 
-- Images files : bmp, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm
+- Images files : bmp, ico, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm,
+                 qti, qtf, qtif, tif, tiff
 
 - Playlist files : pls, m3u, asx
 
@@ -140,7 +143,7 @@ in the src/mime.c table. Do not forget to send a patch to update uShare.
 Feedback
 ========
 
-The author of uShare and this document, Benjamin Zores, can be
+The main author of uShare and this document, Benjamin Zores, can be
 contacted by e-mail on the following address:
 
    ben@geexbox.org
