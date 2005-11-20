@@ -24,6 +24,7 @@
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <errno.h>
 #include <getopt.h>
