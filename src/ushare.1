@@ -17,7 +17,7 @@
 .\" with this program; if not, write to the Free Software Foundation,
 .\" Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 .\"
-.TH USHARE 1 "October 25, 2005"
+.TH USHARE 1 "November 20, 2005"
 .SH NAME
 GeeXboX uShare \- a lightweight UPnP Media Server
 .SH SYNOPSIS
@@ -35,9 +35,8 @@ This program follow the usual GNU command line syntax.
 \fB\-\-verbose (\-v)\fR
 Set verbose display.
 .TP
-\fB\-\-config (\-C)\fR \fIFILE\fR
-Use FILE as config file.
-Default is '/etc/ushare.conf'.
+\fB\-\-daemon (\-D)\fR
+Run as a daemon.
 .TP
 \fB\-\-name (\-n)\fR \fINAME\fR
 Set UPnP Friendly Name (display name of the media server).
@@ -49,7 +48,6 @@ Default is 'uShare'.
 .TP
 \fB\-\-content (\-c)\fR \fIDIRECTORY\fR
 Set directory to scan for multimedia files.
-Default is './' (current directory).
 .TP
 \fB\-\-version (\-V)\fR
 Display uShare version number.
@@ -57,13 +55,13 @@ Display uShare version number.
 The following file formats (extensions) are supported :
 .TP
 .B Video
-asf, avi, divx, wmv, mpeg, mpg, mpe, vob, m1v, m2v, m4v, ts, ogm, mkv, rmvb, mov, qt
+asf, avi, dv, divx, wmv, mjpg, mjpeg, mpeg, mpg, mpe, mp2p, vob, mp2t, m1v, m2v, m4v, m4p, mp4ps, ts, ogm, mkv, rmvb, mov, qt
 .TP
 .B Audio
-mp2, mp3, mp4, mpa, ogg, wav, wma, mka, ra, rm, ram
+aac, ac3, aif, aiff, at3p, au, snd, dts, rmi, mp1, mp2, mp3, mp4, mpa, ogg, wav, pcm, lpcm, l16, wma, mka, ra, rm, ram
 .TP
 .B Images
-bmp, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm
+bmp, ico, gif, jpeg, jpg, jpe, pcd, png, pnm, ppm, qti, qtf, qtif, tif, tiff
 .TP
 .B Playlist
 pls, m3u, asx
