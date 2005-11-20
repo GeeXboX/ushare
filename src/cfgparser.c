@@ -207,6 +207,7 @@ display_usage (void)
   printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
   printf (_(" -c, --content=DIR\tShare the content of DIR directory.\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
+  printf (_(" -D, --daemon\t\tRun as a daemon.\n"));
   printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
   printf (_(" -h, --help\t\tDisplay this help\n"));
 }
@@ -215,11 +216,12 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "Vhvn:i:c:";
+  char short_options[] = "VhvDn:i:c:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
     {"verbose", no_argument, 0, 'v' },
+    {"daemon", no_argument, 0, 'D' },
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
     {"content", required_argument, 0, 'c' },
@@ -251,6 +253,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'v':
       ut->verbose = 1;
+      break;
+
+    case 'D':
+      ut->daemon = 1;
       break;
 
     case 'n':

@@ -25,6 +25,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 #include <getopt.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
@@ -70,6 +71,7 @@ ushare_new (void)
   ut->udn = NULL;
   ut->ip = NULL;
   ut->verbose = 0;
+  ut->daemon = 0;
   
   return ut;
 }
@@ -422,6 +424,19 @@ main (int argc, char **argv)
     return -1;
   }
 
+  if (ut->daemon)
+  {
+    int err;
+    err = daemon (0, 0);
+    if (err == -1)
+    {
+      print_info (_("Error : failed to daemonize program : %s"),
+                  strerror (err));
+      ushare_free (ut);
+      return -1;
+    }
+  }
+  
   signal (SIGINT, UPnPBreak);
 
   display_headers ();

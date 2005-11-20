@@ -76,6 +76,7 @@ struct ushare_t {
   char *udn;
   char *ip;
   int verbose;
+  int daemon;
 };
 
 struct action_event_t {
