@@ -1,7 +1,7 @@
 /*
  * mime.c : GeeXboX uShare media file MIME-type association.
  * Originally developped for the GeeXboX project.
- * Parts of the code are originated from GMediaServer from Oskar Liljeblad.
+ * Ref : http://freedesktop.org/wiki/Standards_2fshared_2dmime_2dinfo_2dspec
  * Copyright (C) 2005 Benjamin Zores <ben@geexbox.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,61 +23,88 @@
 
 #include "mime.h"
 
+#define UPNP_VIDEO "object.item.videoItem.movie"
+#define UPNP_AUDIO "object.item.audioItem.musicTrack"
+#define UPNP_PHOTO "object.item.imageItem.photo"
+#define UPNP_PLAYLIST "object.item.playlistItem"
+
 struct mime_type_t MIME_Type_List[] = {
   /* Video files */
-  { "asf", "object.item.videoItem.movie", "http-get:*:video/x-ms-asf:*"},
-  { "avi", "object.item.videoItem.movie", "http-get:*:video/x-msvideo:*"},
-  { "divx", "object.item.videoItem.movie", "http-get:*:video/x-msvideo:*"},
-  { "wmv", "object.item.videoItem.movie", "http-get:*:video/x-ms-wmv:*"},
-  { "mpeg", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "mpg", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "mpe", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "vob", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "m1v", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "m2v", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "m4v", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "ts", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "ogm", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "mkv", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "rmvb", "object.item.videoItem.movie", "http-get:*:video/mpeg:*"},
-  { "mov", "object.item.videoItem.movie", "http-get:*:video/quicktime:*"},
-  { "qt", "object.item.videoItem.movie", "http-get:*:video/quicktime:*"},
+  { "asf", UPNP_VIDEO, "http-get:*:video/x-ms-asf:*"},
+  { "avi", UPNP_VIDEO, "http-get:*:video/avi:*"},
+  { "dv", UPNP_VIDEO, "http-get:*:video/x-dv:*"},
+  { "divx", UPNP_VIDEO, "http-get:*:video/x-msvideo:*"},
+  { "wmv", UPNP_VIDEO, "http-get:*:video/x-ms-wmv:*"},
+  { "mjpg", UPNP_VIDEO, "http-get:*:video/x-motion-jpeg:*"},
+  { "mjpeg", UPNP_VIDEO, "http-get:*:video/x-motion-jpeg:*"},
+  { "mpeg", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "mpg", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "mpe", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "mp2p", UPNP_VIDEO, "http-get:*:video/mp2p:*"},
+  { "vob", UPNP_VIDEO, "http-get:*:video/mp2p:*"},
+  { "mp2t", UPNP_VIDEO, "http-get:*:video/mp2t:*"},
+  { "m1v", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "m2v", UPNP_VIDEO, "http-get:*:video/mpeg2:*"},
+  { "mpg2", UPNP_VIDEO, "http-get:*:video/mpeg2:*"},
+  { "mpeg2", UPNP_VIDEO, "http-get:*:video/mpeg2:*"},
+  { "m4v", UPNP_VIDEO, "http-get:*:video/mp4:*"},
+  { "m4p", UPNP_VIDEO, "http-get:*:video/mp4:*"},
+  { "mp4ps", UPNP_VIDEO, "http-get:*:video/x-nerodigital-ps:*"},
+  { "ts", UPNP_VIDEO, "http-get:*:video/mpeg2:*"},
+  { "ogm", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "mkv", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "rmvb", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
+  { "mov", UPNP_VIDEO, "http-get:*:video/quicktime:*"},
+  { "qt", UPNP_VIDEO, "http-get:*:video/quicktime:*"},
 
   /* Audio files */
-  { "mp2", "object.item.audioItem.musicTrack", "http-get:*:audio/mpeg:*"},
-  { "mp3", "object.item.audioItem.musicTrack", "http-get:*:audio/mpeg:*"},
-  { "mp4", "object.item.audioItem.musicTrack", "http-get:*:audio/mpeg:*"},
-  { "m4a", "object.item.audioItem.musicTrack", "http-get:*:audio/mpeg:*"},
-  { "ogg", "object.item.audioItem.musicTrack",
-    "http-get:*:audio/application/ogg:*"},
-  { "wav", "object.item.audioItem.musicTrack", "http-get:*:audio/x-wav:*"},
-  { "wma", "object.item.audioItem.musicTrack",
-    "http-get:*:audio/audio/x-ms-wma:*"},
-  { "mka", "object.item.audioItem.musicTrack", "http-get:*:audio/mpeg:*"},
-  { "ra", "object.item.audioItem.musicTrack",
-    "http-get:*:audio/x-pn-realaudio:*"},
-  { "rm", "object.item.audioItem.musicTrack",
-    "http-get:*:audio/x-pn-realaudio:*"},
-  { "ram", "object.item.audioItem.musicTrack",
-    "http-get:*:audio/x-pn-realaudio:*"},
+  { "aac", UPNP_AUDIO, "http-get:*:audio/x-aac:*"},
+  { "ac3", UPNP_AUDIO, "http-get:*:audio/x-ac3:*"},
+  { "aif", UPNP_AUDIO, "http-get:*:audio/aiff:*"},
+  { "aiff", UPNP_AUDIO, "http-get:*:audio/aiff:*"},
+  { "at3p", UPNP_AUDIO, "http-get:*:audio/x-atrac3:*"},
+  { "au", UPNP_AUDIO, "http-get:*:audio/basic:*"},
+  { "snd", UPNP_AUDIO, "http-get:*:audio/basic:*"},
+  { "dts", UPNP_AUDIO, "http-get:*:audio/x-dts:*"},
+  { "rmi", UPNP_AUDIO, "http-get:*:audio/midi:*"},
+  { "mid", UPNP_AUDIO, "http-get:*:audio/midi:*"},
+  { "mp1", UPNP_AUDIO, "http-get:*:audio/mp1:*"},
+  { "mp2", UPNP_AUDIO, "http-get:*:audio/mp2:*"},
+  { "mp3", UPNP_AUDIO, "http-get:*:audio/mpeg:*"},
+  { "mp4", UPNP_AUDIO, "http-get:*:audio/mp4:*"},
+  { "m4a", UPNP_AUDIO, "http-get:*:audio/mpeg:*"},
+  { "ogg", UPNP_AUDIO, "http-get:*:audio/x-ogg:*"},
+  { "wav", UPNP_AUDIO, "http-get:*:audio/wav:*"},
+  { "pcm", UPNP_AUDIO, "http-get:*:audio/l16:*"},
+  { "lpcm", UPNP_AUDIO, "http-get:*:audio/l16:*"},
+  { "l16", UPNP_AUDIO, "http-get:*:audio/l16:*"},
+  { "wma", UPNP_AUDIO, "http-get:*:audio/audio/x-ms-wma:*"},
+  { "mka", UPNP_AUDIO, "http-get:*:audio/mpeg:*"},
+  { "ra", UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:*"},
+  { "rm", UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:*"},
+  { "ram", UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:*"},
 
   /* Images files */
-  { "bmp", "object.item.imageItem.photo", "http-get:*:image/x-ms-bmp:*"},
-  { "gif", "object.item.imageItem.photo", "http-get:*:image/gif:*"},
-  { "jpeg", "object.item.imageItem.photo", "http-get:*:image/jpeg:*"},
-  { "jpg", "object.item.imageItem.photo", "http-get:*:image/jpeg:*"},
-  { "jpe", "object.item.imageItem.photo", "http-get:*:image/jpeg:*"},
-  { "pcd", "object.item.imageItem.photo", "http-get:*:image/x-ms-bmp:*"},
-  { "png", "object.item.imageItem.photo", "http-get:*:image/png:*"},
-  { "pnm", "object.item.imageItem.photo",
-    "http-get:*:image/x-portable-anymap:*"},
-  { "ppm", "object.item.imageItem.photo",
-    "http-get:*:image/x-portable-pixmap:*"},
+  { "bmp", UPNP_PHOTO, "http-get:*:image/bmp:*"},
+  { "ico", UPNP_PHOTO, "http-get:*:image/x-icon:*"},
+  { "gif", UPNP_PHOTO, "http-get:*:image/gif:*"},
+  { "jpeg", UPNP_PHOTO, "http-get:*:image/jpeg:*"},
+  { "jpg", UPNP_PHOTO, "http-get:*:image/jpeg:*"},
+  { "jpe", UPNP_PHOTO, "http-get:*:image/jpeg:*"},
+  { "pcd", UPNP_PHOTO, "http-get:*:image/x-ms-bmp:*"},
+  { "png", UPNP_PHOTO, "http-get:*:image/png:*"},
+  { "pnm", UPNP_PHOTO, "http-get:*:image/x-portable-anymap:*"},
+  { "ppm", UPNP_PHOTO, "http-get:*:image/x-portable-pixmap:*"},
+  { "qti", UPNP_PHOTO, "http-get:*:image/x-quicktime:*"},
+  { "qtf", UPNP_PHOTO, "http-get:*:image/x-quicktime:*"},
+  { "qtif", UPNP_PHOTO, "http-get:*:image/x-quicktime:*"},
+  { "tif", UPNP_PHOTO, "http-get:*:image/tiff:*"},
+  { "tiff", UPNP_PHOTO, "http-get:*:image/tiff:*"},
 
   /* Playlist files */
-  { "pls", "object.item.playlistItem", "http-get:*:audio/x-scpls:*"},
-  { "m3u", "object.item.playlistItem", "http-get:*:audio/mpegurl:*"},
-  { "asx", "object.item.playlistItem", "http-get:*:video/x-ms-asf:*"},
+  { "pls", UPNP_PLAYLIST, "http-get:*:audio/x-scpls:*"},
+  { "m3u", UPNP_PLAYLIST, "http-get:*:audio/mpegurl:*"},
+  { "asx", UPNP_PLAYLIST, "http-get:*:video/x-ms-asf:*"},
 
   { NULL, NULL, NULL}
 };

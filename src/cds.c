@@ -28,7 +28,7 @@
 #include "services.h"
 #include "metadata.h"
 #include "mime.h"
-#include "strbuf.h"
+#include "buffer.h"
 #include "intutil.h"
 #include "minmax.h"
 
@@ -95,9 +95,9 @@
 /* DIDL parameters */
 /* Represent the CDS DIDL Message Header Namespace. */
 #define DIDL_NAMESPACE \
-    " xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\"" \
-    " xmlns:dc=\"http://purl.org/dc/elements/1.1/\"" \
-    " xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\""
+    "xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" " \
+    "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " \
+    "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\""
 
 /* Represent the CDS DIDL Message Header Tag. */
 #define DIDL_LITE "DIDL-Lite"
@@ -180,68 +180,68 @@ cds_get_system_update_id (struct action_event_t *event)
 }
 
 static void
-didl_add_header (struct strbuf_t *out)
+didl_add_header (struct buffer_t *out)
 {
-  strbuf_appendf (out, "<%s %s>", DIDL_LITE, DIDL_NAMESPACE);
+  buffer_appendf (out, "<%s %s>", DIDL_LITE, DIDL_NAMESPACE);
 }
 
 static void
-didl_add_footer (struct strbuf_t *out)
+didl_add_footer (struct buffer_t *out)
 {
-  strbuf_appendf (out, "</%s>", DIDL_LITE);
+  buffer_appendf (out, "</%s>", DIDL_LITE);
 }
 
 static void
-didl_add_tag (struct strbuf_t *out, char *tag, char *value)
-{
-  if (value)
-    strbuf_appendf (out, "<%s>%s</%s>", tag, value, tag);
-}
-
-static void
-didl_add_param (struct strbuf_t *out, char *param, char *value)
+didl_add_tag (struct buffer_t *out, char *tag, char *value)
 {
   if (value)
-    strbuf_appendf (out, " %s=\"%s\"", param, value);
+    buffer_appendf (out, "<%s>%s</%s>", tag, value, tag);
 }
 
 static void
-didl_add_value (struct strbuf_t *out, char *param, int value)
+didl_add_param (struct buffer_t *out, char *param, char *value)
 {
-  strbuf_appendf (out, " %s=\"%d\"", param, value);
+  if (value)
+    buffer_appendf (out, " %s=\"%s\"", param, value);
 }
 
 static void
-didl_add_item (struct strbuf_t *out, int item_id,
+didl_add_value (struct buffer_t *out, char *param, int value)
+{
+  buffer_appendf (out, " %s=\"%d\"", param, value);
+}
+
+static void
+didl_add_item (struct buffer_t *out, int item_id,
                int parent_id, char *restricted, char *class, char *title,
                char *protocol_info, int size, char *url)
 {
-  strbuf_appendf (out, "<%s", DIDL_ITEM);
+  buffer_appendf (out, "<%s", DIDL_ITEM);
   didl_add_value (out, DIDL_ITEM_ID, item_id);
   didl_add_value (out, DIDL_ITEM_PARENT_ID, parent_id);
   didl_add_param (out, DIDL_ITEM_RESTRICTED, restricted);
-  strbuf_append (out, ">");
+  buffer_append (out, ">");
 
   didl_add_tag (out, DIDL_ITEM_CLASS, class);
   didl_add_tag (out, DIDL_ITEM_TITLE, title);
 
-  strbuf_appendf (out, "<%s", DIDL_RES);
+  buffer_appendf (out, "<%s", DIDL_RES);
   didl_add_param (out, DIDL_RES_INFO, protocol_info);
   if (size >= 0)
     didl_add_value (out, DIDL_RES_SIZE, size);
-  strbuf_append (out, ">");
+  buffer_append (out, ">");
   if (url)
-    strbuf_append (out, url);
-  strbuf_appendf (out, "</%s>", DIDL_RES);
-  strbuf_appendf (out, "</%s>", DIDL_ITEM);
+    buffer_append (out, url);
+  buffer_appendf (out, "</%s>", DIDL_RES);
+  buffer_appendf (out, "</%s>", DIDL_ITEM);
 }
 
 static void
-didl_add_container (struct strbuf_t *out, int id, int parent_id,
+didl_add_container (struct buffer_t *out, int id, int parent_id,
                     int child_count, char *restricted, char *searchable,
                     char *title, char *class)
 {
-  strbuf_appendf (out, "<%s", DIDL_CONTAINER);
+  buffer_appendf (out, "<%s", DIDL_CONTAINER);
 
   didl_add_value (out, DIDL_CONTAINER_ID, id);
   didl_add_value (out, DIDL_CONTAINER_PARENT_ID, parent_id);
@@ -249,16 +249,16 @@ didl_add_container (struct strbuf_t *out, int id, int parent_id,
     didl_add_value (out, DIDL_CONTAINER_CHILDS, child_count);
   didl_add_param (out, DIDL_CONTAINER_RESTRICTED, restricted);
   didl_add_param (out, DIDL_CONTAINER_SEARCH, searchable);
-  strbuf_append (out, ">");
+  buffer_append (out, ">");
 
   didl_add_tag (out, DIDL_CONTAINER_CLASS, class);
   didl_add_tag (out, DIDL_CONTAINER_TITLE, title);
 
-  strbuf_appendf (out, "</%s>", DIDL_CONTAINER);
+  buffer_appendf (out, "</%s>", DIDL_CONTAINER);
 }
 
 static int
-cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
+cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
                      int index, int count, struct upnp_entry_t *entry)
 {
   int result_count = 0, c = 0;
@@ -277,8 +277,7 @@ cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
     for (c = index; c < MIN (index + count, entry->child_count); c++)
       result_count++;
 
-    upnp_add_response (event, SERVICE_CDS_DIDL_RESULT,
-                       strbuf_buffer (out));
+    upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
     upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, "1");
     upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, "1");
   }
@@ -293,8 +292,7 @@ cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
     for (c = index; c < MIN (index + count, entry->child_count); c++)
       result_count++;
 
-    upnp_add_response (event, SERVICE_CDS_DIDL_RESULT,
-                       strbuf_buffer (out));
+    upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
     upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED,
                        int32_str (result_count));
     upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH,
@@ -306,7 +304,7 @@ cds_browse_metadata (struct action_event_t *event, struct strbuf_t *out,
 
 static int
 cds_browse_directchildren (struct action_event_t *event,
-                           struct strbuf_t *out, int index,
+                           struct buffer_t *out, int index,
                            int count, struct upnp_entry_t *entry)
 {
   struct upnp_entry_t **childs;
@@ -347,7 +345,7 @@ cds_browse_directchildren (struct action_event_t *event,
 
   didl_add_footer (out);
 
-  upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, strbuf_buffer (out));
+  upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
   upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED,
                      int32_str (result_count));
   upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH,
@@ -363,7 +361,7 @@ cds_browse (struct action_event_t *event)
   struct upnp_entry_t *entry = NULL;
   int result_count = 0, index, count, id, sort_criteria;
   char *flag = NULL;
-  struct strbuf_t *out;
+  struct buffer_t *out = NULL;
   bool metadata;
 
   if (!event)
@@ -406,7 +404,7 @@ cds_browse (struct action_event_t *event)
   if (!entry)
     return false;
 
-  out = strbuf_new ();
+  out = buffer_new ();
   if (!out)
     return false;
 
@@ -419,11 +417,11 @@ cds_browse (struct action_event_t *event)
 
   if (result_count < 0)
     {
-      strbuf_free (out);
+      buffer_free (out);
       return false;
     }
 
-  strbuf_free (out);
+  buffer_free (out);
   upnp_add_response (event, SERVICE_CDS_DIDL_UPDATE_ID,
                      SERVICE_CDS_ROOT_OBJECT_ID);
 

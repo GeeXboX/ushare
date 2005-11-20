@@ -1,5 +1,4 @@
-/*
- * mime.h : GeeXboX uShare media file MIME-type association header.
+/* buffer.h - String buffer manipulation tools header.
  * Originally developped for the GeeXboX project.
  * Copyright (C) 2005 Benjamin Zores <ben@geexbox.org>
  *
@@ -16,15 +15,22 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
-#ifndef _MIME_H_
-#define _MIME_H_
+#ifndef _STRING_BUFFER_H_
+#define _STRING_BUFFER_H_
 
-struct mime_type_t {
-  char *extension;
-  char *class;
-  char *protocol;
+struct buffer_t {
+  char *buf;
+  int len;
+  int capacity;
 };
 
-#endif /* _MIME_H */
+struct buffer_t *buffer_new (void);
+void buffer_free (struct buffer_t *buffer);
+
+void buffer_append (struct buffer_t *buffer, char *str);
+void buffer_appendf (struct buffer_t *buffer, const char *format, ...);
+
+#endif /* _STRING_BUFFER_H_ */

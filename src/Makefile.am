@@ -8,7 +8,7 @@ ushare_SOURCES= \
 	mime.h mime.c \
 	minmax.h \
 	services.h services.c \
-	strbuf.h strbuf.c \
+	buffer.h buffer.c \
 	util_iconv.h util_iconv.c \
 	gettext.h \
 	content.h content.c \
