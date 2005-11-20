@@ -1,3 +1,19 @@
+Template: ushare/name
+Type: string
+Default:uShare
+_Description: uShare's name
+ Set UPnP friendly name. This is the name of this computer shares, 
+ seen by UPnP clients.
+
+Template: ushare/iface
+Type: select
+Choices: ${ifaces}
+Default: eth0
+_Description: Network interface to use
+ Set network interface on which share the content.
+ If your interface is not on the list, please edit the file
+ "${configfile}" manualy.
+
 Template: ushare/share
 Type: string
 Default:

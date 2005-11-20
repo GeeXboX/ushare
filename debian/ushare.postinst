@@ -1,12 +1,30 @@
 #!/bin/sh
 CONFIGFILE=/etc/ushare.conf
+DEFAULT_USHARE_NAME=uShare
+DEFAULT_USHARE_IFACE=eth0
+
 set -e
 . /usr/share/debconf/confmodule
+
+db_get ushare/name
+USHARE_NAME="$RET"
+if [ "$USHARE_NAME" = "$DEFAULT_USHARE_NAME" ]; then
+  USHARE_NAME=""
+fi
+
+db_get ushare/iface
+USHARE_IFACE="$RET"
+if [ "$USHARE_IFACE" = "$DEFAULT_USHARE_IFACE" ]; then
+  USHARE_IFACE=""
+fi
 
 db_get ushare/share
 USHARE_DIR="$RET"
 
-sed -i -e "s%^ *USHARE_DIR=.*%USHARE_DIR=\"$USHARE_DIR\"%" \
+sed -i \
+ -e "s%^ *USHARE_NAME=.*%USHARE_NAME=$USHARE_NAME%" \
+ -e "s%^ *USHARE_IFACE=.*%USHARE_IFACE=$USHARE_IFACE%" \
+ -e "s%^ *USHARE_DIR=.*%USHARE_DIR=\"$USHARE_DIR\"%" \
 $CONFIGFILE
 
 #DEBHELPER#

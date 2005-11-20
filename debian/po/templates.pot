@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: alexis@saettler.org\n"
-"POT-Creation-Date: 2005-11-14 22:27+0100\n"
+"POT-Creation-Date: 2005-11-20 16:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +19,39 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../ushare.templates:4
-msgid "Directories to share"
+msgid "uShare's name"
 msgstr ""
 
 #. Type: string
 #. Description
 #: ../ushare.templates:4
+msgid ""
+"Set UPnP friendly name. This is the name of this computer shares,  seen by "
+"UPnP clients."
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../ushare.templates:12
+msgid "Network interface to use"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../ushare.templates:12
+msgid ""
+"Set network interface on which share the content. If your interface is not "
+"on the list, please edit the file \"${configfile}\" manualy."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../ushare.templates:20
+msgid "Directories to share"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../ushare.templates:20
 msgid "Set the directories to share with uShare."
 msgstr ""
