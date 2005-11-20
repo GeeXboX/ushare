@@ -1,3 +1,13 @@
+2005-xx-xx: GeeXboX uShare 0.9.3 released.
+ Support for multiple directories to be shared.
+ Added start/stop script.
+ Added verbose mode.
+ Read configuration from /etc/ushare.conf configuration file.
+ Support for daemon mode.
+ Better MIME types handling.
+ Support for new multimedia files extensions.
+ Rewrite of some string buffer and integer manipulation tools.                
+
 2005-11-13: GeeXboX uShare 0.9.2 released.
  Improved UPnP compliance with Browse RequestedCount flag.
  Fixed some UPnP Object ID sent in Browse messages (terrible mistake).
