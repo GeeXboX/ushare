@@ -1,7 +1,6 @@
 /*
  * metadata.c : GeeXboX uShare CDS Metadata DB.
  * Originally developped for the GeeXboX project.
- * Parts of the code are originated from GMediaServer from Oskar Liljeblad.
  * Copyright (C) 2005 Benjamin Zores <ben@geexbox.org>
  *
  * This program is free software; you can redistribute it and/or modify
