@@ -413,9 +413,16 @@ build_metadata_list (struct ushare_t *ut)
   /* add files from content directory */
   for (i=0 ; i < ut->contentlist->count ; i++)
   {
+    struct upnp_entry_t *entry = NULL;
     printf (_("Looking for files in content directory : %s\n"),
             ut->contentlist->content[i]);
-    metadata_add_container (ut, ut->root_entry, ut->contentlist->content[i]);
+    entry = upnp_entry_new (ut, basename (ut->contentlist->content[i]),
+                            ut->contentlist->content[i],
+                            ut->root_entry, 0, 1);
+    if (!entry)
+      continue;
+    upnp_entry_add_child (ut->root_entry, entry);
+    metadata_add_container (ut, entry, ut->contentlist->content[i]);
   }
 
   printf (_("Found %d files and subdirectories.\n"), ut->nr_entries);
