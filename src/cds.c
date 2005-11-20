@@ -29,7 +29,6 @@
 #include "metadata.h"
 #include "mime.h"
 #include "buffer.h"
-#include "intutil.h"
 #include "minmax.h"
 
 /* Represent the CDS GetSearchCapabilities action. */
@@ -283,6 +282,7 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
   }
   else  /* container : directory */
   {
+    char tmp[32];
     didl_add_header (out);
     didl_add_container (out, entry->id, entry->parent
                         ? entry->parent->id : -1, entry->child_count,
@@ -293,10 +293,11 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
       result_count++;
 
     upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
-    upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED,
-                       int32_str (result_count));
-    upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH,
-                       int32_str (entry->child_count));
+    sprintf (tmp, "%d", result_count);
+    upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, tmp);
+    
+    sprintf (tmp, "%d", entry->child_count);
+    upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, tmp);
   }
 
   return result_count;
@@ -309,6 +310,7 @@ cds_browse_directchildren (struct action_event_t *event,
 {
   struct upnp_entry_t **childs;
   int s, result_count = 0;
+  char tmp[32];
 
   if (entry->child_count == -1) /* item : file */
     return -1;
@@ -346,10 +348,10 @@ cds_browse_directchildren (struct action_event_t *event,
   didl_add_footer (out);
 
   upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
-  upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED,
-                     int32_str (result_count));
-  upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH,
-                     int32_str (entry->child_count));
+  sprintf (tmp, "%d", result_count);
+  upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, tmp);
+  sprintf (tmp, "%d", entry->child_count);
+  upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, tmp);
 
   return result_count;
 }
