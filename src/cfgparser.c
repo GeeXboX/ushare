@@ -24,6 +24,12 @@
 #include <string.h>
 #include <getopt.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#else
+#error "Missing config.h file : run configure again"
+#endif
+
 #include "gettext.h"
 #define _(string) gettext (string)
 
