@@ -200,14 +200,15 @@ display_usage (void)
 {
   display_headers ();
   printf ("\n");
-  printf (_("Usage: ushare [option] [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
+  printf (_("Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
   printf (_("Options:\n"));
-  printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is '%s')\n"), DEFAULT_USHARE_NAME);
-  printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
-  printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
-  printf (_("   -v, --verbose \t\tSet verbose display\n"));
-  printf (_("   -V, --version \t\tDisplay the version of uShare and exit\n"));
-  printf (_("   -h, --help \t\t\tDisplay this help\n"));
+  printf (_(" -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"),
+          DEFAULT_USHARE_NAME);
+  printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
+  printf (_(" -c, --content=DIR\tShare the content of DIR directory.\n"));
+  printf (_(" -v, --verbose\t\tSet verbose display\n"));
+  printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
+  printf (_(" -h, --help\t\tDisplay this help\n"));
 }
 
 int
