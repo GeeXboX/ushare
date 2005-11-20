@@ -4,9 +4,9 @@ set -e
 . /usr/share/debconf/confmodule
 
 db_get ushare/share
-USHARED_DIR="$RET"
+USHARE_DIR="$RET"
 
-sed -i -e "s%^ *USHARED_DIR=.*%USHARED_DIR=\"$USHARED_DIR\"%" \
+sed -i -e "s%^ *USHARE_DIR=.*%USHARE_DIR=\"$USHARE_DIR\"%" \
 $CONFIGFILE
 
 #DEBHELPER#

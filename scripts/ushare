@@ -20,7 +20,7 @@ PIDFILE=/var/run/ushare.pid
 [ -x $DAEMON ] || exit 0
 
 # abort if no shared directory is defined
-[ -z "$USHARED_DIR" ] && exit 0
+[ -z "$USHARE_DIR" ] && exit 0
 
 set -e
 
@@ -35,7 +35,7 @@ if [ -n "$USHARE_IFACE" ]; then
   USHARE_OPTIONS=$USHARE_OPTIONS -i $USHARE_IFACE
 fi
 
-for dir in $(echo "$USHARED_DIR" | sed 's/,/ /g'); do
+for dir in $(echo "$USHARE_DIR" | sed 's/,/ /g'); do
   USHARE_OPTIONS=$USHARE_OPTIONS" -c $dir"
 done
 
