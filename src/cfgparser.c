@@ -163,7 +163,7 @@ parse_config_file (struct ushare_t *ut)
         print_info ("[config] uShare Interface name: %s\n", ut->interface);
       }
     }
-    else if (!strncmp (line, USHARED_DIR, strlen (USHARED_DIR)))
+    else if (!strncmp (line, USHARE_DIR, strlen (USHARE_DIR)))
     {
       s = strchr (line, '=') + 1;
       if (s && s[0] != '\0')
