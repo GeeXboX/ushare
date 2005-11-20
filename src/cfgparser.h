@@ -21,31 +21,17 @@
 #ifndef _CONFIG_PARSER_H_
 #define _CONFIG_PARSER_H_
 
-#include "content.h"
-
-typedef struct ushare_config
-{
-  char *name;
-  char *interface;
-  content_list *content;
-} ushare_config;
-
+#include "ushare.h"
 
 #define USHARE_NAME "USHARE_NAME"
 #define USHARE_IFACE "USHARE_IFACE"
 #define USHARED_DIR "USHARED_DIR"
 
-#define DEFAULT_CONFFILE "/etc/ushare.conf"
+#define USHARE_CONFIG_FILE "/etc/ushare.conf"
 #define DEFAULT_USHARE_NAME "uShare"
 #define DEFAULT_USHARE_IFACE "eth0"
 
-ushare_config *ushare_config_new (void);
-void ushare_config_free (ushare_config *c);
-int parse_config_file (ushare_config *config, const char *file);
-
-void config_set_name (ushare_config *config, const char *name);
-void config_set_interface (ushare_config *config, const char *iface);
-void config_add_contentdir (ushare_config *config, const char *dir);
-void config_set_contentdir (ushare_config *config, content_list *content);
+int parse_config_file (struct ushare_t *ut);
+int parse_command_line (struct ushare_t *ut, int argc, char **argv);
 
 #endif /* _CONFIG_PARSER_H_ */

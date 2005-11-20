@@ -22,6 +22,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <getopt.h>
+
+#include "gettext.h"
+#define _(string) gettext (string)
 
 #include "cfgparser.h"
 #include "ushare.h"
@@ -71,83 +75,47 @@ strdup_trim (const char *s)
   return r;
 }
 
-ushare_config *
-ushare_config_new (void)
+static void
+ushare_set_name (struct ushare_t *ut, const char *name)
 {
-  ushare_config *config = (ushare_config *) malloc (sizeof (ushare_config));
-  config->name = strdup (DEFAULT_USHARE_NAME);
-  config->interface = strdup (DEFAULT_USHARE_IFACE);
-  config->content = NULL;
-
-  return config;
-}
-
-void
-ushare_config_free (ushare_config *c)
-{
-  if (!c)
+  if (!ut || !name)
     return;
 
-  if (c->name)
-    free (c->name);
-  if (c->interface)
-    free (c->interface);
-  if (c->content)
-    free_content (c->content);
-
-  free (c);
-}
-
-void
-config_set_name (ushare_config *config, const char *name)
-{
-  if (!config || !name)
-    return;
-
-  if (config->name)
+  if (ut->name)
   {
-    free (config->name);
-    config->name = NULL;
+    free (ut->name);
+    ut->name = NULL;
   }
 
-  config->name = strdup_trim (name);
+  ut->name = strdup_trim (name);
 }
 
-void
-config_set_interface (ushare_config *config, const char *iface)
+static void
+ushare_set_interface (struct ushare_t *ut, const char *iface)
 {
-  if (!config || !iface)
+  if (!ut || !iface)
     return;
 
-  if (config->interface)
+  if (ut->interface)
   {
-    free (config->interface);
-    config->interface = NULL;
+    free (ut->interface);
+    ut->interface = NULL;
   }
 
-  config->interface = strdup_trim (iface);
+  ut->interface = strdup_trim (iface);
 }
 
-void
-config_add_contentdir (ushare_config *config, const char *dir)
+static void
+ushare_add_contentdir (struct ushare_t *ut, const char *dir)
 {
-  if (!config || !dir)
+  if (!ut || !dir)
     return;
 
-  config->content = add_content (config->content, dir);
-}
-
-void
-config_set_contentdir (ushare_config *config, content_list *content)
-{
-  if (!config || !content)
-    return;
-
-  config->content = content;
+  ut->contentlist = add_content (ut->contentlist, dir);
 }
 
 int
-parse_config_file (ushare_config *config, const char *file)
+parse_config_file (struct ushare_t *ut)
 {
   FILE *conffile;
   char *line = NULL;
@@ -156,13 +124,10 @@ parse_config_file (ushare_config *config, const char *file)
   ssize_t read;
   char *s = NULL, *token = NULL;
 
-  if (!file)
+  if (!ut)
     return -1;
 
-  if (!config)
-    return -1;
-
-  conffile = fopen (file, "r");
+  conffile = fopen (USHARE_CONFIG_FILE, "r");
   if (!conffile)
     return -1;
 
@@ -185,8 +150,8 @@ parse_config_file (ushare_config *config, const char *file)
       s = strchr (line, '=') + 1;
       if (s && s[0] != '\0')
       {
-        config_set_name (config, s);
-        print_info ("[config] uShare Name: %s\n", config->name);
+        ushare_set_name (ut, s);
+        print_info ("[config] uShare Name: %s\n", ut->name);
       }
     }
     else if (!strncmp (line, USHARE_IFACE, strlen (USHARE_IFACE)))
@@ -194,9 +159,8 @@ parse_config_file (ushare_config *config, const char *file)
       s = strchr (line, '=') + 1;
       if (s && s[0] != '\0')
       {
-        config_set_interface (config, s);
-        print_info ("[config] uShare Interface name: %s\n",
-                    config->interface);
+        ushare_set_interface (ut, s);
+        print_info ("[config] uShare Interface name: %s\n", ut->interface);
       }
     }
     else if (!strncmp (line, USHARED_DIR, strlen (USHARED_DIR)))
@@ -210,10 +174,10 @@ parse_config_file (ushare_config *config, const char *file)
         token = strtok (s, USHARE_DIR_DELIM);
         while (token)
         {
-          config_add_contentdir (config, token);
+          ushare_add_contentdir (ut, token);
           token = strtok (NULL, USHARE_DIR_DELIM);
         }
-        print_info("\n");
+        print_info ("\n");
       }
     }
   }
@@ -224,6 +188,83 @@ parse_config_file (ushare_config *config, const char *file)
     free (s);
   if (line)
     free(line);
+
+  return 0;
+}
+
+static void
+display_usage (void)
+{
+  display_headers ();
+  printf ("\n");
+  printf (_("Usage: ushare [option] [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
+  printf (_("Options:\n"));
+  printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is '%s')\n"), DEFAULT_USHARE_NAME);
+  printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
+  printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
+  printf (_("   -v, --verbose \t\tSet verbose display\n"));
+  printf (_("   -V, --version \t\tDisplay the version of uShare and exit\n"));
+  printf (_("   -h, --help \t\t\tDisplay this help\n"));
+}
+
+int
+parse_command_line (struct ushare_t *ut, int argc, char **argv)
+{
+  int c, index;
+  char short_options[] = "Vhvn:i:c:";
+  struct option long_options [] = {
+    {"version", no_argument, 0, 'V' },
+    {"help", no_argument, 0, 'h' },
+    {"verbose", no_argument, 0, 'v' },
+    {"name", required_argument, 0, 'n' },
+    {"interface", required_argument, 0, 'i' },
+    {"content", required_argument, 0, 'c' },
+    {0, 0, 0, 0 }
+  };
+
+  /* command line argument processing */
+  while (1)
+  {
+    c = getopt_long (argc, argv, short_options, long_options, &index);
+
+    if (c == EOF)
+      break;
+
+    switch (c)
+    {
+    case 0:
+      /* opt = long_options[index].name; */
+      break;
+
+    case '?':
+    case 'h':
+      display_usage ();
+      return -1;
+
+    case 'V':
+      display_headers ();
+      return -1;
+
+    case 'v':
+      ut->verbose = 1;
+      break;
+
+    case 'n':
+      ushare_set_name (ut, optarg);
+      break;
+
+    case 'i':
+      ushare_set_interface (ut, optarg);
+      break;
+
+    case 'c':
+      ushare_add_contentdir (ut, optarg);
+      break;
+
+    default:
+      break;
+    }
+  }
 
   return 0;
 }

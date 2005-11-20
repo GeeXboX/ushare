@@ -66,6 +66,18 @@
 "  </device>" \
 "</root>"
 
+struct ushare_t {
+  char *name;
+  char *interface;
+  content_list *contentlist;
+  struct upnp_entry_t *root_entry;
+  int nr_entries;
+  UpnpDevice_Handle dev;
+  char *udn;
+  char *ip;
+  int verbose;
+};
+
 struct action_event_t {
   struct Upnp_Action_Request *request;
   bool status;
@@ -73,7 +85,6 @@ struct action_event_t {
 };
 
 void print_info (const char *format, ...);
-int finish_upnp (void);
-int init_upnp (char *name, char *udn, char *ip);
+void display_headers (void);
 
 #endif /* _USHARE_H_ */

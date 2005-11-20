@@ -356,10 +356,10 @@ cds_browse_directchildren (struct action_event_t *event,
   return result_count;
 }
 
-bool
+static bool
 cds_browse (struct action_event_t *event)
 {
-  extern struct upnp_entry_t *root_entry;
+  extern struct ushare_t *ut;
   struct upnp_entry_t *entry = NULL;
   int result_count = 0, index, count, id, sort_criteria;
   char *flag = NULL;
@@ -402,7 +402,7 @@ cds_browse (struct action_event_t *event)
   }
   free (flag);
 
-  entry = upnp_get_entry (root_entry, id);
+  entry = upnp_get_entry (ut->root_entry, id);
   if (!entry)
     return false;
 

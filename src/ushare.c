@@ -55,10 +55,46 @@
 #include "gettext.h"
 #define _(string) gettext (string)
 
-static UpnpDevice_Handle dev;
-static char *deviceUDN;
-static ushare_config *config;
-int verbose_flag;
+struct ushare_t *ut = NULL;
+
+static struct ushare_t *
+ushare_new (void)
+{
+  struct ushare_t *ut = (struct ushare_t *) malloc (sizeof (struct ushare_t));
+  ut->name = strdup (DEFAULT_USHARE_NAME);
+  ut->interface = strdup (DEFAULT_USHARE_IFACE);
+  ut->contentlist = NULL;
+  ut->root_entry = NULL;
+  ut->nr_entries = 0;
+  ut->dev = 0;
+  ut->udn = NULL;
+  ut->ip = NULL;
+  ut->verbose = 0;
+  
+  return ut;
+}
+
+static void
+ushare_free (struct ushare_t *ut)
+{
+  if (!ut)
+    return;
+
+  if (ut->name)
+    free (ut->name);
+  if (ut->interface)
+    free (ut->interface);
+  if (ut->contentlist)
+    free_content (ut->contentlist);
+  if (ut->root_entry)
+    upnp_entry_free (ut->root_entry);
+  if (ut->udn)
+    free (ut->udn);
+  if (ut->ip)
+    free (ut->ip);
+  
+  free (ut);
+}
 
 static void
 handle_action_request (struct Upnp_Action_Request *request)
@@ -74,7 +110,7 @@ handle_action_request (struct Upnp_Action_Request *request)
   if (request->ErrCode != UPNP_E_SUCCESS)
     return;
 
-  if (strcmp (request->DevUDN + 5, deviceUDN))
+  if (strcmp (request->DevUDN + 5, ut->udn))
     return;
 
   ip = request->CtrlPtIPAddr.s_addr;
@@ -137,7 +173,7 @@ print_info (const char *format, ...)
   if (!format)
     return;
 
-  if (!verbose_flag)
+  if (!ut->verbose)
     return;
 
   va_start (va, format);
@@ -145,39 +181,32 @@ print_info (const char *format, ...)
   va_end (va);
 }  
 
-int
+static int
 finish_upnp (void)
 {
   printf (_("Stopping UPnP Service ...\n"));
-  UpnpUnRegisterRootDevice (dev);
+  UpnpUnRegisterRootDevice (ut->dev);
   UpnpFinish ();
-
-  if (deviceUDN)
-    free (deviceUDN);
 
   return UPNP_E_SUCCESS;
 }
 
-int
-init_upnp (char *name, char *udn, char *ip)
+static int
+init_upnp (struct ushare_t *ut)
 {
   char *description = NULL;
   int len, res;
 
-  if (!name || !udn || !ip)
+  if (!ut || !ut->name || !ut->udn || !ut->ip)
     return -1;
 
-  deviceUDN = strdup (udn);
-  if (!deviceUDN)
-    return -1;
-
-  len = strlen (UPNP_DESCRIPTION) + strlen (name) + strlen (udn) + 1;
+  len = strlen (UPNP_DESCRIPTION) + strlen (ut->name) + strlen (ut->udn) + 1;
   description = (char *) malloc (len * sizeof (char));
   memset (description, 0, len);
-  sprintf (description, UPNP_DESCRIPTION, name, udn);
+  sprintf (description, UPNP_DESCRIPTION, ut->name, ut->udn);
 
   printf (_("Initializing UPnP subsystem ...\n"));
-  res = UpnpInit (ip, 0);
+  res = UpnpInit (ut->ip, 0);
   if (res != UPNP_E_SUCCESS)
   {
     printf (_("Cannot initialize UPnP subsystem\n"));
@@ -206,7 +235,8 @@ init_upnp (char *name, char *udn, char *ip)
   }
 
   res = UpnpRegisterRootDevice2 (UPNPREG_BUF_DESC, description, 0, 1,
-                                 device_callback_event_handler, NULL, &dev);
+                                 device_callback_event_handler,
+                                 NULL, &(ut->dev));
   if (res != UPNP_E_SUCCESS)
   {
     printf (_("Cannot register UPnP device\n"));
@@ -214,7 +244,7 @@ init_upnp (char *name, char *udn, char *ip)
     return -1;
   }
 
-  res = UpnpUnRegisterRootDevice (dev);
+  res = UpnpUnRegisterRootDevice (ut->dev);
   if (res != UPNP_E_SUCCESS)
   {
     printf (_("Cannot unregister UPnP device\n"));
@@ -223,7 +253,8 @@ init_upnp (char *name, char *udn, char *ip)
   }
 
   res = UpnpRegisterRootDevice2 (UPNPREG_BUF_DESC, description, 0, 1,
-                                 device_callback_event_handler, NULL, &dev);
+                                 device_callback_event_handler,
+                                 NULL, &(ut->dev));
   if (res != UPNP_E_SUCCESS)
   {
     printf (_("Cannot register UPnP device\n"));
@@ -232,7 +263,7 @@ init_upnp (char *name, char *udn, char *ip)
   }
 
   printf (_("Sending UPnP advertisement for device ...\n"));
-  UpnpSendAdvertisement (dev, 1800);
+  UpnpSendAdvertisement (ut->dev, 1800);
 
   printf (_("Listening for control point connections ...\n"));
 
@@ -242,7 +273,7 @@ init_upnp (char *name, char *udn, char *ip)
   return 0;
 }
 
-char *
+static char *
 create_udn (char *interface)
 {
   int sock;
@@ -283,7 +314,7 @@ create_udn (char *interface)
   return buf;
 }
 
-char *
+static char *
 get_iface_address (char *interface)
 {
   int sock, ip;
@@ -325,14 +356,14 @@ static void
 UPnPBreak (int s __attribute__ ((unused)))
 {
   finish_upnp ();
-  free_metadata_list ();
-  ushare_config_free (config);
+  free_metadata_list (ut);
+  ushare_free (ut);
   finish_iconv ();
 
   exit (0);
 }
 
-static void
+void
 display_headers (void)
 {
   printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
@@ -342,24 +373,6 @@ display_headers (void)
 }
 
 static void
-display_usage (void)
-{
-  display_headers ();
-  printf ("\n");
-  printf (_("Usage: ushare [option] [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
-  printf (_("Options:\n"));
-  printf (_("   -C, --config=FILE \t\tUse FILE as config file (default is '%s')\n"), DEFAULT_CONFFILE);
-  printf (_("   -n, --name=NAME \t\tSet UPnP Friendly Name (default is '%s')\n"), DEFAULT_USHARE_NAME);
-  printf (_("   -i, --interface=IFACE \tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
-  printf (_("   -c, --content=DIR \t\tShare the content of DIR directory (default is './')\n"));
-  printf (_("   -v, --verbose \t\tSet verbose display\n"));
-  printf (_("   -V, --version \t\tDisplay the version of uShare and exit\n"));
-  printf (_("   -h, --help \t\t\tDisplay this help\n"));
-
-  exit (0);
-}
-
-void
 setup_i18n(void)
 {
 #if HAVE_SETLOCALE && ENABLE_NLS
@@ -372,144 +385,54 @@ setup_i18n(void)
 int
 main (int argc, char **argv)
 {
-  char *udn = NULL, *ip = NULL;
-  char *name = NULL, *interface = NULL, *conffile = NULL;
-  int c,index;
-  content_list *content;
-  char short_options[] = "vVhn:i:c:C:";
-  struct option long_options [] = {
-    {"verbose", no_argument, 0, 'v' },
-    {"version", no_argument, 0, 'V' },
-    {"help", no_argument, 0, 'h' },
-    {"name", required_argument, 0, 'n' },
-    {"interface", required_argument, 0, 'i' },
-    {"content", required_argument, 0, 'c' },
-    {"config", required_argument, 0, 'C' },
-    {0, 0, 0, 0 }
-  };
-
+  ut = ushare_new ();
+  if (!ut)
+    return -1;
+  
   setup_i18n();
   setup_iconv();
-  content = NULL;
-  config = ushare_config_new ();
-  verbose_flag = 0;
 
-  /* command line argument processing */
-  while (1)
-    {
-      c = getopt_long(argc, argv, short_options, long_options, &index);
+  if (parse_config_file (ut) < 0)
+    print_info (_("Warning: can't parse file \"%s\".\n"), USHARE_CONFIG_FILE);
 
-      if (c == EOF)
-        break;
-
-      switch (c)
-        {
-        case 0:
-          /* opt = long_options[index].name; */
-          break;
-
-        case '?':
-        case ':':
-        case 'h':
-          display_usage ();
-          return 0;
-
-        case 'v':
-          verbose_flag = 1;
-          break;
-
-        case 'V':
-          display_headers ();
-          return 0;
-
-        case 'n':
-          if (!optarg)
-            return -1;
-          name = strdup (optarg);
-          break;
-
-        case 'i':
-          if (!optarg)
-            return -1;
-          interface = strdup (optarg);
-          break;
-
-        case 'c':
-          if (!optarg)
-            return -1;
-          content = add_content (content, optarg);
-          break;
-
-        case 'C':
-          if (!optarg)
-            return -1;
-          conffile = strdup (optarg);
-          break;
-
-        default:
-          return -1;
-        }
-    }
-
-  if (!conffile)
-    conffile = strdup (DEFAULT_CONFFILE);
-
-  if (parse_config_file (config, conffile) < 0)
-    print_info (_("Warning: can't parse file \"%s\".\n"), conffile);
-
-  if (content)
-    config_set_contentdir (config, content);
-  else if (!config->content)
+  if (parse_command_line (ut, argc, argv) < 0)
   {
-    /* FIXME 
-     *  No content dir. Is it better to share current dir
-     *   or to stop for security reasons ?
-     */
-    config_add_contentdir (config, "./");
+    ushare_free (ut);
+    return 0;
   }
 
-  if (name)
+  if (!ut->contentlist)
   {
-    config_set_name (config, name);
-    free (name);
-  }
-
-  if (interface)
-  {
-    config_set_interface (config, interface);
-    free (interface);
-  }
-
-  udn = create_udn (config->interface);
-  if (!udn)
-  {
-    ushare_config_free (config);
+    print_info (_("Error : no content directory to be shared.\n"));
+    ushare_free (ut);
     return -1;
   }
 
-  ip = get_iface_address (config->interface);
-  if (!ip)
+  ut->udn = create_udn (ut->interface);
+  if (!ut->udn)
   {
-    ushare_config_free (config);
-    free (udn);
+    ushare_free (ut);
+    return -1;
+  }
+
+  ut->ip = get_iface_address (ut->interface);
+  if (!ut->ip)
+  {
+    ushare_free (ut);
     return -1;
   }
 
   signal (SIGINT, UPnPBreak);
 
   display_headers ();
-  if (init_upnp (config->name, udn, ip) < 0)
+  if (init_upnp (ut) < 0)
   {
     finish_upnp ();
-    ushare_config_free (config);
-    free (udn);
-    free (ip);
+    ushare_free (ut);
     return -1;
   }
-  free (udn);
-  free (ip);
 
-  build_metadata_list (config->content);
+  build_metadata_list (ut);
 
   while (1)
     sleep (1000000);

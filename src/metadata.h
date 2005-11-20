@@ -45,8 +45,9 @@ struct upnp_entry_t {
   int fd;
 };
 
-void free_metadata_list (void);
-void build_metadata_list (const content_list *contentdir);
+void free_metadata_list (struct ushare_t *ut);
+void build_metadata_list (struct ushare_t *ut);
 struct upnp_entry_t * upnp_get_entry (struct upnp_entry_t *entry, int id);
+void upnp_entry_free (struct upnp_entry_t *entry);
 
 #endif /* _METADATA_H_ */

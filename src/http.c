@@ -60,7 +60,7 @@ struct web_file_t {
 static int
 http_get_info (const char *filename, struct File_Info *info)
 {
-  extern struct upnp_entry_t *root_entry;
+  extern struct ushare_t *ut;
   struct upnp_entry_t *entry = NULL;
   struct stat st;
   int upnp_id = 0;
@@ -91,7 +91,7 @@ http_get_info (const char *filename, struct File_Info *info)
   }
 
   upnp_id = atoi (strrchr (filename, '/') + 1);
-  entry = upnp_get_entry (root_entry, upnp_id);
+  entry = upnp_get_entry (ut->root_entry, upnp_id);
   if (!entry)
     return -1;
 
@@ -122,7 +122,7 @@ http_get_info (const char *filename, struct File_Info *info)
 static UpnpWebFileHandle
 http_open (const char *filename, enum UpnpOpenFileMode mode)
 {
-  extern struct upnp_entry_t *root_entry;
+  extern struct ushare_t *ut;
   struct upnp_entry_t *entry = NULL;
   struct web_file_t *file;
   int fd, upnp_id = 0;
@@ -158,7 +158,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   }
 
   upnp_id = atoi (strrchr (filename, '/') + 1);
-  entry = upnp_get_entry (root_entry, upnp_id);
+  entry = upnp_get_entry (ut->root_entry, upnp_id);
   if (!entry)
     return NULL;
 

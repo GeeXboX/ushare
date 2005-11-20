@@ -45,11 +45,6 @@
 #include "gettext.h"
 #define _(string) gettext (string)
 
-struct upnp_entry_t *root_entry = NULL;
-int nr_entries = 0;
-
-static void upnp_entry_free (struct upnp_entry_t *entry);
-
 static char *
 getExtension (const char *filename)
 {
@@ -184,7 +179,7 @@ get_list_length (void *list)
 }
 
 static struct upnp_entry_t *
-upnp_entry_new (const char *name, const char *fullpath,
+upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
                 struct upnp_entry_t *parent, int size, int dir)
 {
   struct upnp_entry_t *entry = NULL;
@@ -195,7 +190,7 @@ upnp_entry_new (const char *name, const char *fullpath,
 
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
-  entry->id = nr_entries++;
+  entry->id = ut->nr_entries++;
   entry->fullpath = fullpath ? strdup (fullpath) : NULL;
   entry->parent = parent;
   entry->child_count =  dir ? 0 : -1;
@@ -245,7 +240,7 @@ upnp_entry_new (const char *name, const char *fullpath,
   return entry;
 }
 
-static void
+void
 upnp_entry_free (struct upnp_entry_t *entry)
 {
   struct upnp_entry_t **childs;
@@ -315,7 +310,8 @@ upnp_get_entry (struct upnp_entry_t *entry, int id)
 }
 
 static void
-metadata_add_file (struct upnp_entry_t *entry, const char *file, const char *name)
+metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
+                   const char *file, const char *name)
 {
   struct stat st;
 
@@ -329,14 +325,15 @@ metadata_add_file (struct upnp_entry_t *entry, const char *file, const char *nam
   {
     struct upnp_entry_t *child = NULL;
 
-    child = upnp_entry_new (name, file, entry, st.st_size, 0);
+    child = upnp_entry_new (ut, name, file, entry, st.st_size, 0);
     if (child)
       upnp_entry_add_child (entry, child);
   }
 }
 
 static void
-metadata_add_container (struct upnp_entry_t *entry, const char *container)
+metadata_add_container (struct ushare_t *ut,
+                        struct upnp_entry_t *entry, const char *container)
 {
   struct dirent **namelist;
   int n;
@@ -379,13 +376,13 @@ metadata_add_container (struct upnp_entry_t *entry, const char *container)
       {
         struct upnp_entry_t *child = NULL;
 
-        child = upnp_entry_new (namelist[i]->d_name,
+        child = upnp_entry_new (ut, namelist[i]->d_name,
                                 fullpath, entry, 0, 1);
-        metadata_add_container (child, fullpath);
+        metadata_add_container (ut, child, fullpath);
         upnp_entry_add_child (entry, child);
       }
       else
-        metadata_add_file (entry, fullpath, namelist[i]->d_name);
+        metadata_add_file (ut, entry, fullpath, namelist[i]->d_name);
 
       free (namelist[i]);
       free (fullpath);
@@ -395,30 +392,31 @@ metadata_add_container (struct upnp_entry_t *entry, const char *container)
 }
 
 void
-free_metadata_list (void)
+free_metadata_list (struct ushare_t *ut)
 {
-  if (root_entry)
-    upnp_entry_free (root_entry);
-  root_entry = NULL;
-  nr_entries = 0;
+  if (ut->root_entry)
+    upnp_entry_free (ut->root_entry);
+  ut->root_entry = NULL;
+  ut->nr_entries = 0;
 }
 
 void
-build_metadata_list (const content_list *contentdir)
+build_metadata_list (struct ushare_t *ut)
 {
   int i;
   printf (_("Building Metadata List ...\n"));
 
   /* build root entry */
-  if (!root_entry)
-    root_entry = upnp_entry_new ("root", NULL, NULL, -1, 1);
+  if (!ut->root_entry)
+    ut->root_entry = upnp_entry_new (ut, "root", NULL, NULL, -1, 1);
 
   /* add files from content directory */
-  for (i=0 ; i < contentdir->count ; i++)
+  for (i=0 ; i < ut->contentlist->count ; i++)
   {
-    printf (_("Looking for files in content directory : %s\n"), contentdir->content[i]);
-    metadata_add_container (root_entry, contentdir->content[i]);
+    printf (_("Looking for files in content directory : %s\n"),
+            ut->contentlist->content[i]);
+    metadata_add_container (ut, ut->root_entry, ut->contentlist->content[i]);
   }
 
-  printf (_("Found %d files and subdirectories.\n"), nr_entries);
+  printf (_("Found %d files and subdirectories.\n"), ut->nr_entries);
 }
