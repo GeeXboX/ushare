@@ -7,155 +7,153 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ushare 0.9.2\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-11-18 18:20+0100\n"
-"PO-Revision-Date: 2005-11-18 18:20+0100\n"
+"POT-Creation-Date: 2005-11-20 18:20+0100\n"
+"PO-Revision-Date: 2005-11-20 18:01+0100\n"
 "Last-Translator: Alexis Saettler <asbin@asbin.org>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ushare.c:150
+#: src/ushare.c:190
 #, c-format
 msgid "Stopping UPnP Service ...\n"
 msgstr "Arrêt du service UPnP ...\n"
 
-#: src/ushare.c:178
+#: src/ushare.c:211
 #, c-format
 msgid "Initializing UPnP subsystem ...\n"
 msgstr "Initialisation du système UPnP ...\n"
 
-#: src/ushare.c:182
+#: src/ushare.c:215
 #, c-format
 msgid "Cannot initialize UPnP subsystem\n"
 msgstr "Impossible d'initialiser le système UPnP ...\n"
 
-#: src/ushare.c:186
+#: src/ushare.c:219
 #, c-format
 msgid "UPnP MediaServer listening on %s:%d\n"
 msgstr "Serveur Multimédia UPnP en écoute sur %s:%d\n"
 
-#: src/ushare.c:194
+#: src/ushare.c:227
 #, c-format
 msgid "Cannot set virtual directory callbacks\n"
 msgstr "Impossible de créer les retours des dossiers virtuels\n"
 
-#: src/ushare.c:202
+#: src/ushare.c:235
 #, c-format
 msgid "Cannot add virtual directory for web server\n"
 msgstr "Impossible d'ajouter le dossier virtuel du serveur web\n"
 
-#: src/ushare.c:211 src/ushare.c:228
+#: src/ushare.c:245 src/ushare.c:263
 #, c-format
 msgid "Cannot register UPnP device\n"
 msgstr "Impossible d'enregistrer le périphérique UPnP\n"
 
-#: src/ushare.c:219
+#: src/ushare.c:253
 #, c-format
 msgid "Cannot unregister UPnP device\n"
 msgstr "Impossible de supprimer le périphérique UPnP\n"
 
-#: src/ushare.c:233
+#: src/ushare.c:268
 #, c-format
 msgid "Sending UPnP advertisement for device ...\n"
 msgstr "Envoit des informations UPnP du périphérique ...\n"
 
-#: src/ushare.c:236
+#: src/ushare.c:271
 #, c-format
 msgid "Listening for control point connections ...\n"
 msgstr "Attente de connexions ...\n"
 
-#: src/ushare.c:337
+#: src/ushare.c:372
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
-msgstr "%s (version %s), un serveur UPnP léger.\n"
+msgstr "%s (version %s), un serveur mutlimédia UPnP léger.\n"
 
-#: src/ushare.c:339
+#: src/ushare.c:374
 #, c-format
 msgid "Benjamin Zores (C) 2005, for GeeXboX Team.\n"
 msgstr "Benjamin Zores (C) 2005, pour l'équipe GeeXboX.\n"
 
-#: src/ushare.c:340
+#: src/ushare.c:375
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr "Voir http://ushare.geexbox.org/ pour les mises à jour.\n"
 
-#: src/ushare.c:348
+#: src/ushare.c:399
 #, c-format
-msgid ""
-"Usage: ushare [option] [-n name] [-i interface] [-c directory] [[-c "
-"directory]...]\n"
-msgstr ""
-"Usage : ushare [option] [-n nom] [-i interface] [-c répertoire] [[-c "
-"répertoire]...]\n"
+msgid "Warning: can't parse file \"%s\".\n"
+msgstr "Attention : impossible de lire le fichier \"%s\".\n"
 
-#: src/ushare.c:349
+#: src/ushare.c:409
+msgid "Error: no content directory to be shared.\n"
+msgstr "Erreur : aucun répertoire de contenus à partager.\n"
+
+#: src/ushare.c:434
 #, c-format
-msgid "Options:\n"
-msgstr "Options :\n"
+msgid "Error: failed to daemonize program : %s\n"
+msgstr "Erreur : impossible de démoniser le programme : %s\n"
 
-#: src/ushare.c:350
-#, c-format
-msgid "   -C, --config=FILE \t\tUse FILE as config file (default is '%s')\n"
-msgstr ""
-"   -C, --config=FICHIER \tUtiliser FICHIER comme fichier de configuration ('%"
-"s' par défaut)\n"
-
-#: src/ushare.c:351
-#, c-format
-msgid "   -n, --name=NAME \t\tSet UPnP Friendly Name (default is '%s')\n"
-msgstr "   -n, --name=NOM \t\tDéfini le nom UPnP ('%s' par défaut)\n"
-
-#: src/ushare.c:352
-#, c-format
-msgid ""
-"   -i, --interface=IFACE \tUse IFACE Network Interface (default is '%s')\n"
-msgstr ""
-"   -i, --interface=IFACE \tUtiliser l'interface réseau IFACE ('%s' par "
-"défaut)\n"
-
-#: src/ushare.c:353
-#, c-format
-msgid ""
-"   -c, --content=DIR \t\tShare the content of DIR directory (default is "
-"'./')\n"
-msgstr ""
-"   -c, --content=REP \t\tPartage le contenu du répertoire REP ('./' par "
-"défaut)\n"
-
-#: src/ushare.c:354
-#, c-format
-msgid "   -v, --verbose \t\tSet verbose display\n"
-msgstr "   -v, --verbose \t\tMode bavard\n"
-
-#: src/ushare.c:355
-#, c-format
-msgid "   -V, --version \t\tDisplay the version of uShare and exit\n"
-msgstr ""
-"   -V, --version \t\tAffiche la version de uShare et quitte le programme\n"
-
-#: src/ushare.c:356
-#, c-format
-msgid "   -h, --help \t\t\tDisplay this help\n"
-msgstr "   -h, --help \t\t\tAffiche cette aide\n"
-
-#: src/ushare.c:455
-#, c-format
-msgid "Error: file \"%s\" doesn't exist, using default file\n"
-msgstr ""
-"Erreur : le fichier \"%s\" n'existe pas, utilisation du fichier par défaut\n"
-
-#: src/metadata.c:410
+#: src/metadata.c:406
 #, c-format
 msgid "Building Metadata List ...\n"
 msgstr "Création de la liste de données\n"
 
-#: src/metadata.c:419
+#: src/metadata.c:416
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr "Recherche des fichiers dans le répertoire de contenus : %s\n"
 
-#: src/metadata.c:423
+#: src/metadata.c:427
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr "%d fichiers et sous-répertoires trouvés.\n"
+
+#: src/cfgparser.c:209
+#, c-format
+msgid ""
+"Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"
+msgstr ""
+"Usage : ushare [-n nom] [-i interface] [-c répertoire] [[-c répertoire]...]\n"
+
+#: src/cfgparser.c:210
+#, c-format
+msgid "Options:\n"
+msgstr "Options :\n"
+
+#: src/cfgparser.c:211
+#, c-format
+msgid " -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"
+msgstr " -n, --name=NOM\t\tDéfini le nom UPnP ('%s' par défaut)\n"
+
+#: src/cfgparser.c:213
+#, c-format
+msgid " -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"
+msgstr ""
+" -i, --interface=IFACE\tUtiliser l'interface réseau IFACE ('%s' par défaut)\n"
+
+#: src/cfgparser.c:214
+#, c-format
+msgid " -c, --content=DIR\tShare the content of DIR directory\n"
+msgstr " -c, --content=REP\tPartage le contenu du répertoire REP\n"
+
+#: src/cfgparser.c:215
+#, c-format
+msgid " -v, --verbose\t\tSet verbose display\n"
+msgstr " -v, --verbose\t\tMode bavard\n"
+
+#: src/cfgparser.c:216
+#, c-format
+msgid " -D, --daemon\t\tRun as a daemon\n"
+msgstr " -D, --daemon\t\tDémarrer en mode démon\n"
+
+#: src/cfgparser.c:217
+#, c-format
+msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
+msgstr ""
+" -V, --version\t\tAffiche la version de uShare et quitte le programme\n"
+
+#: src/cfgparser.c:218
+#, c-format
+msgid " -h, --help\t\tDisplay this help\n"
+msgstr " -h, --help\t\tAffiche cette aide\n"

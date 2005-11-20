@@ -1,3 +1,5 @@
 src/ushare.c
 src/metadata.c
-src/util_iconv.c
+src/cfgparser.c
+src/http.c
+src/services.c
