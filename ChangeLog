@@ -1,3 +1,13 @@
+2005-11-20  Benjamin Zores  <ben@geexbox.org>
+
+	* new public bug-fix release (Version 0.9.3)
+	* Added verbose mode.
+	* Read configuration from /etc/ushare.conf configuration file.
+	* Support for daemon mode.
+	* Better MIME types handling.
+	* Support for new multimedia files extensions.
+	* Rewrite of some string buffer and integer manipulation tools.
+
 2005-11-16  Alexis Saettler  <asbin@asbin.org>
 
 	* modify -c parameter habdle, to allow multiple shared directories.
