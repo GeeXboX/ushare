@@ -28,17 +28,6 @@ checkpid() {
   [ -e $PIDFILE ] || touch $PIDFILE
 }
 
-if [ -n "$USHARE_NAME" ]; then
-  USHARE_OPTIONS=$USHARE_OPTIONS -n $USHARE_NAME
-fi
-if [ -n "$USHARE_IFACE" ]; then
-  USHARE_OPTIONS=$USHARE_OPTIONS -i $USHARE_IFACE
-fi
-
-for dir in $(echo "$USHARE_DIR" | sed 's/,/ /g'); do
-  USHARE_OPTIONS=$USHARE_OPTIONS" -c $dir"
-done
-
 case "$1" in
   start)
     echo -n "Starting $DESC: $NAME"
