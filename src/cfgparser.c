@@ -168,26 +168,29 @@ parse_config_file (struct ushare_t *ut)
       s = strchr (line, '=') + 1;
       if (s && s[0] != '\0')
       {
-        s = strdup_trim (s);
-        print_info ("[config] uShare Shared directories: %s\n", s);
-
-        token = strtok (s, USHARE_DIR_DELIM);
-        while (token)
+        char *x = NULL;
+        x = strdup_trim (s);
+        if (x)
         {
-          ushare_add_contentdir (ut, token);
-          token = strtok (NULL, USHARE_DIR_DELIM);
+          print_info ("[config] uShare Shared directories: %s\n", x);
+
+          token = strtok (x, USHARE_DIR_DELIM);
+          while (token)
+          {
+            ushare_add_contentdir (ut, token);
+            token = strtok (NULL, USHARE_DIR_DELIM);
+          }
+          print_info ("\n");
+          free (x);
         }
-        print_info ("\n");
       }
     }
   }
 
   fclose (conffile);
 
-  if (s)
-    free (s);
   if (line)
-    free(line);
+    free (line);
 
   return 0;
 }
