@@ -26,7 +26,6 @@
 #include <upnp/upnptools.h>
 #include <stdbool.h>
 
-#include "strbuf.h"
 #include "ushare.h"
 #include "http.h"
 #include "content.h"
