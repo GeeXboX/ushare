@@ -73,7 +73,7 @@ ushare_new (void)
   ut->ip = NULL;
   ut->verbose = 0;
   ut->daemon = 0;
-  
+
   return ut;
 }
 
@@ -95,7 +95,7 @@ ushare_free (struct ushare_t *ut)
     free (ut->udn);
   if (ut->ip)
     free (ut->ip);
-  
+
   free (ut);
 }
 
@@ -121,9 +121,9 @@ handle_action_request (struct Upnp_Action_Request *request)
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
-  print_info ("ServiceID : %s\n", request->ServiceID);
-  print_info ("actionName : %s\n", request->ActionName);
-  print_info ("CtrlPtIP : %s\n", val);
+  print_info ("ServiceID: %s\n", request->ServiceID);
+  print_info ("actionName: %s\n", request->ActionName);
+  print_info ("CtrlPtIP: %s\n", val);
 
   if (find_service_action (request, &service, &action))
     {
@@ -391,7 +391,7 @@ main (int argc, char **argv)
   ut = ushare_new ();
   if (!ut)
     return -1;
-  
+
   setup_i18n();
   setup_iconv();
 
@@ -406,7 +406,7 @@ main (int argc, char **argv)
 
   if (!ut->contentlist)
   {
-    print_info (_("Error : no content directory to be shared.\n"));
+    print_info (_("Error: no content directory to be shared.\n"));
     ushare_free (ut);
     return -1;
   }
@@ -431,13 +431,13 @@ main (int argc, char **argv)
     err = daemon (0, 0);
     if (err == -1)
     {
-      print_info (_("Error : failed to daemonize program : %s"),
+      print_info (_("Error: failed to daemonize program : %s\n"),
                   strerror (err));
       ushare_free (ut);
       return -1;
     }
   }
-  
+
   signal (SIGINT, UPnPBreak);
 
   display_headers ();

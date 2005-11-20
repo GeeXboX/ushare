@@ -211,9 +211,9 @@ display_usage (void)
   printf (_(" -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"),
           DEFAULT_USHARE_NAME);
   printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"), DEFAULT_USHARE_IFACE);
-  printf (_(" -c, --content=DIR\tShare the content of DIR directory.\n"));
+  printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
-  printf (_(" -D, --daemon\t\tRun as a daemon.\n"));
+  printf (_(" -D, --daemon\t\tRun as a daemon\n"));
   printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
   printf (_(" -h, --help\t\tDisplay this help\n"));
 }
