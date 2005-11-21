@@ -26,6 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -135,7 +136,7 @@ getUpnpProtocol (const char *filename)
   return NULL;
 }
 
-static int
+static bool
 is_valid_extension (const char *filename)
 {
   extern struct mime_type_t MIME_Type_List[];
@@ -143,11 +144,11 @@ is_valid_extension (const char *filename)
   char *extension = NULL;
 
   if (!filename)
-    return 0;
+    return false;
 
   extension = getExtension (filename);
   if (!extension)
-    return 0;
+    return false;
 
   list = MIME_Type_List;
   while (list->extension)
@@ -155,14 +156,14 @@ is_valid_extension (const char *filename)
     if (!strcasecmp ((*list).extension, extension))
     {
       free (extension);
-      return 1;
+      return true;
     }
     *list++;
   }
 
   free (extension);
 
-  return 0;
+  return false;
 }
 
 static int

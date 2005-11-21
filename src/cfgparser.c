@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
+#include <stdbool.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -38,7 +39,7 @@
 
 #define USHARE_DIR_DELIM ","
 
-static int
+static bool
 ignore_line (const char *line)
 {
   int i;
@@ -46,15 +47,15 @@ ignore_line (const char *line)
 
   /* commented line */
   if (line[0] == '#' )
-    return 1;
+    return true;
 
   len = strlen (line);
 
   for (i = 0 ; i < (int) len ; i++ )
     if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
-      return 0;
+      return false;
 
-  return 1;
+  return true;
 }
 
 static char *
@@ -235,7 +236,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
   };
 
   /* command line argument processing */
-  while (1)
+  while (true)
   {
     c = getopt_long (argc, argv, short_options, long_options, &index);
 
@@ -258,11 +259,11 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
       return -1;
 
     case 'v':
-      ut->verbose = 1;
+      ut->verbose = true;
       break;
 
     case 'D':
-      ut->daemon = 1;
+      ut->daemon = true;
       break;
 
     case 'n':

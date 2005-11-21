@@ -75,8 +75,8 @@ struct ushare_t {
   UpnpDevice_Handle dev;
   char *udn;
   char *ip;
-  int verbose;
-  int daemon;
+  bool verbose;
+  bool daemon;
 };
 
 struct action_event_t {

@@ -32,6 +32,7 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -71,8 +72,8 @@ ushare_new (void)
   ut->dev = 0;
   ut->udn = NULL;
   ut->ip = NULL;
-  ut->verbose = 0;
-  ut->daemon = 0;
+  ut->verbose = false;
+  ut->daemon = false;
 
   return ut;
 }
@@ -363,7 +364,7 @@ UPnPBreak (int s __attribute__ ((unused)))
   ushare_free (ut);
   finish_iconv ();
 
-  exit (0);
+  exit (EXIT_SUCCESS);
 }
 
 void
@@ -390,7 +391,7 @@ main (int argc, char **argv)
 {
   ut = ushare_new ();
   if (!ut)
-    return -1;
+    return EXIT_FAILURE;
 
   setup_i18n();
   setup_iconv();
@@ -401,28 +402,28 @@ main (int argc, char **argv)
   if (parse_command_line (ut, argc, argv) < 0)
   {
     ushare_free (ut);
-    return 0;
+    return EXIT_SUCCESS;
   }
 
   if (!ut->contentlist)
   {
     print_info (_("Error: no content directory to be shared.\n"));
     ushare_free (ut);
-    return -1;
+    return EXIT_FAILURE;
   }
 
   ut->udn = create_udn (ut->interface);
   if (!ut->udn)
   {
     ushare_free (ut);
-    return -1;
+    return EXIT_FAILURE;
   }
 
   ut->ip = get_iface_address (ut->interface);
   if (!ut->ip)
   {
     ushare_free (ut);
-    return -1;
+    return EXIT_FAILURE;
   }
 
   if (ut->daemon)
@@ -434,7 +435,7 @@ main (int argc, char **argv)
       print_info (_("Error: failed to daemonize program : %s\n"),
                   strerror (err));
       ushare_free (ut);
-      return -1;
+      return EXIT_FAILURE;
     }
   }
 
@@ -445,14 +446,14 @@ main (int argc, char **argv)
   {
     finish_upnp ();
     ushare_free (ut);
-    return -1;
+    return EXIT_FAILURE;
   }
 
   build_metadata_list (ut);
 
-  while (1)
+  while (true)
     sleep (1000000);
 
   /* it should never be executed */
-  return 0;
+  return EXIT_SUCCESS;
 }
