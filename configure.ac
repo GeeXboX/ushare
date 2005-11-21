@@ -8,7 +8,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CC
 AC_PROG_MAKE_SET
 
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.14.5)
 ALL_LINGUAS="fr"
 
@@ -19,9 +19,12 @@ AC_SUBST(LOCALEDIR)
 
 AM_ICONV
 AM_LANGINFO_CODESET
+AC_CHECK_FUNCS([setlocale])
+AC_CHECK_HEADERS([langinfo.h libintl.h locale.h])
 
-AC_CHECK_HEADER([upnp/upnp.h], [], [exit])
-AC_CHECK_HEADER([upnp/upnptools.h], [], [exit])
+AC_CHECK_HEADERS([upnp/upnp.h upnp/upnptools.h], [], [
+  AC_MSG_ERROR(*** You need libupnp to build this program ! ***)
+])
 
 AC_SEARCH_LIBS(ixmlCloneDOMString, ixml, [], [exit])
 AC_SEARCH_LIBS(UpnpInit, upnp, [], [exit])
@@ -35,7 +38,6 @@ AC_CONFIG_FILES([
         debian/Makefile
         debian/po/Makefile
         src/Makefile
-        intl/Makefile
         po/Makefile.in
         scripts/Makefile
         ])
