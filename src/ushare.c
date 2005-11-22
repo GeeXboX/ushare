@@ -62,6 +62,9 @@ static struct ushare_t *
 ushare_new (void)
 {
   struct ushare_t *ut = (struct ushare_t *) malloc (sizeof (struct ushare_t));
+  if (!ut)
+    return NULL;
+
   ut->name = strdup (DEFAULT_USHARE_NAME);
   ut->interface = strdup (DEFAULT_USHARE_IFACE);
   ut->contentlist = NULL;
@@ -106,7 +109,7 @@ handle_action_request (struct Upnp_Action_Request *request)
   char val[256];
   int ip;
 
-  if (!request)
+  if (!request || !ut)
     return;
 
   if (request->ErrCode != UPNP_E_SUCCESS)
@@ -186,6 +189,9 @@ print_info (const char *format, ...)
 static int
 finish_upnp (void)
 {
+  if (!ut)
+    return -1;
+
   printf (_("Stopping UPnP Service ...\n"));
   UpnpUnRegisterRootDevice (ut->dev);
   UpnpFinish ();
