@@ -38,6 +38,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <fcntl.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -54,7 +55,6 @@
 #include "content.h"
 #include "cfgparser.h"
 #include "gettext.h"
-
 
 struct ushare_t *ut = NULL;
 
@@ -426,8 +426,13 @@ main (int argc, char **argv)
 
   if (ut->daemon)
   {
+#if DEBUG
+    int err, fd;
+    err = daemon (0, 1);
+#else
     int err;
     err = daemon (0, 0);
+#endif
     if (err == -1)
     {
       print_info (_("Error: failed to daemonize program : %s\n"),
@@ -435,6 +440,16 @@ main (int argc, char **argv)
       ushare_free (ut);
       return EXIT_FAILURE;
     }
+#if DEBUG
+    fd = open ("/dev/null", O_RDWR);
+    if (fd != -1)
+    {
+      dup2 (fd, STDIN_FILENO);
+      dup2 (fd, STDERR_FILENO);
+      close (fd);
+    }
+    freopen (DEFAULT_USHARE_LOGFILE, "a", stdout);
+#endif
   }
 
   signal (SIGINT, UPnPBreak);

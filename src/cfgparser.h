@@ -30,6 +30,7 @@
 #define USHARE_CONFIG_FILE "/etc/ushare.conf"
 #define DEFAULT_USHARE_NAME "uShare"
 #define DEFAULT_USHARE_IFACE "eth0"
+#define DEFAULT_USHARE_LOGFILE "/var/log/ushare.log"
 
 int parse_config_file (struct ushare_t *ut);
 int parse_command_line (struct ushare_t *ut, int argc, char **argv);
