@@ -55,6 +55,8 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -W"
 fi
 
+AC_DEFINE(_GNU_SOURCE, [],[Use GNU])
+
 AC_CONFIG_FILES([
         Makefile
         debian/Makefile
