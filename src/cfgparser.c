@@ -18,18 +18,17 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <getopt.h>
-#include <stdbool.h>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #else
 #error "Missing config.h file : run configure again"
 #endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <getopt.h>
+#include <stdbool.h>
 
 #include "gettext.h"
 #define _(string) gettext (string)
