@@ -40,9 +40,7 @@
 #include "metadata.h"
 #include "util_iconv.h"
 #include "content.h"
-
 #include "gettext.h"
-#define _(string) gettext (string)
 
 static char *
 getExtension (const char *filename)

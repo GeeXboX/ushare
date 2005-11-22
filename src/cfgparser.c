@@ -31,8 +31,6 @@
 #include <stdbool.h>
 
 #include "gettext.h"
-#define _(string) gettext (string)
-
 #include "cfgparser.h"
 #include "ushare.h"
 

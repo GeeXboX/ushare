@@ -42,6 +42,10 @@
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 
+#if HAVE_SETLOCALE && ENABLE_NLS
+# include <locale.h>
+#endif
+
 #include "ushare.h"
 #include "services.h"
 #include "http.h"
@@ -49,13 +53,8 @@
 #include "util_iconv.h"
 #include "content.h"
 #include "cfgparser.h"
-
-#if HAVE_SETLOCALE && ENABLE_NLS
-# include <locale.h>
-#endif
-
 #include "gettext.h"
-#define _(string) gettext (string)
+
 
 struct ushare_t *ut = NULL;
 
