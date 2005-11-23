@@ -12,6 +12,7 @@ ushare_SOURCES= \
 	gettext.h \
 	content.h content.c \
 	cfgparser.h cfgparser.c \
+	trace.h trace.c \
 	ushare.h ushare.c
 
 man_MANS = ushare.1

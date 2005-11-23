@@ -55,6 +55,7 @@
 #include "content.h"
 #include "cfgparser.h"
 #include "gettext.h"
+#include "trace.h"
 
 struct ushare_t *ut = NULL;
 
@@ -123,9 +124,9 @@ handle_action_request (struct Upnp_Action_Request *request)
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
-  print_info ("ServiceID: %s\n", request->ServiceID);
-  print_info ("actionName: %s\n", request->ActionName);
-  print_info ("CtrlPtIP: %s\n", val);
+  log_verbose ("ServiceID: %s\n", request->ServiceID);
+  log_verbose ("actionName: %s\n", request->ActionName);
+  log_verbose ("CtrlPtIP: %s\n", val);
 
   if (find_service_action (request, &service, &action))
     {
@@ -170,29 +171,13 @@ device_callback_event_handler (Upnp_EventType type, void *event,
   return 0;
 }
 
-void
-print_info (const char *format, ...)
-{
-  va_list va;
-
-  if (!format)
-    return;
-
-  if (!ut->verbose)
-    return;
-
-  va_start (va, format);
-  vfprintf (stdout, format, va);
-  va_end (va);
-}
-
 static int
 finish_upnp (void)
 {
   if (!ut)
     return -1;
 
-  printf (_("Stopping UPnP Service ...\n"));
+  log_info (_("Stopping UPnP Service ...\n"));
   UpnpUnRegisterRootDevice (ut->dev);
   UpnpFinish ();
 
@@ -213,23 +198,23 @@ init_upnp (struct ushare_t *ut)
   memset (description, 0, len);
   sprintf (description, UPNP_DESCRIPTION, ut->name, ut->udn);
 
-  printf (_("Initializing UPnP subsystem ...\n"));
+  log_info (_("Initializing UPnP subsystem ...\n"));
   res = UpnpInit (ut->ip, 0);
   if (res != UPNP_E_SUCCESS)
   {
-    printf (_("Cannot initialize UPnP subsystem\n"));
+    log_error (_("Cannot initialize UPnP subsystem\n"));
     return -1;
   }
 
-  printf (_("UPnP MediaServer listening on %s:%d\n"),
-          UpnpGetServerIpAddress (), UpnpGetServerPort());
+  log_info (_("UPnP MediaServer listening on %s:%d\n"),
+            UpnpGetServerIpAddress (), UpnpGetServerPort());
 
   UpnpEnableWebserver (TRUE);
 
   res = UpnpSetVirtualDirCallbacks (&virtual_dir_callbacks);
   if (res != UPNP_E_SUCCESS)
   {
-    printf (_("Cannot set virtual directory callbacks\n"));
+    log_error (_("Cannot set virtual directory callbacks\n"));
     free (description);
     return -1;
   }
@@ -237,7 +222,7 @@ init_upnp (struct ushare_t *ut)
   res = UpnpAddVirtualDir (VIRTUAL_DIR);
   if (res != UPNP_E_SUCCESS)
   {
-    printf (_("Cannot add virtual directory for web server\n"));
+    log_error (_("Cannot add virtual directory for web server\n"));
     free (description);
     return -1;
   }
@@ -247,7 +232,7 @@ init_upnp (struct ushare_t *ut)
                                  NULL, &(ut->dev));
   if (res != UPNP_E_SUCCESS)
   {
-    printf (_("Cannot register UPnP device\n"));
+    log_error (_("Cannot register UPnP device\n"));
     free (description);
     return -1;
   }
@@ -255,7 +240,7 @@ init_upnp (struct ushare_t *ut)
   res = UpnpUnRegisterRootDevice (ut->dev);
   if (res != UPNP_E_SUCCESS)
   {
-    printf (_("Cannot unregister UPnP device\n"));
+    log_error (_("Cannot unregister UPnP device\n"));
     free (description);
     return -1;
   }
@@ -265,15 +250,15 @@ init_upnp (struct ushare_t *ut)
                                  NULL, &(ut->dev));
   if (res != UPNP_E_SUCCESS)
   {
-    printf (_("Cannot register UPnP device\n"));
+    log_error (_("Cannot register UPnP device\n"));
     free (description);
     return -1;
   }
 
-  printf (_("Sending UPnP advertisement for device ...\n"));
+  log_info (_("Sending UPnP advertisement for device ...\n"));
   UpnpSendAdvertisement (ut->dev, 1800);
 
-  printf (_("Listening for control point connections ...\n"));
+  log_info (_("Listening for control point connections ...\n"));
 
   if (description)
     free (description);
@@ -374,10 +359,10 @@ UPnPBreak (int s __attribute__ ((unused)))
 void
 display_headers (void)
 {
-  printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
-          PACKAGE_NAME, VERSION);
-  printf (_("Benjamin Zores (C) 2005, for GeeXboX Team.\n"));
-  printf (_("See http://ushare.geexbox.org/ for updates.\n"));
+  log_info (_("%s (version %s), a lightweight UPnP Media Server.\n"),
+            PACKAGE_NAME, VERSION);
+  log_info (_("Benjamin Zores (C) 2005, for GeeXboX Team.\n"));
+  log_info (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
 static void
@@ -401,7 +386,7 @@ main (int argc, char **argv)
   setup_iconv();
 
   if (parse_config_file (ut) < 0)
-    print_info (_("Warning: can't parse file \"%s\".\n"), USHARE_CONFIG_FILE);
+    log_error (_("Warning: can't parse file \"%s\".\n"), USHARE_CONFIG_FILE);
 
   if (parse_command_line (ut, argc, argv) < 0)
   {
@@ -411,7 +396,7 @@ main (int argc, char **argv)
 
   if (!ut->contentlist)
   {
-    print_info (_("Error: no content directory to be shared.\n"));
+    log_error (_("Error: no content directory to be shared.\n"));
     ushare_free (ut);
     return EXIT_FAILURE;
   }
@@ -432,30 +417,16 @@ main (int argc, char **argv)
 
   if (ut->daemon)
   {
-#if DEBUG
-    int err, fd;
-    err = daemon (0, 1);
-#else
     int err;
     err = daemon (0, 0);
-#endif
     if (err == -1)
     {
-      print_info (_("Error: failed to daemonize program : %s\n"),
-                  strerror (err));
+      log_error (_("Error: failed to daemonize program : %s\n"),
+                 strerror (err));
       ushare_free (ut);
       return EXIT_FAILURE;
     }
-#if DEBUG
-    fd = open ("/dev/null", O_RDWR);
-    if (fd != -1)
-    {
-      dup2 (fd, STDIN_FILENO);
-      dup2 (fd, STDERR_FILENO);
-      close (fd);
-    }
-    freopen (DEFAULT_USHARE_LOGFILE, "a", stdout);
-#endif
+    start_log ();
   }
 
   signal (SIGINT, UPnPBreak);

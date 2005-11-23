@@ -28,6 +28,7 @@
 #include "services.h"
 #include "cms.h"
 #include "cds.h"
+#include "trace.h"
 
 extern struct service_action_t cds_service_actions[];
 extern struct service_action_t cms_service_actions[];
@@ -115,14 +116,14 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
   node = (IXML_Node *) request->ActionRequest;
   if (!node)
   {
-    print_info ("Invalid action request document");
+    log_verbose ("Invalid action request document");
     return NULL;
   }
 
   node = ixmlNode_getFirstChild (node);
   if (!node)
   {
-    print_info ("Invalid action request document");
+    log_verbose ("Invalid action request document");
     return NULL;
   }
 
@@ -136,7 +137,7 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
       return strdup (ixmlNode_getNodeValue (node));
     }
 
-  print_info ("Missing action request argument (%s)", key);
+  log_verbose ("Missing action request argument (%s)", key);
 
   return NULL;
 }

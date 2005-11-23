@@ -85,7 +85,6 @@ struct action_event_t {
   struct service_t *service;
 };
 
-void print_info (const char *format, ...);
 void display_headers (void);
 
 #endif /* _USHARE_H_ */

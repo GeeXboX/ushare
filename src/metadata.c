@@ -41,6 +41,7 @@
 #include "util_iconv.h"
 #include "content.h"
 #include "gettext.h"
+#include "trace.h"
 
 static char *
 getExtension (const char *filename)
@@ -232,7 +233,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   entry->fd = -1;
 
   if (entry->id && entry->url)
-    print_info ("Entry->URL (%d): %s\n", entry->id, entry->url);
+    log_verbose ("Entry->URL (%d): %s\n", entry->id, entry->url);
 
   return entry;
 }
@@ -360,7 +361,7 @@ metadata_add_container (struct ushare_t *ut,
         malloc (strlen (container) + strlen (namelist[i]->d_name) + 2);
       sprintf (fullpath, "%s/%s", container, namelist[i]->d_name);
 
-      print_info ("%s\n", fullpath);
+      log_verbose ("%s\n", fullpath);
 
       if (stat (fullpath, &st) < 0)
       {
@@ -401,7 +402,7 @@ void
 build_metadata_list (struct ushare_t *ut)
 {
   int i;
-  printf (_("Building Metadata List ...\n"));
+  log_info (_("Building Metadata List ...\n"));
 
   /* build root entry */
   if (!ut->root_entry)
@@ -411,7 +412,7 @@ build_metadata_list (struct ushare_t *ut)
   for (i=0 ; i < ut->contentlist->count ; i++)
   {
     struct upnp_entry_t *entry = NULL;
-    printf (_("Looking for files in content directory : %s\n"),
+    log_info (_("Looking for files in content directory : %s\n"),
             ut->contentlist->content[i]);
     entry = upnp_entry_new (ut, basename (ut->contentlist->content[i]),
                             ut->contentlist->content[i],
@@ -422,5 +423,5 @@ build_metadata_list (struct ushare_t *ut)
     metadata_add_container (ut, entry, ut->contentlist->content[i]);
   }
 
-  printf (_("Found %d files and subdirectories.\n"), ut->nr_entries);
+  log_info (_("Found %d files and subdirectories.\n"), ut->nr_entries);
 }
