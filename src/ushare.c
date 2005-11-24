@@ -359,10 +359,10 @@ UPnPBreak (int s __attribute__ ((unused)))
 void
 display_headers (void)
 {
-  log_info (_("%s (version %s), a lightweight UPnP Media Server.\n"),
-            PACKAGE_NAME, VERSION);
-  log_info (_("Benjamin Zores (C) 2005, for GeeXboX Team.\n"));
-  log_info (_("See http://ushare.geexbox.org/ for updates.\n"));
+  printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
+          PACKAGE_NAME, VERSION);
+  printf (_("Benjamin Zores (C) 2005, for GeeXboX Team.\n"));
+  printf (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
 static void
@@ -386,12 +386,22 @@ main (int argc, char **argv)
   setup_iconv();
 
   if (parse_config_file (ut) < 0)
-    log_error (_("Warning: can't parse file \"%s\".\n"), USHARE_CONFIG_FILE);
+  {
+    /* fprintf here, because syslog not yet ready */
+    fprintf (stderr, _("Warning: can't parse file \"%s\".\n"),
+             USHARE_CONFIG_FILE);
+  }
 
   if (parse_command_line (ut, argc, argv) < 0)
   {
     ushare_free (ut);
     return EXIT_SUCCESS;
+  }
+
+  if (ut->daemon)
+  {
+    /* starting syslog feature as soon as possible */
+    start_log ();
   }
 
   if (!ut->contentlist)
@@ -426,12 +436,14 @@ main (int argc, char **argv)
       ushare_free (ut);
       return EXIT_FAILURE;
     }
-    start_log ();
+  }
+  else
+  {
+    display_headers ();
   }
 
   signal (SIGINT, UPnPBreak);
 
-  display_headers ();
   if (init_upnp (ut) < 0)
   {
     finish_upnp ();

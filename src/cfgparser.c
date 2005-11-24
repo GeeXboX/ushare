@@ -147,7 +147,7 @@ parse_config_file (struct ushare_t *ut)
     if (line[len-1] == '\n')
       line[len-1] = '\0';
 
-    while (line[0] == ' ' || line[0] == '	')
+    while (line[0] == ' ' || line[0] == '\t')
       line++;
 
     if (!strncmp (line, USHARE_NAME, strlen (USHARE_NAME)))
@@ -156,7 +156,6 @@ parse_config_file (struct ushare_t *ut)
       if (s && s[0] != '\0')
       {
         ushare_set_name (ut, s);
-        log_verbose ("[config] uShare Name: %s\n", ut->name);
       }
     }
     else if (!strncmp (line, USHARE_IFACE, strlen (USHARE_IFACE)))
@@ -165,7 +164,6 @@ parse_config_file (struct ushare_t *ut)
       if (s && s[0] != '\0')
       {
         ushare_set_interface (ut, s);
-        log_verbose ("[config] uShare Interface name: %s\n", ut->interface);
       }
     }
     else if (!strncmp (line, USHARE_DIR, strlen (USHARE_DIR)))
@@ -177,8 +175,6 @@ parse_config_file (struct ushare_t *ut)
         x = strdup_trim (s);
         if (x)
         {
-          log_verbose ("[config] uShare Shared directories: %s\n", x);
-
           token = strtok (x, USHARE_DIR_DELIM);
           while (token)
           {
@@ -204,18 +200,18 @@ static void
 display_usage (void)
 {
   display_headers ();
-  log_info ("\n");
-  log_info (_("Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
-  log_info (_("Options:\n"));
-  log_info (_(" -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"),
-            DEFAULT_USHARE_NAME);
-  log_info (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"),
-            DEFAULT_USHARE_IFACE);
-  log_info (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
-  log_info (_(" -v, --verbose\t\tSet verbose display\n"));
-  log_info (_(" -D, --daemon\t\tRun as a daemon\n"));
-  log_info (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
-  log_info (_(" -h, --help\t\tDisplay this help\n"));
+  printf ("\n");
+  printf (_("Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
+  printf (_("Options:\n"));
+  printf (_(" -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"),
+          DEFAULT_USHARE_NAME);
+  printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"),
+          DEFAULT_USHARE_IFACE);
+  printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
+  printf (_(" -v, --verbose\t\tSet verbose display\n"));
+  printf (_(" -D, --daemon\t\tRun as a daemon\n"));
+  printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
+  printf (_(" -h, --help\t\tDisplay this help\n"));
 }
 
 int
