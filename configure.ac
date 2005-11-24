@@ -29,7 +29,7 @@ AC_CHECK_HEADERS([langinfo.h libintl.h locale.h])
 AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_HEADER_STDBOOL
-AC_CHECK_HEADERS([limits.h fcntl.h sys/ioctl.h])
+AC_CHECK_HEADERS([limits.h fcntl.h sys/ioctl.h syslog.h])
 AC_CHECK_HEADERS([upnp/upnp.h upnp/upnptools.h], [], [
   AC_MSG_ERROR(*** You need libupnp to build this program ! ***)
 ])
