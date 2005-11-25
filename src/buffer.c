@@ -34,6 +34,9 @@ buffer_new (void)
   struct buffer_t *buffer = NULL;
 
   buffer = (struct buffer_t *) malloc (sizeof (struct buffer_t));
+  if (!buffer)
+    return NULL;
+
   buffer->buf = NULL;
   buffer->len = 0;
   buffer->capacity = 0;
@@ -42,10 +45,10 @@ buffer_new (void)
 }
 
 void
-buffer_append (struct buffer_t *buffer, char *str)
+buffer_append (struct buffer_t *buffer, const char *str)
 {
-  int len;
-  
+  size_t len;
+
   if (!buffer || !str)
     return;
 
@@ -55,7 +58,7 @@ buffer_append (struct buffer_t *buffer, char *str)
     buffer->buf = (char *) malloc (buffer->capacity * sizeof (char));
     memset (buffer->buf, '\0', buffer->capacity);
   }
-  
+
   len = buffer->len + strlen (str);
   if (len >= buffer->capacity)
   {
@@ -72,7 +75,7 @@ buffer_appendf (struct buffer_t *buffer, const char *format, ...)
 {
   char str[BUFFER_DEFAULT_CAPACITY];
   va_list va;
-  
+
   if (!buffer || !format)
     return;
 
@@ -80,7 +83,7 @@ buffer_appendf (struct buffer_t *buffer, const char *format, ...)
   vsprintf (str, format, va);
   buffer_append (buffer, str);
   va_end (va);
-}  
+}
 
 void
 buffer_free (struct buffer_t *buffer)

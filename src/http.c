@@ -201,8 +201,8 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
     break;
   case FILE_MEMORY:
     log_verbose ("Read file from memory.\n");
-    len = MIN (buflen, file->detail.memory.len - file->pos);
-    memcpy (buf, file->detail.memory.contents + file->pos, len);
+    len = (size_t) MIN (buflen, file->detail.memory.len - file->pos);
+    memcpy (buf, file->detail.memory.contents + file->pos, (size_t) len);
     break;
   default:
     log_verbose ("Unknown file type.\n");

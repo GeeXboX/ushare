@@ -32,7 +32,9 @@
 #define DEFAULT_USHARE_IFACE "eth0"
 #define DEFAULT_USHARE_LOGFILE "/var/log/ushare.log"
 
-int parse_config_file (struct ushare_t *ut);
-int parse_command_line (struct ushare_t *ut, int argc, char **argv);
+int parse_config_file (struct ushare_t *ut)
+    __attribute__ ((nonnull));
+int parse_command_line (struct ushare_t *ut, int argc, char **argv)
+    __attribute__ ((nonnull (1)));
 
 #endif /* _CONFIG_PARSER_H_ */

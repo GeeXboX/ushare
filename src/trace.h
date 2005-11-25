@@ -28,8 +28,8 @@ typedef enum {
 } log_level;
 
 void print_log (log_level level, const char *format, ...)
-  __attribute__ ((__format__ (__printf__, 2, 3)));
-void start_log (void);
+  __attribute__ ((format (printf, 2, 3)));
+inline void start_log (void);
 
 /* log_info
  * Normal print, to replace printf

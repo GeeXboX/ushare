@@ -26,7 +26,9 @@ typedef struct content_list {
   int count;
 } content_list;
 
-content_list *add_content(content_list *list, const char *item);
-void free_content(content_list *list);
+content_list *add_content(content_list *list, const char *item)
+    __attribute__ ((malloc));
+void free_content(content_list *list)
+    __attribute__ ((nonnull));
 
 #endif

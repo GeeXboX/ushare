@@ -196,7 +196,7 @@ parse_config_file (struct ushare_t *ut)
   return 0;
 }
 
-static void
+inline static void
 display_usage (void)
 {
   display_headers ();

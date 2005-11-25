@@ -59,6 +59,9 @@
 
 struct ushare_t *ut = NULL;
 
+static struct ushare_t * ushare_new (void)
+    __attribute__ ((malloc));
+
 static struct ushare_t *
 ushare_new (void)
 {
@@ -108,7 +111,7 @@ handle_action_request (struct Upnp_Action_Request *request)
   struct service_t *service;
   struct service_action_t *action;
   char val[256];
-  int ip;
+  uint32_t ip;
 
   if (!request || !ut)
     return;
@@ -188,7 +191,8 @@ static int
 init_upnp (struct ushare_t *ut)
 {
   char *description = NULL;
-  int len, res;
+  int res;
+  size_t len;
 
   if (!ut || !ut->name || !ut->udn || !ut->ip)
     return -1;
@@ -310,7 +314,8 @@ create_udn (char *interface)
 static char *
 get_iface_address (char *interface)
 {
-  int sock, ip;
+  int sock;
+  uint32_t ip;
   struct ifreq ifr;
   char *val;
 
@@ -345,6 +350,9 @@ get_iface_address (char *interface)
   return val;
 }
 
+static void UPnPBreak (int s __attribute__ ((unused)))
+    __attribute__ ((noreturn));
+
 static void
 UPnPBreak (int s __attribute__ ((unused)))
 {
@@ -356,7 +364,7 @@ UPnPBreak (int s __attribute__ ((unused)))
   exit (EXIT_SUCCESS);
 }
 
-void
+inline void
 display_headers (void)
 {
   printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
@@ -365,7 +373,7 @@ display_headers (void)
   printf (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
-static void
+inline static void
 setup_i18n(void)
 {
 #if HAVE_SETLOCALE && ENABLE_NLS

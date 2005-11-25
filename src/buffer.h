@@ -23,14 +23,16 @@
 
 struct buffer_t {
   char *buf;
-  int len;
-  int capacity;
+  size_t len;
+  size_t capacity;
 };
 
-struct buffer_t *buffer_new (void);
+struct buffer_t *buffer_new (void)
+    __attribute__ ((malloc));
 void buffer_free (struct buffer_t *buffer);
 
-void buffer_append (struct buffer_t *buffer, char *str);
-void buffer_appendf (struct buffer_t *buffer, const char *format, ...);
+void buffer_append (struct buffer_t *buffer, const char *str);
+void buffer_appendf (struct buffer_t *buffer, const char *format, ...)
+    __attribute__ ((format (printf , 2, 3)));
 
 #endif /* _STRING_BUFFER_H_ */

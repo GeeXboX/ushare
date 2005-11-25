@@ -62,7 +62,7 @@ print_log (log_level level, const char *format, ...)
   va_end (va);
 }
 
-void
+inline void
 start_log (void)
 {
   openlog (PACKAGE_NAME, LOG_PID, LOG_DAEMON);

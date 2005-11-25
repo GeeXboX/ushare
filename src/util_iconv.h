@@ -23,7 +23,8 @@
 
 void setup_iconv (void);
 void finish_iconv (void);
-char *iconv_convert (const char *inbuf);
+char *iconv_convert (const char *inbuf)
+    __attribute__ ((malloc, nonnull, format_arg (1)));
 
 #define UTF8 "UTF-8"
 
