@@ -175,7 +175,7 @@ device_callback_event_handler (Upnp_EventType type, void *event,
 }
 
 static int
-finish_upnp (void)
+finish_upnp (struct ushare_t *ut)
 {
   if (!ut)
     return -1;
@@ -353,7 +353,7 @@ get_iface_address (char *interface)
 static int
 restart_upnp (struct ushare_t *ut)
 {
-  finish_upnp ();
+  finish_upnp (ut);
 
   ut->udn = create_udn (ut->interface);
   if (!ut->udn)
@@ -372,7 +372,7 @@ static void UPnPBreak (int s __attribute__ ((unused)))
 static void
 UPnPBreak (int s __attribute__ ((unused)))
 {
-  finish_upnp ();
+  finish_upnp (ut);
   free_metadata_list (ut);
   ushare_free (ut);
   finish_iconv ();
@@ -529,7 +529,7 @@ main (int argc, char **argv)
 
   if (init_upnp (ut) < 0)
   {
-    finish_upnp ();
+    finish_upnp (ut);
     ushare_free (ut);
     return EXIT_FAILURE;
   }
