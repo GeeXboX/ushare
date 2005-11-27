@@ -350,6 +350,22 @@ get_iface_address (char *interface)
   return val;
 }
 
+static int
+restart_upnp (struct ushare_t *ut)
+{
+  finish_upnp ();
+
+  ut->udn = create_udn (ut->interface);
+  if (!ut->udn)
+    return -1;
+
+  ut->ip = get_iface_address (ut->interface);
+  if (!ut->ip)
+    return -1;
+
+  return (init_upnp (ut));
+}
+
 static void UPnPBreak (int s __attribute__ ((unused)))
     __attribute__ ((noreturn));
 
@@ -362,6 +378,64 @@ UPnPBreak (int s __attribute__ ((unused)))
   finish_iconv ();
 
   exit (EXIT_SUCCESS);
+}
+
+static void
+reload_config (int s __attribute__ ((unused)))
+{
+  struct ushare_t *ut2;
+  bool reload = false;
+
+  log_info (_("Reloading configuration...\n"));
+
+  ut2 = ushare_new ();
+  if (!ut || !ut2)
+    return;
+
+  if (parse_config_file (ut2) < 0)
+    return;
+
+  if (ut->name && strcmp (ut->name, ut2->name))
+  {
+    free (ut->name);
+    ut->name = ut2->name;
+    ut2->name = NULL;
+    reload = true;
+  }
+
+  if (ut->interface && strcmp (ut->interface, ut2->interface))
+  {
+    free (ut->interface);
+    ut->interface = ut2->interface;
+    ut2->interface = NULL;
+    reload = true;
+  }
+
+  if (reload)
+  {
+    if (restart_upnp (ut) < 0)
+    {
+      ushare_free (ut2);
+      raise (SIGINT);
+    }
+  }
+
+  if (ut->contentlist)
+    free_content (ut->contentlist);
+  ut->contentlist = ut2->contentlist;
+  ut2->contentlist = NULL;
+  ushare_free (ut2);
+
+  if (ut->contentlist)
+  {
+    free_metadata_list (ut);
+    build_metadata_list (ut);
+  }
+  else
+  {
+    log_error (_("Error: no content directory to be shared.\n"));
+    raise (SIGINT);
+  }
 }
 
 inline void
@@ -451,6 +525,7 @@ main (int argc, char **argv)
   }
 
   signal (SIGINT, UPnPBreak);
+  signal (SIGHUP, reload_config);
 
   if (init_upnp (ut) < 0)
   {

@@ -42,9 +42,11 @@ case "$1" in
     start-stop-daemon --stop --signal 2 --quiet --oknodo --pidfile $PIDFILE
     echo "."
   ;;
-#  reload|force-reload)
-#    start-stop-daemon --stop --signal 1 --quiet --oknodo --pidfile $PIDFILE --exec $DAEMON
-#  ;;
+  reload|force-reload)
+    echo -n "Reloading $DESC: $NAME"
+    start-stop-daemon --stop --signal 1 --quiet --oknodo --pidfile $PIDFILE --exec $DAEMON
+    echo "."
+  ;;
   restart)
     $0 stop
     $1 start
