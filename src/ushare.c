@@ -355,10 +355,14 @@ restart_upnp (struct ushare_t *ut)
 {
   finish_upnp (ut);
 
+  if (ut->udn)
+    free (ut->udn);
   ut->udn = create_udn (ut->interface);
   if (!ut->udn)
     return -1;
 
+  if (ut->ip)
+    free (ut->ip);
   ut->ip = get_iface_address (ut->interface);
   if (!ut->ip)
     return -1;
