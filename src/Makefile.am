@@ -15,5 +15,4 @@ ushare_SOURCES= \
 	trace.h trace.c \
 	ushare.h ushare.c
 
-man_MANS = ushare.1
-EXTRA_DIST = $(man_MANS)
+dist_man_MANS = ushare.1
