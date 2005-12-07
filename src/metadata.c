@@ -43,6 +43,8 @@
 #include "gettext.h"
 #include "trace.h"
 
+#define TITLE_UNKNOWN "unknown"
+
 static char *
 getExtension (const char *filename)
 {
@@ -222,6 +224,12 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
     if (x)  /* avoid displaying file extension */
       *x = '\0';
     entry->title = title;
+    
+    if (!strcmp (title, "")) /* DIDL dc:title can't be empty */
+    {
+      free (entry->title);
+      entry->title = strdup (TITLE_UNKNOWN);
+    }
   }
   else
   {
@@ -412,11 +420,22 @@ build_metadata_list (struct ushare_t *ut)
   for (i=0 ; i < ut->contentlist->count ; i++)
   {
     struct upnp_entry_t *entry = NULL;
+    char *title = NULL;
+    int size = 0;
+    
     log_info (_("Looking for files in content directory : %s\n"),
-            ut->contentlist->content[i]);
-    entry = upnp_entry_new (ut, basename (ut->contentlist->content[i]),
-                            ut->contentlist->content[i],
-                            ut->root_entry, 0, 1);
+              ut->contentlist->content[i]);
+
+    size = strlen (ut->contentlist->content[i]);
+    if (ut->contentlist->content[i][size - 1] == '/')
+      ut->contentlist->content[i][size - 1] = '\0';
+    title = strrchr (ut->contentlist->content[i], '/');
+    if (title)
+      title++;
+
+    entry = upnp_entry_new (ut, title, ut->contentlist->content[i],
+                            ut->root_entry, -1, 1);
+
     if (!entry)
       continue;
     upnp_entry_add_child (ut->root_entry, entry);
