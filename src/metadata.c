@@ -433,6 +433,10 @@ build_metadata_list (struct ushare_t *ut)
     if (title)
       title++;
 
+    /* directly use content directory name if no '/' before basename */
+    if (!title)
+      title = ut->contentlist->content[i];
+    
     entry = upnp_entry_new (ut, title, ut->contentlist->content[i],
                             ut->root_entry, -1, 1);
 
