@@ -38,17 +38,13 @@
       uShare is free software - it is licensed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (GPL).
       
       <h2>Latest News</h2>
-      Latest release of uShare is 0.9.3.<br/>
+      Latest release of uShare is 0.9.4.<br/>
       See its ChangeLog :<br/>
       <br/>
-      - Support for multiple directories to be shared.<br/>
-      - Added start/stop script.<br/>
-      - Added verbose mode.<br/>
-      - Read configuration from <i>/etc/ushare.conf</i> configuration file.<br/>
-      - Support for daemon mode.<br/>
-      - Better MIME types handling.<br/>
-      - Support for new multimedia files extensions.<br/>
-      - Rewrite of some string buffer and integer manipulation tools.
+      - Fixed some memleaks.<br/>
+      - Avoid having empty shared directory name.<br/>
+      - Fixed handling of non-absolute content directories paths.<br/>
+      - Added logging with syslog support, in daemon mode.
 
       <h2>Copyright and License</h2>
       uShare is copyright (C) 2005 Benjamin Zores.<br/>
@@ -122,11 +118,11 @@
       If you want uShare to support more file formats, simply add its properties in the <i>src/mime.c</i> table. Do not forget to send a patch to update uShare.
 
       <h2>Download</h2>
-      The currently available uShare release is 0.9.3.<br/>
-      Sources can be downloaded <a href="http://ushare.geexbox.org/releases/ushare-0.9.3.tar.bz2">here</a>.  
+      The currently available uShare release is 0.9.4.<br/>
+      Sources can be downloaded <a href="http://ushare.geexbox.org/releases/ushare-0.9.4.tar.bz2">here</a>.  
       <br/>
       <h3>Debian Package</h3>
-      If you're using Debian GNU/Linux distribution, you can also grab the <a href="http://geexbox.org/debian/pool/main/ushare/ushare_0.9.3-1_i386.deb">binary for i386</a>.<br/>
+      If you're using Debian GNU/Linux distribution, you can also grab the <a href="http://www.geexbox.org/debian/pool/main/ushare/ushare_0.9.4-1_i386.deb">binary for i386</a>.<br/>
       uShare is also available through <b>apt-get</b>. Simply add the following line to your <i>/etc/apt/sources.list</i> file :
       <pre style="background-color: rgb(220, 220, 220)">
       deb http://www.geexbox.org/debian/ unstable main

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-11-27 03:27+0100\n"
+"POT-Creation-Date: 2005-12-08 21:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,49 +57,49 @@ msgstr ""
 msgid "Listening for control point connections ...\n"
 msgstr ""
 
-#: src/ushare.c:389
+#: src/ushare.c:393
 msgid "Reloading configuration...\n"
 msgstr ""
 
-#: src/ushare.c:436 src/ushare.c:491
+#: src/ushare.c:440 src/ushare.c:495
 msgid "Error: no content directory to be shared.\n"
 msgstr ""
 
-#: src/ushare.c:444
+#: src/ushare.c:448
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr ""
 
-#: src/ushare.c:446
+#: src/ushare.c:450
 #, c-format
 msgid "Benjamin Zores (C) 2005, for GeeXboX Team.\n"
 msgstr ""
 
-#: src/ushare.c:447
+#: src/ushare.c:451
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr ""
 
-#: src/ushare.c:473
+#: src/ushare.c:477
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr ""
 
-#: src/ushare.c:516
+#: src/ushare.c:520
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr ""
 
-#: src/metadata.c:405
+#: src/metadata.c:413
 msgid "Building Metadata List ...\n"
 msgstr ""
 
-#: src/metadata.c:415
+#: src/metadata.c:426
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr ""
 
-#: src/metadata.c:426
+#: src/metadata.c:449
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr ""

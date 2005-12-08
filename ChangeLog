@@ -1,3 +1,11 @@
+2005-12-08  Benjamin Zores  <ben@geexbox.org>
+
+	* new public bug-fix release (Version 0.9.4)
+	* fixed some memleaks.
+	* avoid having empty shared directory name
+  	  (crash with djmount, thanks to Remi Turboult for reporting it).
+	* fixed handling of non-absolute content directories paths.
+
 2005-11-23  Alexis Saettler  <asbin@asbin.org>
 
 	* add logging with syslog support, in daemon mode.

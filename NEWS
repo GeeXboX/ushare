@@ -1,3 +1,9 @@
+2005-12-07 : GeeXboX uShare 0.9.4 released.
+ Fixed some memleaks.
+ Avoid having empty shared directory name.
+ Fixed handling of non-absolute content directories paths.
+ Added logging with syslog support, in daemon mode.
+
 2005-11-20: GeeXboX uShare 0.9.3 released.
  Support for multiple directories to be shared.
  Added start/stop script.
