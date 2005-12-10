@@ -121,6 +121,10 @@ struct mime_type_t MIME_Type_List[] = {
   { "vsf", UPNP_TEXT, "http-get:*:text/vsf:*"}, /* ViPlay */
   { "zeg", UPNP_TEXT, "http-get:*:text/zeg:*"}, /* ZeroG */
   { "mpl", UPNP_TEXT, "http-get:*:text/mpl:*"}, /* MPL */
+
+  /* Miscellaneous text files */
+  { "bup", UPNP_TEXT, "http-get:*:text/bup:*"}, /* DVD backup */
+  { "ifo", UPNP_TEXT, "http-get:*:text/ifo:*"}, /* DVD information */
   
   { NULL, NULL, NULL}
 };
