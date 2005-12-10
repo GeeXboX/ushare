@@ -1,3 +1,7 @@
+2005-12-10  Benjamin Zores  <ben@geexbox.org>
+
+	* added support for subtitle file formats.
+
 2005-12-08  Benjamin Zores  <ben@geexbox.org>
 
 	* new public bug-fix release (Version 0.9.4)

@@ -27,6 +27,7 @@
 #define UPNP_AUDIO "object.item.audioItem.musicTrack"
 #define UPNP_PHOTO "object.item.imageItem.photo"
 #define UPNP_PLAYLIST "object.item.playlistItem"
+#define UPNP_TEXT "object.item.textItem"
 
 struct mime_type_t MIME_Type_List[] = {
   /* Video files */
@@ -106,5 +107,20 @@ struct mime_type_t MIME_Type_List[] = {
   { "m3u", UPNP_PLAYLIST, "http-get:*:audio/mpegurl:*"},
   { "asx", UPNP_PLAYLIST, "http-get:*:video/x-ms-asf:*"},
 
+  /* Subtitle Text files */
+  { "srt", UPNP_TEXT, "http-get:*:text/srt:*"}, /* SubRip */
+  { "ssa", UPNP_TEXT, "http-get:*:text/ssa:*"}, /* SubStation Alpha */
+  { "stl", UPNP_TEXT, "http-get:*:text/srt:*"}, /* Spruce */
+  { "psb", UPNP_TEXT, "http-get:*:text/psb:*"}, /* PowerDivX */
+  { "pjs", UPNP_TEXT, "http-get:*:text/pjs:*"}, /* Phoenix Japanimation */
+  { "sub", UPNP_TEXT, "http-get:*:text/sub:*"}, /* MicroDVD */
+  { "idx", UPNP_TEXT, "http-get:*:text/idx:*"}, /* VOBsub */
+  { "dks", UPNP_TEXT, "http-get:*:text/dks:*"}, /* DKS */
+  { "scr", UPNP_TEXT, "http-get:*:text/scr:*"}, /* MACsub */
+  { "tts", UPNP_TEXT, "http-get:*:text/tts:*"}, /* TurboTitler */
+  { "vsf", UPNP_TEXT, "http-get:*:text/vsf:*"}, /* ViPlay */
+  { "zeg", UPNP_TEXT, "http-get:*:text/zeg:*"}, /* ZeroG */
+  { "mpl", UPNP_TEXT, "http-get:*:text/mpl:*"}, /* MPL */
+  
   { NULL, NULL, NULL}
 };
