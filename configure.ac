@@ -59,8 +59,6 @@ AC_DEFINE(_GNU_SOURCE, [],[Use GNU])
 
 AC_CONFIG_FILES([
         Makefile
-        debian/Makefile
-        debian/po/Makefile
         src/Makefile
         po/Makefile.in
         scripts/Makefile
