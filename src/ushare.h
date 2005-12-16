@@ -41,10 +41,11 @@
 "    <deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>" \
 "    <friendlyName>%s</friendlyName>" \
 "    <manufacturer>GeeXboX Team</manufacturer>" \
-"    <manufacturerURL>http://www.geexbox.org/</manufacturerURL>" \
+"    <manufacturerURL>http://ushare.geexbox.org/</manufacturerURL>" \
 "    <modelDescription>GeeXboX uShare : UPnP Media Server</modelDescription>" \
 "    <modelName>uShare</modelName>" \
-"    <modelNumber>Alpha</modelNumber>" \
+"    <modelNumber>001</modelNumber>" \
+"    <modelURL>http://ushare.geexbox.org/</modelURL>" \
 "    <serialNumber>GEEXBOX-USHARE-01</serialNumber>" \
 "    <UDN>uuid:%s</UDN>" \
 "    <serviceList>" \
