@@ -224,7 +224,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
     if (x)  /* avoid displaying file extension */
       *x = '\0';
     entry->title = title;
-    
+
     if (!strcmp (title, "")) /* DIDL dc:title can't be empty */
     {
       free (entry->title);
@@ -422,7 +422,7 @@ build_metadata_list (struct ushare_t *ut)
     struct upnp_entry_t *entry = NULL;
     char *title = NULL;
     int size = 0;
-    
+
     log_info (_("Looking for files in content directory : %s\n"),
               ut->contentlist->content[i]);
 
@@ -432,11 +432,12 @@ build_metadata_list (struct ushare_t *ut)
     title = strrchr (ut->contentlist->content[i], '/');
     if (title)
       title++;
-
-    /* directly use content directory name if no '/' before basename */
-    if (!title)
+    else
+    {
+      /* directly use content directory name if no '/' before basename */
       title = ut->contentlist->content[i];
-    
+    }
+
     entry = upnp_entry_new (ut, title, ut->contentlist->content[i],
                             ut->root_entry, -1, 1);
 
