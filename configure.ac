@@ -36,6 +36,7 @@ AC_CHECK_HEADERS([upnp/upnp.h upnp/upnptools.h], [], [
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
+AC_C_INLINE
 AC_TYPE_SIGNAL
 AC_TYPE_SIZE_T
 
@@ -46,6 +47,8 @@ AC_FUNC_REALLOC
 AC_FUNC_STAT
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([memset socket strcasecmp strchr strrchr strdup strndup strerror])
+AC_CHECK_LIB([ixml], [ixmlNode_getNodeName])
+AC_CHECK_LIB([upnp], [UpnpInit])
 
 # Checks for libraries.
 AC_SEARCH_LIBS(ixmlCloneDOMString, ixml, [], [exit])
