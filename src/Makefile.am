@@ -3,6 +3,7 @@ ushare_SOURCES= \
 	cds.h cds.c \
 	cms.h cms.c \
 	http.h http.c \
+	presentation.h presentation.c \
 	metadata.h metadata.c \
 	mime.h mime.c \
 	minmax.h \

@@ -1,3 +1,8 @@
+2005-12-17  Benjamin Zores  <ben@geexbox.org>
+
+	* added UPnP presentation URL support.
+	  (you can now update or add contents through a web interface).
+
 2005-12-10  Benjamin Zores  <ben@geexbox.org>
 
 	* added support for subtitle file formats.

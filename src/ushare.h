@@ -27,6 +27,7 @@
 #include <stdbool.h>
 
 #include "content.h"
+#include "buffer.h"
 
 #define VIRTUAL_DIR "/web"
 
@@ -64,6 +65,7 @@
 "        <eventSubURL>/web/cds_event</eventSubURL>" \
 "      </service>" \
 "    </serviceList>" \
+"    <presentationURL>/web/ushare.html</presentationURL>" \
 "  </device>" \
 "</root>"
 
@@ -76,6 +78,7 @@ struct ushare_t {
   UpnpDevice_Handle dev;
   char *udn;
   char *ip;
+  struct buffer_t *presentation;
   bool verbose;
   bool daemon;
 };

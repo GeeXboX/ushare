@@ -118,6 +118,13 @@ the -i option to specify which interface uShare should listen on.
    ushare -c /shares
    ushare -c /shares1 --content=/shares2
 
+You can also perform remote control of uShare UPnP Media Server through its
+web interface. This let you define new content locations at runtime or
+update the currently shared one in case the filesystem has changed.
+Just go to :
+
+   http://ip_address:port/web/ushare.html
+
 See the manual page for more details :
 
    man ushare

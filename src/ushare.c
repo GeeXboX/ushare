@@ -56,6 +56,7 @@
 #include "cfgparser.h"
 #include "gettext.h"
 #include "trace.h"
+#include "buffer.h"
 
 struct ushare_t *ut = NULL;
 
@@ -77,6 +78,7 @@ ushare_new (void)
   ut->dev = 0;
   ut->udn = NULL;
   ut->ip = NULL;
+  ut->presentation = NULL;
   ut->verbose = false;
   ut->daemon = false;
 
@@ -101,6 +103,8 @@ ushare_free (struct ushare_t *ut)
     free (ut->udn);
   if (ut->ip)
     free (ut->ip);
+  if (ut->presentation)
+    buffer_free (ut->presentation);
 
   free (ut);
 }

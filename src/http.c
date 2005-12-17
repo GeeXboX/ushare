@@ -38,6 +38,7 @@
 #include "http.h"
 #include "minmax.h"
 #include "trace.h"
+#include "presentation.h"
 
 struct web_file_t {
   char *fullpath;
@@ -88,6 +89,32 @@ http_get_info (const char *filename, struct File_Info *info)
     info->is_directory = 0;
     info->is_readable = 1;
     info->content_type = ixmlCloneDOMString (SERVICE_CONTENT_TYPE);
+    return 0;
+  }
+
+  if (!strcmp (filename, USHARE_PRESENTATION_PAGE))
+  {
+    if (build_presentation_page (ut) < 0)
+      return -1;
+    
+    info->file_length = ut->presentation->len;
+    info->last_modified = 0;
+    info->is_directory = 0;
+    info->is_readable = 1;
+    info->content_type = ixmlCloneDOMString (PRESENTATION_PAGE_CONTENT_TYPE);
+    return 0;
+  }
+
+  if (!strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
+  {
+    if (process_cgi (ut, (char *) (filename + strlen (USHARE_CGI) + 1)) < 0)
+      return -1;
+    
+    info->file_length = ut->presentation->len;
+    info->last_modified = 0;
+    info->is_directory = 0;
+    info->is_readable = 1;
+    info->content_type = ixmlCloneDOMString (PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
 
@@ -155,6 +182,18 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
     file->type = FILE_MEMORY;
     file->detail.memory.contents = strdup (CMS_DESCRIPTION);
     file->detail.memory.len = CMS_DESCRIPTION_LEN;
+    return ((UpnpWebFileHandle) file);
+  }
+
+  if (!strcmp (filename, USHARE_PRESENTATION_PAGE)
+      || !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
+  {
+    file = malloc (sizeof (struct web_file_t));
+    file->fullpath = strdup (USHARE_PRESENTATION_PAGE);
+    file->pos = 0;
+    file->type = FILE_MEMORY;
+    file->detail.memory.contents = strdup (ut->presentation->buf);
+    file->detail.memory.len = ut->presentation->len;
     return ((UpnpWebFileHandle) file);
   }
 
