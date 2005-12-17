@@ -31,6 +31,7 @@
 
 #define CGI_ACTION "action="
 #define CGI_ACTION_ADD "add"
+#define CGI_ACTION_DEL "del"
 #define CGI_ACTION_REFRESH "refresh"
 #define CGI_PATH "path="
 
@@ -39,7 +40,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
 {
   char *action = NULL;
   int refresh = 0;
-  
+
   if (!ut || !cgiargs)
     return -1;
 
@@ -62,6 +63,22 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
       free (path);
     }
   }
+  else if (!strcmp (action, CGI_ACTION_DEL))
+  {
+    char *shares,*share;
+    int num, shift=0;
+
+    shares = strdup (cgiargs + strlen (CGI_ACTION) + strlen (action) + 1);
+    for (share = strtok (shares, "&"); share ; share = strtok (NULL, "&"))
+    {
+      if (sscanf (share, "share[%d]=on", &num) < 0)
+        continue;
+      ut->contentlist = del_content (ut->contentlist, num - shift++);
+    }
+
+    refresh = 1;
+    free (shares);
+  }
   else if (!strcmp (action, CGI_ACTION_REFRESH))
     refresh = 1;
 
@@ -70,11 +87,11 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
     free_metadata_list (ut);
     build_metadata_list (ut);
   }
-  
+
   if (ut->presentation)
     buffer_free (ut->presentation);
   ut->presentation = buffer_new ();
-  
+
   buffer_append (ut->presentation, "<html>");
   buffer_append (ut->presentation, "<head>");
   buffer_append (ut->presentation, "<title>uShare Information Page</title>");
@@ -89,7 +106,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
 
   if (action)
     free (action);
-  
+
   return 0;
 }
 
@@ -97,7 +114,7 @@ int
 build_presentation_page (struct ushare_t *ut)
 {
   int i;
-  
+
   if (!ut)
     return -1;
 
@@ -130,19 +147,31 @@ build_presentation_page (struct ushare_t *ut)
                   "<b>Number of shared files and directories : </b>%d<br/>",
                   ut->nr_entries);
   buffer_append (ut->presentation, "<br/>");
- 
-  for (i = 0; i < ut->contentlist->count; i++)
-    buffer_appendf (ut->presentation, "<b>Share #%d</b> : %s<br/>",
-                    i + 1, ut->contentlist->content[i]);
-  buffer_append (ut->presentation, "<br/>");
-  
+
   buffer_appendf (ut->presentation,
-                  "<form method=get action=\"%s\">", USHARE_CGI);
+                  "<form method=\"get\" action=\"%s\">", USHARE_CGI);
+  buffer_appendf (ut->presentation,
+                  "<input type=\"hidden\" name=\"action\" value=\"%s\"/>",
+                  CGI_ACTION_DEL);
+  for (i = 0 ; i < ut->contentlist->count ; i++)
+  {
+    buffer_appendf (ut->presentation, "<b>Share #%d :</b>", i + 1);
+    buffer_appendf (ut->presentation,
+                    "<input type=\"checkbox\" name=\"share[%d]\"/>", i);
+    buffer_appendf (ut->presentation, "%s<br/>", ut->contentlist->content[i]);
+  }
+  buffer_append (ut->presentation,
+                 "<input type=\"submit\" value=\"unShare!\"/>");
+  buffer_append (ut->presentation, "</form>");
+  buffer_append (ut->presentation, "<br/>");
+
+  buffer_appendf (ut->presentation,
+                  "<form method=\"get\" action=\"%s\">", USHARE_CGI);
   buffer_append (ut->presentation, "Add a new share :  ");
   buffer_appendf (ut->presentation,
                   "<input type=\"hidden\" name=\"action\" value=\"%s\"/>",
                   CGI_ACTION_ADD);
-  buffer_append (ut->presentation, "<input type=text name=\"path\">");
+  buffer_append (ut->presentation, "<input type=\"text\" name=\"path\"/>");
   buffer_append (ut->presentation,
                  "<input type=\"submit\" value=\"Share!\"/>");
   buffer_append (ut->presentation, "</form>");
@@ -150,7 +179,7 @@ build_presentation_page (struct ushare_t *ut)
   buffer_append (ut->presentation, "<br/>");
 
   buffer_appendf (ut->presentation,
-                  "<form method=get action=\"%s\">", USHARE_CGI);
+                  "<form method=\"get\" action=\"%s\">", USHARE_CGI);
   buffer_appendf (ut->presentation,
                   "<input type=\"hidden\" name=\"action\" value=\"%s\"/>",
                   CGI_ACTION_REFRESH);

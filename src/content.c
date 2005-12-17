@@ -48,6 +48,32 @@ add_content(content_list *list, const char *item)
   return list;
 }
 
+/*
+ * Remove the n'th content (start from 0)
+ */
+content_list *
+del_content(content_list *list, int n)
+{
+  int i;
+
+  if (!list || n >= list->count)
+    return NULL;
+
+  if (n >= list->count)
+    return list;
+
+  if (list->content[n])
+  {
+    free (list->content[n]);
+    for (i = n ; i < list->count - 1 ; i++)
+      list->content[i] = list->content[i+1];
+    list->count--;
+    list->content[list->count] = NULL;
+  }
+
+  return list;
+}
+
 void
 free_content(content_list *list)
 {
