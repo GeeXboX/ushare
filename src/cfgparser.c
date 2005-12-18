@@ -181,7 +181,6 @@ parse_config_file (struct ushare_t *ut)
             ushare_add_contentdir (ut, token);
             token = strtok (NULL, USHARE_DIR_DELIM);
           }
-          log_verbose ("\n");
           free (x);
         }
       }
