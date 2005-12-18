@@ -34,7 +34,8 @@
 #define CGI_ACTION_ADD "add"
 #define CGI_ACTION_DEL "del"
 #define CGI_ACTION_REFRESH "refresh"
-#define CGI_PATH "path="
+#define CGI_PATH "path"
+#define CGI_SHARE "share"
 
 int
 process_cgi (struct ushare_t *ut, char *cgiargs)
@@ -56,10 +57,10 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
     char *path = NULL;
     path = strdup (cgiargs + strlen (CGI_ACTION) + strlen (action) + 1);
 
-    if (path && !strncmp (path, CGI_PATH, strlen (CGI_PATH)))
+    if (path && !strncmp (path, CGI_PATH"=", strlen (CGI_PATH) + 1))
     {
       ut->contentlist = add_content (ut->contentlist,
-                                     path + strlen (CGI_PATH));
+                                     path + strlen (CGI_PATH) + 1);
       refresh = 1;
       free (path);
     }
@@ -72,7 +73,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
     shares = strdup (cgiargs + strlen (CGI_ACTION) + strlen (action) + 1);
     for (share = strtok (shares, "&"); share ; share = strtok (NULL, "&"))
     {
-      if (sscanf (share, "share[%d]=on", &num) < 0)
+      if (sscanf (share, CGI_SHARE"[%d]=on", &num) < 0)
         continue;
       ut->contentlist = del_content (ut->contentlist, num - shift++);
     }
@@ -163,7 +164,7 @@ build_presentation_page (struct ushare_t *ut)
   {
     buffer_appendf (ut->presentation, "<b>%s #%d :</b>", _("Share"), i + 1);
     buffer_appendf (ut->presentation,
-                    "<input type=\"checkbox\" name=\"share[%d]\"/>", i);
+                    "<input type=\"checkbox\" name=\""CGI_SHARE"[%d]\"/>", i);
     buffer_appendf (ut->presentation, "%s<br/>", ut->contentlist->content[i]);
   }
   buffer_appendf (ut->presentation,
@@ -177,7 +178,7 @@ build_presentation_page (struct ushare_t *ut)
   buffer_appendf (ut->presentation,
                   "<input type=\"hidden\" name=\"action\" value=\"%s\"/>",
                   CGI_ACTION_ADD);
-  buffer_append (ut->presentation, "<input type=\"text\" name=\"path\"/>");
+  buffer_append (ut->presentation, "<input type=\"text\" name=\""CGI_PATH"\"/>");
   buffer_appendf (ut->presentation,
                   "<input type=\"submit\" value=\"%s\"/>", _("Share!"));
   buffer_append (ut->presentation, "</form>");
