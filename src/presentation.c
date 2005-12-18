@@ -28,6 +28,7 @@
 #include "content.h"
 #include "buffer.h"
 #include "presentation.h"
+#include "gettext.h"
 
 #define CGI_ACTION "action="
 #define CGI_ACTION_ADD "add"
@@ -94,7 +95,8 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
 
   buffer_append (ut->presentation, "<html>");
   buffer_append (ut->presentation, "<head>");
-  buffer_append (ut->presentation, "<title>uShare Information Page</title>");
+  buffer_appendf (ut->presentation, "<title>%s</title>",
+                  _("uShare Information Page"));
   buffer_append (ut->presentation,
                  "<meta http-equiv=\"pragma\" content=\"no-cache\">");
   buffer_append (ut->presentation,
@@ -124,28 +126,32 @@ build_presentation_page (struct ushare_t *ut)
 
   buffer_append (ut->presentation, "<html>");
   buffer_append (ut->presentation, "<head>");
-  buffer_append (ut->presentation, "<title>uShare Information Page</title>");
+  buffer_appendf (ut->presentation, "<title>%s</title>",
+                 _("uShare Information Page"));
   buffer_append (ut->presentation,
-                 "<meta http-equiv=\"pragma\" content=\"no-cache\">");
+                 "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+  buffer_append (ut->presentation,
+                 "<meta http-equiv=\"pragma\" content=\"no-cache\"/>");
   buffer_append (ut->presentation,
                  "<meta http-equiv=\"expires\" content=\"1970-01-01\"/>");
   buffer_append (ut->presentation, "</head>");
   buffer_append (ut->presentation, "<body>");
   buffer_append (ut->presentation, "<h1 align=\"center\">");
-  buffer_append (ut->presentation,
-                 "<tt>uShare UPnP A/V Media Server</tt><br/>");
-  buffer_append (ut->presentation, "Information Page");
+  buffer_appendf (ut->presentation, "<tt>%s</tt><br/>",
+                  _("uShare UPnP A/V Media Server"));
+  buffer_append (ut->presentation, _("Information Page"));
   buffer_append (ut->presentation, "</h1>");
   buffer_append (ut->presentation, "<br/>");
 
   buffer_append (ut->presentation, "<center>");
   buffer_append (ut->presentation, "<tr width=\"500\">");
-  buffer_appendf (ut->presentation, "<b>Version</b> : %s<br/>", VERSION);
+  buffer_appendf (ut->presentation, "<b>%s :</b> %s<br/>",
+                  _("Version"), VERSION);
   buffer_append (ut->presentation, "</tr>");
-  buffer_appendf (ut->presentation, "<b>Device UDN</b> : %s<br/>", ut->udn);
-  buffer_appendf (ut->presentation,
-                  "<b>Number of shared files and directories : </b>%d<br/>",
-                  ut->nr_entries);
+  buffer_appendf (ut->presentation, "<b>%s :</b> %s<br/>",
+                  _("Device UDN"), ut->udn);
+  buffer_appendf (ut->presentation, "<b>%s :</b> %d<br/>",
+                  _("Number of shared files and directories"), ut->nr_entries);
   buffer_append (ut->presentation, "<br/>");
 
   buffer_appendf (ut->presentation,
@@ -155,25 +161,25 @@ build_presentation_page (struct ushare_t *ut)
                   CGI_ACTION_DEL);
   for (i = 0 ; i < ut->contentlist->count ; i++)
   {
-    buffer_appendf (ut->presentation, "<b>Share #%d :</b>", i + 1);
+    buffer_appendf (ut->presentation, "<b>%s #%d :</b>", _("Share"), i + 1);
     buffer_appendf (ut->presentation,
                     "<input type=\"checkbox\" name=\"share[%d]\"/>", i);
     buffer_appendf (ut->presentation, "%s<br/>", ut->contentlist->content[i]);
   }
-  buffer_append (ut->presentation,
-                 "<input type=\"submit\" value=\"unShare!\"/>");
+  buffer_appendf (ut->presentation,
+                 "<input type=\"submit\" value=\"%s\"/>", _("unShare!"));
   buffer_append (ut->presentation, "</form>");
   buffer_append (ut->presentation, "<br/>");
 
   buffer_appendf (ut->presentation,
                   "<form method=\"get\" action=\"%s\">", USHARE_CGI);
-  buffer_append (ut->presentation, "Add a new share :  ");
+  buffer_append (ut->presentation, _("Add a new share :  "));
   buffer_appendf (ut->presentation,
                   "<input type=\"hidden\" name=\"action\" value=\"%s\"/>",
                   CGI_ACTION_ADD);
   buffer_append (ut->presentation, "<input type=\"text\" name=\"path\"/>");
-  buffer_append (ut->presentation,
-                 "<input type=\"submit\" value=\"Share!\"/>");
+  buffer_appendf (ut->presentation,
+                  "<input type=\"submit\" value=\"%s\"/>", _("Share!"));
   buffer_append (ut->presentation, "</form>");
 
   buffer_append (ut->presentation, "<br/>");
@@ -183,8 +189,8 @@ build_presentation_page (struct ushare_t *ut)
   buffer_appendf (ut->presentation,
                   "<input type=\"hidden\" name=\"action\" value=\"%s\"/>",
                   CGI_ACTION_REFRESH);
-  buffer_append (ut->presentation,
-                 "<input type=\"submit\" value=\"Refresh Shares ...\"/>");
+  buffer_appendf (ut->presentation, "<input type=\"submit\" value=\"%s\"/>",
+                  _("Refresh Shares ..."));
   buffer_append (ut->presentation, "</form>");
   buffer_append (ut->presentation, "</center>");
 
