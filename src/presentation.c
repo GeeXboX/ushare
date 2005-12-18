@@ -24,11 +24,16 @@
 #error "Missing config.h file : run configure again"
 #endif
 
+#if HAVE_LANGINFO_CODESET
+# include <langinfo.h>
+#endif
+
 #include "metadata.h"
 #include "content.h"
 #include "buffer.h"
 #include "presentation.h"
 #include "gettext.h"
+#include "util_iconv.h"
 
 #define CGI_ACTION "action="
 #define CGI_ACTION_ADD "add"
@@ -117,6 +122,7 @@ int
 build_presentation_page (struct ushare_t *ut)
 {
   int i;
+  char *mycodeset = UTF8;
 
   if (!ut)
     return -1;
@@ -125,12 +131,17 @@ build_presentation_page (struct ushare_t *ut)
     buffer_free (ut->presentation);
   ut->presentation = buffer_new ();
 
+#if HAVE_LANGINFO_CODESET
+  mycodeset = nl_langinfo (CODESET);
+#endif
+
   buffer_append (ut->presentation, "<html>");
   buffer_append (ut->presentation, "<head>");
   buffer_appendf (ut->presentation, "<title>%s</title>",
                  _("uShare Information Page"));
-  buffer_append (ut->presentation,
-                 "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+  buffer_appendf (ut->presentation,
+                  "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\"/>",
+                  mycodeset);
   buffer_append (ut->presentation,
                  "<meta http-equiv=\"pragma\" content=\"no-cache\"/>");
   buffer_append (ut->presentation,
