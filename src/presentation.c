@@ -122,7 +122,7 @@ int
 build_presentation_page (struct ushare_t *ut)
 {
   int i;
-  char *mycodeset = UTF8;
+  char *mycodeset = NULL;
 
   if (!ut)
     return -1;
@@ -134,6 +134,8 @@ build_presentation_page (struct ushare_t *ut)
 #if HAVE_LANGINFO_CODESET
   mycodeset = nl_langinfo (CODESET);
 #endif
+  if (!mycodeset)
+    mycodeset = UTF8;
 
   buffer_append (ut->presentation, "<html>");
   buffer_append (ut->presentation, "<head>");
