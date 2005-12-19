@@ -400,6 +400,7 @@ metadata_add_container (struct ushare_t *ut,
 void
 free_metadata_list (struct ushare_t *ut)
 {
+  ut->init = 0;
   if (ut->root_entry)
     upnp_entry_free (ut->root_entry);
   ut->root_entry = NULL;
@@ -448,4 +449,5 @@ build_metadata_list (struct ushare_t *ut)
   }
 
   log_info (_("Found %d files and subdirectories.\n"), ut->nr_entries);
+  ut->init = 1;
 }

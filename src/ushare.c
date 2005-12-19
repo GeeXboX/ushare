@@ -75,6 +75,7 @@ ushare_new (void)
   ut->contentlist = NULL;
   ut->root_entry = NULL;
   ut->nr_entries = 0;
+  ut->init = 0;
   ut->dev = 0;
   ut->udn = NULL;
   ut->ip = NULL;

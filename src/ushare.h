@@ -75,6 +75,7 @@ struct ushare_t {
   content_list *contentlist;
   struct upnp_entry_t *root_entry;
   int nr_entries;
+  int init;
   UpnpDevice_Handle dev;
   char *udn;
   char *ip;

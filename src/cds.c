@@ -373,6 +373,10 @@ cds_browse (struct action_event_t *event)
   if (!event->status)
     return false;
 
+  /* check if metadatas have been well inited */
+  if (!ut->init)
+    return false;
+  
   /* Retrieve Browse arguments */
   index = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_START_INDEX);
   count = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_REQUEST_COUNT);
