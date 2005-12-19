@@ -207,6 +207,7 @@ display_usage (void)
   printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"),
           DEFAULT_USHARE_IFACE);
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
+  printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
   printf (_(" -D, --daemon\t\tRun as a daemon\n"));
   printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
@@ -217,7 +218,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDn:i:c:";
+  char short_options[] = "VhvDwn:i:c:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -226,6 +227,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
     {"content", required_argument, 0, 'c' },
+    {"no-web", no_argument, 0, 'w' },
     {0, 0, 0, 0 }
   };
 
@@ -270,6 +272,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'c':
       ushare_add_contentdir (ut, optarg);
+      break;
+
+    case 'w':
+      ut->use_presentation = false;
       break;
 
     default:

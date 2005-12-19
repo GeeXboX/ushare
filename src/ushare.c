@@ -80,6 +80,7 @@ ushare_new (void)
   ut->udn = NULL;
   ut->ip = NULL;
   ut->presentation = NULL;
+  ut->use_presentation = true;
   ut->verbose = false;
   ut->daemon = false;
 

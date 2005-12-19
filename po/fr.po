@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ushare 0.9.5\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-12-18 13:11+0100\n"
+"POT-Creation-Date: 2005-12-19 19:13+0100\n"
 "PO-Revision-Date: 2005-12-18 13:11+0100\n"
 "Last-Translator: Alexis Saettler <asbin@asbin.org>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -15,76 +15,76 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ushare.c:187
+#: src/ushare.c:188
 msgid "Stopping UPnP Service ...\n"
 msgstr "Arrêt du service UPnP ...\n"
 
-#: src/ushare.c:209
+#: src/ushare.c:210
 msgid "Initializing UPnP subsystem ...\n"
 msgstr "Initialisation du système UPnP ...\n"
 
-#: src/ushare.c:213
+#: src/ushare.c:214
 msgid "Cannot initialize UPnP subsystem\n"
 msgstr "Impossible d'initialiser le système UPnP ...\n"
 
-#: src/ushare.c:217
+#: src/ushare.c:218
 #, c-format
 msgid "UPnP MediaServer listening on %s:%d\n"
 msgstr "Serveur Multimédia UPnP en écoute sur %s:%d\n"
 
-#: src/ushare.c:225
+#: src/ushare.c:226
 msgid "Cannot set virtual directory callbacks\n"
 msgstr "Impossible de créer les retours des dossiers virtuels\n"
 
-#: src/ushare.c:233
+#: src/ushare.c:234
 msgid "Cannot add virtual directory for web server\n"
 msgstr "Impossible d'ajouter le dossier virtuel du serveur web\n"
 
-#: src/ushare.c:243 src/ushare.c:261
+#: src/ushare.c:244 src/ushare.c:262
 msgid "Cannot register UPnP device\n"
 msgstr "Impossible d'enregistrer le périphérique UPnP\n"
 
-#: src/ushare.c:251
+#: src/ushare.c:252
 msgid "Cannot unregister UPnP device\n"
 msgstr "Impossible de supprimer le périphérique UPnP\n"
 
-#: src/ushare.c:266
+#: src/ushare.c:267
 msgid "Sending UPnP advertisement for device ...\n"
 msgstr "Envoit des informations UPnP du périphérique ...\n"
 
-#: src/ushare.c:269
+#: src/ushare.c:270
 msgid "Listening for control point connections ...\n"
 msgstr "Attente de connexions ...\n"
 
-#: src/ushare.c:397
+#: src/ushare.c:398
 msgid "Reloading configuration...\n"
 msgstr "Rechargement de la configuration...\n"
 
-#: src/ushare.c:444 src/ushare.c:499
+#: src/ushare.c:445 src/ushare.c:500
 msgid "Error: no content directory to be shared.\n"
 msgstr "Erreur : aucun répertoire de contenus à partager.\n"
 
-#: src/ushare.c:452
+#: src/ushare.c:453
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr "%s (version %s), un serveur mutlimédia UPnP léger.\n"
 
-#: src/ushare.c:454
+#: src/ushare.c:455
 #, c-format
 msgid "Benjamin Zores (C) 2005, for GeeXboX Team.\n"
 msgstr "Benjamin Zores (C) 2005, pour l'équipe GeeXboX.\n"
 
-#: src/ushare.c:455
+#: src/ushare.c:456
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr "Voir http://ushare.geexbox.org/ pour les mises à jour.\n"
 
-#: src/ushare.c:481
+#: src/ushare.c:482
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr "Attention : impossible de lire le fichier \"%s\".\n"
 
-#: src/ushare.c:524
+#: src/ushare.c:525
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr "Erreur : impossible de démoniser le programme : %s\n"
@@ -133,65 +133,71 @@ msgstr " -c, --content=REP\tPartage le contenu du répertoire REP\n"
 
 #: src/cfgparser.c:210
 #, c-format
+msgid " -w, --no-web\t\tDisable the control web page (enabled by default)\n"
+msgstr ""
+" -w, --no-web\t\tDésactive la page de contrôle web (activée par défaut)\n"
+
+#: src/cfgparser.c:211
+#, c-format
 msgid " -v, --verbose\t\tSet verbose display\n"
 msgstr " -v, --verbose\t\tMode bavard\n"
 
-#: src/cfgparser.c:211
+#: src/cfgparser.c:212
 #, c-format
 msgid " -D, --daemon\t\tRun as a daemon\n"
 msgstr " -D, --daemon\t\tDémarrer en mode démon\n"
 
-#: src/cfgparser.c:212
+#: src/cfgparser.c:213
 #, c-format
 msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
 msgstr ""
 " -V, --version\t\tAffiche la version de uShare et quitte le programme\n"
 
-#: src/cfgparser.c:213
+#: src/cfgparser.c:214
 #, c-format
 msgid " -h, --help\t\tDisplay this help\n"
 msgstr " -h, --help\t\tAffiche cette aide\n"
 
-#: src/presentation.c:99 src/presentation.c:130
+#: src/presentation.c:105 src/presentation.c:143
 msgid "uShare Information Page"
 msgstr "Page d'information de uShare"
 
-#: src/presentation.c:141
+#: src/presentation.c:155
 msgid "uShare UPnP A/V Media Server"
 msgstr "uShare - Serveur Multimédia A/V UPnP"
 
-#: src/presentation.c:142
+#: src/presentation.c:156
 msgid "Information Page"
 msgstr "Page d'information"
 
-#: src/presentation.c:149
+#: src/presentation.c:163
 msgid "Version"
 msgstr "Version"
 
-#: src/presentation.c:152
+#: src/presentation.c:166
 msgid "Device UDN"
 msgstr "Périphérique UDN"
 
-#: src/presentation.c:154
+#: src/presentation.c:168
 msgid "Number of shared files and directories"
 msgstr "Nombre de fichiers et sous-répertoires partagés"
 
-#: src/presentation.c:164
+#: src/presentation.c:178
 msgid "Share"
 msgstr "Partage"
 
-#: src/presentation.c:170
+#: src/presentation.c:184
 msgid "unShare!"
 msgstr "Départager!"
 
-#: src/presentation.c:176
+#: src/presentation.c:190
 msgid "Add a new share :  "
 msgstr "Ajouter un partage :  "
 
-#: src/presentation.c:182
+#: src/presentation.c:196
 msgid "Share!"
 msgstr "Partager !"
 
-#: src/presentation.c:193
+#: src/presentation.c:207
 msgid "Refresh Shares ..."
 msgstr "Rafraîchir les partages ..."

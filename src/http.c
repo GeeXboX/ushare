@@ -92,7 +92,7 @@ http_get_info (const char *filename, struct File_Info *info)
     return 0;
   }
 
-  if (!strcmp (filename, USHARE_PRESENTATION_PAGE))
+  if (ut->use_presentation && !strcmp (filename, USHARE_PRESENTATION_PAGE))
   {
     if (build_presentation_page (ut) < 0)
       return -1;
@@ -105,7 +105,7 @@ http_get_info (const char *filename, struct File_Info *info)
     return 0;
   }
 
-  if (!strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
+  if (ut->use_presentation && !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
   {
     if (process_cgi (ut, (char *) (filename + strlen (USHARE_CGI) + 1)) < 0)
       return -1;
@@ -185,8 +185,8 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
     return ((UpnpWebFileHandle) file);
   }
 
-  if (!strcmp (filename, USHARE_PRESENTATION_PAGE)
-      || !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
+  if (ut->use_presentation && ( !strcmp (filename, USHARE_PRESENTATION_PAGE)
+      || !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI))))
   {
     file = malloc (sizeof (struct web_file_t));
     file->fullpath = strdup (USHARE_PRESENTATION_PAGE);

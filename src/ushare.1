@@ -22,7 +22,7 @@
 GeeXboX uShare \(hy a lightweight UPnP Media Server
 .SH SYNOPSIS
 .B ushare
-[\f-\-v\fR] [\f-\-n name\fR] [\f-\-i interface\fR] [\f-\-c directory\fR] [[\f-\-c directory\fR]...]
+[\f-\-v\fR] [\f-\-n name\fR] [\f-\-i interface\fR] [\f-\-w\fR] [\f-\-c directory\fR] [[\f-\-c directory\fR]...]
 .SH DESCRIPTION
 \fBGeeXboX uShare\fP is a free UPnP multimedia files Media Server.
 It implements the server component that provides UPnP media devices with
@@ -49,12 +49,16 @@ Default is 'uShare'.
 \fB\-\-content (\-c)\fR \fIDIRECTORY\fR
 Set directory to scan for multimedia files.
 .TP
+\fB\-\-no\-web (\-w)\fR
+Disable the control web page (enabled by default).
+.TP
 \fB\-\-version (\-V)\fR
 Display uShare version number.
 .SH "REMOTE CONTROL"
 You can also perform remote control of uShare UPnP Media Server through its
 web interface. This let you define new content locations at runtime or
 update the currently shared one in case the filesystem has changed.
+To disable this feature, use the --no-web option (see bellow).
 .TP
 Just go to :
 .TP

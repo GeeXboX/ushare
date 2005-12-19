@@ -80,6 +80,7 @@ struct ushare_t {
   char *udn;
   char *ip;
   struct buffer_t *presentation;
+  bool use_presentation;
   bool verbose;
   bool daemon;
 };
