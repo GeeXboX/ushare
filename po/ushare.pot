@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-12-19 19:13+0100\n"
+"POT-Creation-Date: 2005-12-19 20:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,90 +16,90 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ushare.c:188
+#: src/ushare.c:189
 msgid "Stopping UPnP Service ...\n"
 msgstr ""
 
-#: src/ushare.c:210
+#: src/ushare.c:211
 msgid "Initializing UPnP subsystem ...\n"
 msgstr ""
 
-#: src/ushare.c:214
+#: src/ushare.c:215
 msgid "Cannot initialize UPnP subsystem\n"
 msgstr ""
 
-#: src/ushare.c:218
+#: src/ushare.c:219
 #, c-format
 msgid "UPnP MediaServer listening on %s:%d\n"
 msgstr ""
 
-#: src/ushare.c:226
+#: src/ushare.c:227
 msgid "Cannot set virtual directory callbacks\n"
 msgstr ""
 
-#: src/ushare.c:234
+#: src/ushare.c:235
 msgid "Cannot add virtual directory for web server\n"
 msgstr ""
 
-#: src/ushare.c:244 src/ushare.c:262
+#: src/ushare.c:245 src/ushare.c:263
 msgid "Cannot register UPnP device\n"
 msgstr ""
 
-#: src/ushare.c:252
+#: src/ushare.c:253
 msgid "Cannot unregister UPnP device\n"
 msgstr ""
 
-#: src/ushare.c:267
+#: src/ushare.c:268
 msgid "Sending UPnP advertisement for device ...\n"
 msgstr ""
 
-#: src/ushare.c:270
+#: src/ushare.c:271
 msgid "Listening for control point connections ...\n"
 msgstr ""
 
-#: src/ushare.c:398
+#: src/ushare.c:399
 msgid "Reloading configuration...\n"
 msgstr ""
 
-#: src/ushare.c:445 src/ushare.c:500
+#: src/ushare.c:446 src/ushare.c:501
 msgid "Error: no content directory to be shared.\n"
 msgstr ""
 
-#: src/ushare.c:453
+#: src/ushare.c:454
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr ""
 
-#: src/ushare.c:455
+#: src/ushare.c:456
 #, c-format
 msgid "Benjamin Zores (C) 2005, for GeeXboX Team.\n"
 msgstr ""
 
-#: src/ushare.c:456
+#: src/ushare.c:457
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr ""
 
-#: src/ushare.c:482
+#: src/ushare.c:483
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr ""
 
-#: src/ushare.c:525
+#: src/ushare.c:526
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr ""
 
-#: src/metadata.c:413
+#: src/metadata.c:417
 msgid "Building Metadata List ...\n"
 msgstr ""
 
-#: src/metadata.c:426
+#: src/metadata.c:430
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr ""
 
-#: src/metadata.c:450
+#: src/metadata.c:454
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr ""

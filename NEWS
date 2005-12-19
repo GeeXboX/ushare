@@ -1,3 +1,9 @@
+2005-12-19 : GeeXboX uShare 0.9.5 released.
+ Added UPnP presentation URL support (you can now update or add/remove
+ contents through a web interface).
+ Added support for subtitle file formats.
+ Added support for DVD specific file formats.
+
 2005-12-07 : GeeXboX uShare 0.9.4 released.
  Fixed some memleaks.
  Avoid having empty shared directory name.
