@@ -1,10 +1,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ushare 0.9.2\n"
+"Project-Id-Version: ushare 0.9.5\n"
 "Report-Msgid-Bugs-To: alexis@saettler.org\n"
 "POT-Creation-Date: 2005-11-20 16:01+0100\n"
-"PO-Revision-Date: 2005-11-20 16:01+0100\n"
+"PO-Revision-Date: 2005-12-19 15:20+0100\n"
 "Last-Translator: Alexis Saettler <alexis@saettler.org>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,6 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../ushare.templates:4
-#, fuzzy
 msgid "uShare's name"
 msgstr "Nom de uShare"
 

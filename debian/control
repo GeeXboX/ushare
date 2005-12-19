@@ -1,7 +1,7 @@
 Source: ushare
 Section: devel
 Priority: optional
-Maintainer: Alexis Saettler (asbin ;-]) <alexis@saettler.org>
+Maintainer: Alexis Saettler <alexis@saettler.org>
 Build-Depends: debhelper (>= 4.1.16), cdbs (>= 0.4.23-1.1), build-essential, libupnp-dev
 Standards-Version: 3.6.2.1
 
