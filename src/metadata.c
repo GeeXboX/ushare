@@ -219,10 +219,13 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   title = iconv_convert (name);
   if (title)
   {
-    char *x = NULL;
-    x = strrchr (title, '.');
-    if (x)  /* avoid displaying file extension */
-      *x = '\0';
+    if (!dir)
+    {
+      char *x = NULL;
+      x = strrchr (title, '.');
+      if (x)  /* avoid displaying file extension */
+        *x = '\0';
+    }
     entry->title = title;
 
     if (!strcmp (title, "")) /* DIDL dc:title can't be empty */
