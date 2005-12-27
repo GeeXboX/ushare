@@ -1,3 +1,8 @@
+2005-12-27  Benjamin Zores  <ben@geexbox.org>
+
+	* fixed a potential buffer overrun when building DIDL messages.
+	  (patch by Bernd Loske <bernd@loskeonline.net> ).
+
 2005-12-19  Benjamin Zores  <ben@geexbox.org>
 
 	* new public release (Version 0.9.5)

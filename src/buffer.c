@@ -62,7 +62,7 @@ buffer_append (struct buffer_t *buffer, const char *str)
   len = buffer->len + strlen (str);
   if (len >= buffer->capacity)
   {
-    buffer->capacity = MIN (len, 2 * buffer->capacity);
+    buffer->capacity = MAX (len + 1, 2 * buffer->capacity);
     buffer->buf = realloc (buffer->buf, buffer->capacity);
   }
 
@@ -74,14 +74,23 @@ void
 buffer_appendf (struct buffer_t *buffer, const char *format, ...)
 {
   char str[BUFFER_DEFAULT_CAPACITY];
+  int size;
   va_list va;
 
   if (!buffer || !format)
     return;
 
   va_start (va, format);
-  vsprintf (str, format, va);
-  buffer_append (buffer, str);
+  size = vsnprintf (str, BUFFER_DEFAULT_CAPACITY, format, va);
+  if (size >= BUFFER_DEFAULT_CAPACITY)
+  {
+    char* dynstr = (char *) malloc (size + 1);
+    vsnprintf (dynstr, size + 1, format, va);
+    buffer_append (buffer, dynstr);
+    free (dynstr);
+  }
+  else
+    buffer_append (buffer, str);
   va_end (va);
 }
 
