@@ -25,6 +25,7 @@
 
 #define USHARE_NAME "USHARE_NAME"
 #define USHARE_IFACE "USHARE_IFACE"
+#define USHARE_PORT "USHARE_PORT"
 #define USHARE_DIR "USHARE_DIR"
 
 #define USHARE_CONFIG_FILE "/etc/ushare.conf"

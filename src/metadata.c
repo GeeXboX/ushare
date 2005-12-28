@@ -206,7 +206,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
       entry->protocol = getUpnpProtocol (name);
       entry->url = (char *) malloc (1024 * sizeof (char));
       sprintf (entry->url, "http://%s:%d%s/%d",
-               UpnpGetServerIpAddress (), UpnpGetServerPort(),
+               UpnpGetServerIpAddress (), ut->port,
                VIRTUAL_DIR, entry->id);
     }
   else /* container */

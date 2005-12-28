@@ -79,6 +79,7 @@ ushare_new (void)
   ut->dev = 0;
   ut->udn = NULL;
   ut->ip = NULL;
+  ut->port = 0; /* Randomly attributed by libupnp */
   ut->presentation = NULL;
   ut->use_presentation = true;
   ut->verbose = false;
@@ -209,15 +210,16 @@ init_upnp (struct ushare_t *ut)
   sprintf (description, UPNP_DESCRIPTION, ut->name, ut->udn);
 
   log_info (_("Initializing UPnP subsystem ...\n"));
-  res = UpnpInit (ut->ip, 0);
+  res = UpnpInit (ut->ip, ut->port);
   if (res != UPNP_E_SUCCESS)
   {
     log_error (_("Cannot initialize UPnP subsystem\n"));
     return -1;
   }
 
+  ut->port = UpnpGetServerPort();
   log_info (_("UPnP MediaServer listening on %s:%d\n"),
-            UpnpGetServerIpAddress (), UpnpGetServerPort());
+            UpnpGetServerIpAddress (), ut->port);
 
   UpnpEnableWebserver (TRUE);
 
@@ -418,6 +420,12 @@ reload_config (int s __attribute__ ((unused)))
     free (ut->interface);
     ut->interface = ut2->interface;
     ut2->interface = NULL;
+    reload = true;
+  }
+
+  if (ut->port != ut2->port)
+  {
+    ut->port = ut2->port;
     reload = true;
   }
 

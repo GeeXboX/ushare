@@ -79,6 +79,7 @@ struct ushare_t {
   UpnpDevice_Handle dev;
   char *udn;
   char *ip;
+  unsigned short port;
   struct buffer_t *presentation;
   bool use_presentation;
   bool verbose;

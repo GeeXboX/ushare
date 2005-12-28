@@ -166,6 +166,12 @@ parse_config_file (struct ushare_t *ut)
         ushare_set_interface (ut, s);
       }
     }
+    else if (!strncmp (line, USHARE_PORT, strlen (USHARE_PORT)))
+    {
+      s = strchr (line, '=') + 1;
+      if (s && s[0] != '\0')
+        ut->port = atoi (s);
+    }
     else if (!strncmp (line, USHARE_DIR, strlen (USHARE_DIR)))
     {
       s = strchr (line, '=') + 1;
@@ -200,12 +206,13 @@ display_usage (void)
 {
   display_headers ();
   printf ("\n");
-  printf (_("Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"));
+  printf (_("Usage: ushare [-n name] [-i interface] [-p port] [-c directory] [[-c directory]...]\n"));
   printf (_("Options:\n"));
   printf (_(" -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"),
           DEFAULT_USHARE_NAME);
   printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"),
           DEFAULT_USHARE_IFACE);
+  printf (_(" -p, --port=PORT\tForces the HTTP server to run on PORT\n"));
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
@@ -218,7 +225,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDwn:i:c:";
+  char short_options[] = "VhvDwn:i:p:c:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -226,6 +233,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"daemon", no_argument, 0, 'D' },
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
+    {"port", required_argument, 0, 'p' },
     {"content", required_argument, 0, 'c' },
     {"no-web", no_argument, 0, 'w' },
     {0, 0, 0, 0 }
@@ -268,6 +276,18 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'i':
       ushare_set_interface (ut, optarg);
+      break;
+
+    case 'p':
+      ut->port = atoi (optarg);
+      if (ut->port <= 49152)
+      {
+        fprintf (stderr,
+                 _("Warning: port doesn't fit IANA port assignements.\n"));
+
+        fprintf (stderr, _("Warning : Only Dynamic or Private Ports can be used (from 49152 through 65535)\n"));
+        ut->port = 0;
+      }
       break;
 
     case 'c':

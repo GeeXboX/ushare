@@ -102,6 +102,7 @@ Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory] ...]
 Options:
  -n, --name=NAME        Set UPnP Friendly Name (default is 'uShare')
  -i, --interface=IFACE  Use IFACE Network Interface (default is 'eth0')
+ -p, --port=PORT        Forces the HTTP server to run on PORT
  -c, --content=DIR      Share the content of DIR directory.
  -v, --verbose          Set verbose display
  -D, --daemon           Run as a daemon.

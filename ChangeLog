@@ -1,3 +1,8 @@
+2005-12-28  Benjamin Zores  <ben@geexbox.org>
+
+	* can now specify on which port the HTTP server has to run.
+	  (useful for security and firewall issues).
+
 2005-12-27  Benjamin Zores  <ben@geexbox.org>
 
 	* fixed a potential buffer overrun when building DIDL messages.
