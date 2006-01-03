@@ -2,7 +2,7 @@
  * mime.c : GeeXboX uShare media file MIME-type association.
  * Originally developped for the GeeXboX project.
  * Ref : http://freedesktop.org/wiki/Standards_2fshared_2dmime_2dinfo_2dspec
- * Copyright (C) 2005 Benjamin Zores <ben@geexbox.org>
+ * Copyright (C) 2005-2006 Benjamin Zores <ben@geexbox.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

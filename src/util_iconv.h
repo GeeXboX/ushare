@@ -1,7 +1,7 @@
 /*
  * util_iconv.h : GeeXboX uShare iconv string encoding utilities headers.
  * Originally developped for the GeeXboX project.
- * Copyright (C) 2005 Alexis Saettler <asbin@asbin.org>
+ * Copyright (C) 2005-2006 Alexis Saettler <asbin@asbin.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
