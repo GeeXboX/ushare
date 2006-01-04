@@ -1,4 +1,3 @@
 - change daemon running user (currently root)
-- support for 64bits offsets (2 GB+ files)
 - add static libupnp in sources for easier maintaining and fixes
 - add authentication to web interface ??

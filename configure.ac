@@ -57,6 +57,8 @@ if test "x$GCC" = "xyes"; then
 fi
 
 AC_DEFINE(_GNU_SOURCE, [],[Use GNU])
+AC_DEFINE(_LARGE_FILE_SOURCE, [], [Large files support])
+AC_DEFINE(_FILE_OFFSET_BITS, [64], [File Offset size])
 
 AC_CONFIG_FILES([
         Makefile
