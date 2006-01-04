@@ -461,7 +461,7 @@ display_headers (void)
 {
   printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
           PACKAGE_NAME, VERSION);
-  printf (_("Benjamin Zores (C) 2005, for GeeXboX Team.\n"));
+  printf (_("Benjamin Zores (C) 2005-2006, for GeeXboX Team.\n"));
   printf (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
