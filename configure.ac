@@ -47,8 +47,6 @@ AC_FUNC_REALLOC
 AC_FUNC_STAT
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([memset socket strcasecmp strchr strrchr strdup strndup strerror])
-AC_CHECK_LIB([ixml], [ixmlNode_getNodeName])
-AC_CHECK_LIB([upnp], [UpnpInit])
 
 # Checks for libraries.
 AC_SEARCH_LIBS(ixmlCloneDOMString, ixml, [], [exit])
