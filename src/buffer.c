@@ -18,6 +18,12 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#else
+#error "Missing config.h file : run configure again"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
