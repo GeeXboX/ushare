@@ -53,7 +53,7 @@ AC_SEARCH_LIBS(ixmlCloneDOMString, ixml, [], [exit])
 AC_SEARCH_LIBS(UpnpInit, upnp, [], [exit])
 
 if test "x$GCC" = "xyes"; then
-  CFLAGS="$CFLAGS -Wall -W -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
+  CFLAGS="$CFLAGS -Wall -W -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
 
 AC_DEFINE(_GNU_SOURCE, [],[Use GNU])
