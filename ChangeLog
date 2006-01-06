@@ -1,3 +1,8 @@
+2006-01-06  Benjamin Zores  <ben@geexbox.org>
+
+	* added Fedora RPM build file (ushare.spec) and startup script.
+	  (patch by Eric Tanguy <eric.tanguy@univ-nantes.fr>)
+
 2005-12-28  Benjamin Zores  <ben@geexbox.org>
 
 	* can now specify on which port the HTTP server has to run.

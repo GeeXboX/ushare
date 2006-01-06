@@ -1,0 +1,80 @@
+#!/bin/sh
+#
+# ushare This shell script takes care of starting and stopping ushare.
+#
+# chkconfig: - 75 25
+# description:	uShare UPnP A/V Media Server.
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+OPTIONS=""
+prog=ushare
+DESC="uShare UPnP A/V Media Server"
+
+[ -r "/etc/ushare.conf" ] && . /etc/ushare.conf
+# abort if no shared directory is defined
+[ -z "$USHARE_DIR" ] && exit 0
+
+
+start() {
+	echo -n $"Starting $DESC: "
+	daemon --user ushare $prog -D
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
+}
+
+stop() {
+	echo -n $"Stopping $DESC: "
+	killproc $prog
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog /var/run/ircd.pid
+}
+
+reload() {
+	echo -n $"Reloading $DESC: "
+	killproc $prog -HUP
+	RETVAL=$?
+	echo
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+	status $prog
+	RETVAL=$?
+	;;
+  restart)
+	stop
+	start
+	;;
+  condrestart)
+	if [ -f /var/lock/subsys/$prog ]; then
+	  stop
+	  start
+	fi
+	;;
+  reload)
+	reload
+	;;
+  *)
+	echo $"Usage: $prog {start|stop|restart|condrestart|reload|status"
+	exit 1
+esac
+
+exit $RETVAL
