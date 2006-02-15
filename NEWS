@@ -1,3 +1,9 @@
+2006-xx-xx : GeeXboX uShare 0.9.6 released.
+ Added Fedora RPM build and startup init scripts.
+ Support for for large files (2GB+ files).
+ Can now specify on which port the HTTP server has to run.
+ Fixed a potential buffer overrun when building DIDL messages.
+
 2006-01-31 : uShare has been included in the Fedora Project.
  See http://fedoraproject.org/extras/4/i386/repodata/repoview/ushare-0-0.9.5-4.fc4.html
 
