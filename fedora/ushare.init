@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# ushare This shell script takes care of starting and stopping ushare.
+# ushare		This shell script takes care of starting and stopping ushare.
 #
 # chkconfig: - 75 25
 # description:	uShare UPnP A/V Media Server.
@@ -17,7 +17,7 @@
 
 OPTIONS=""
 prog=ushare
-DESC="uShare UPnP A/V Media Server"
+DESC="UPnP A/V Media Server"
 
 [ -r "/etc/ushare.conf" ] && . /etc/ushare.conf
 # abort if no shared directory is defined
@@ -25,7 +25,7 @@ DESC="uShare UPnP A/V Media Server"
 
 
 start() {
-	echo -n $"Starting $DESC: "
+	echo -n $"Starting $prog: "
 	daemon --user ushare $prog -D
 	RETVAL=$?
 	echo
@@ -33,7 +33,7 @@ start() {
 }
 
 stop() {
-	echo -n $"Stopping $DESC: "
+	echo -n $"Stopping $prog: "
 	killproc $prog
 	RETVAL=$?
 	echo
@@ -41,7 +41,7 @@ stop() {
 }
 
 reload() {
-	echo -n $"Reloading $DESC: "
+	echo -n $"Reloading $prog: "
 	killproc $prog -HUP
 	RETVAL=$?
 	echo
@@ -78,3 +78,4 @@ case "$1" in
 esac
 
 exit $RETVAL
+
