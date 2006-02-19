@@ -1,3 +1,9 @@
+ushare (0.9.6-0ubuntu1) dapper; urgency=low
+
+  * new upstream release
+
+ -- Alexis Saettler <alexis@saettler.org>  Sun, 19 Feb 2006 17:52:34 +0100
+
 ushare (0.9.5-0ubuntu1) dapper; urgency=low
 
   * new upstream release
