@@ -1,4 +1,4 @@
-2006-xx-xx : GeeXboX uShare 0.9.6 released.
+2006-02-19 : GeeXboX uShare 0.9.6 released.
  Added Fedora RPM build and startup init scripts.
  Support for for large files (2GB+ files).
  Can now specify on which port the HTTP server has to run.
