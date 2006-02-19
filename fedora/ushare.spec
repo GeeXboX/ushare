@@ -1,14 +1,13 @@
 Summary: UPnP (TM) A/V Media Server
 Name: ushare
-Version: 0.9.5
-Release: 4%{?dist}
+Version: 0.9.6
+Release: 1%{?dist}
 License: GPL
 Group: Applications/Multimedia
 URL: http://ushare.geexbox.org/
 
 Source: http://ushare.geexbox.org/releases/%{name}-%{version}.tar.bz2
 Source1:ushare.init
-Patch0:	ushare-0.9.5-buffer.diff
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: libupnp-devel
@@ -25,7 +24,6 @@ of libupnp to stream the files to clients.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %configure
@@ -70,6 +68,15 @@ fi
 %attr(770,ushare,ushare) %dir %{_var}/lib/ushare/
 
 %changelog
+* Tue Feb 14 2006 Eric Tanguy <eric.tanguy@univ-nantes.fr> - 0.9.6-1
+- Update to 0.9.6
+
+* Tue Feb 14 2006 Eric Tanguy <eric.tanguy@univ-nantes.fr> - 0.9.5-6
+- Rebuild for FC5
+
+* Fri Feb 10 2006 Eric Tanguy <eric.tanguy@univ-nantes.fr> - 0.9.5-5
+- Rebuild for FC5
+
 * Tue Dec 27 2005 Eric Tanguy 0.9.5-4
 - Use %find_lang macro instead of %{_datadir}/locale/*
 
