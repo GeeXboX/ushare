@@ -1,3 +1,10 @@
+2006-02-27  Benjamin Zores  <ben@geexbox.org>
+
+	* applied suggestions from Julien Lincy
+	* UPnP CDS compliance fix when request count and index are 0.
+	* removed the ':' characters from UDN anming convention (devices like
+	  the Roku SoundBridge M2000 Network Music Player do not support it).
+
 2006-02-19  Benjamin Zores  <ben@geexbox.org>
 
 	* new public release (Version 0.9.6)
