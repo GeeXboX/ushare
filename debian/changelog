@@ -1,3 +1,11 @@
+ushare (0.9.6-0ubuntu2) dapper; urgency=low
+
+  * remove build-dep on build-essential
+  * update build-dep on debhelper to (>= 5.0.0) version
+  * postinst doesn't update conffile on upgrade anymore
+
+ -- Alexis Saettler <alexis@saettler.org>  Tue, 28 Feb 2006 01:25:02 +0100
+
 ushare (0.9.6-0ubuntu1) dapper; urgency=low
 
   * new upstream release
