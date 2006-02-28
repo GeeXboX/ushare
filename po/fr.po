@@ -7,84 +7,84 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ushare 0.9.5\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-12-19 20:19+0100\n"
-"PO-Revision-Date: 2005-12-18 13:11+0100\n"
+"POT-Creation-Date: 2006-02-19 17:21+0100\n"
+"PO-Revision-Date: 2006-02-28 11:30+0100\n"
 "Last-Translator: Alexis Saettler <asbin@asbin.org>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ushare.c:189
+#: src/ushare.c:190
 msgid "Stopping UPnP Service ...\n"
 msgstr "Arrêt du service UPnP ...\n"
 
-#: src/ushare.c:211
+#: src/ushare.c:212
 msgid "Initializing UPnP subsystem ...\n"
 msgstr "Initialisation du système UPnP ...\n"
 
-#: src/ushare.c:215
+#: src/ushare.c:216
 msgid "Cannot initialize UPnP subsystem\n"
 msgstr "Impossible d'initialiser le système UPnP ...\n"
 
-#: src/ushare.c:219
+#: src/ushare.c:221
 #, c-format
 msgid "UPnP MediaServer listening on %s:%d\n"
 msgstr "Serveur Multimédia UPnP en écoute sur %s:%d\n"
 
-#: src/ushare.c:227
+#: src/ushare.c:229
 msgid "Cannot set virtual directory callbacks\n"
 msgstr "Impossible de créer les retours des dossiers virtuels\n"
 
-#: src/ushare.c:235
+#: src/ushare.c:237
 msgid "Cannot add virtual directory for web server\n"
 msgstr "Impossible d'ajouter le dossier virtuel du serveur web\n"
 
-#: src/ushare.c:245 src/ushare.c:263
+#: src/ushare.c:247 src/ushare.c:265
 msgid "Cannot register UPnP device\n"
 msgstr "Impossible d'enregistrer le périphérique UPnP\n"
 
-#: src/ushare.c:253
+#: src/ushare.c:255
 msgid "Cannot unregister UPnP device\n"
 msgstr "Impossible de supprimer le périphérique UPnP\n"
 
-#: src/ushare.c:268
+#: src/ushare.c:270
 msgid "Sending UPnP advertisement for device ...\n"
 msgstr "Envoit des informations UPnP du périphérique ...\n"
 
-#: src/ushare.c:271
+#: src/ushare.c:273
 msgid "Listening for control point connections ...\n"
 msgstr "Attente de connexions ...\n"
 
-#: src/ushare.c:399
+#: src/ushare.c:401
 msgid "Reloading configuration...\n"
 msgstr "Rechargement de la configuration...\n"
 
-#: src/ushare.c:446 src/ushare.c:501
+#: src/ushare.c:454 src/ushare.c:509
 msgid "Error: no content directory to be shared.\n"
 msgstr "Erreur : aucun répertoire de contenus à partager.\n"
 
-#: src/ushare.c:454
+#: src/ushare.c:462
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr "%s (version %s), un serveur mutlimédia UPnP léger.\n"
 
-#: src/ushare.c:456
+#: src/ushare.c:464
 #, c-format
-msgid "Benjamin Zores (C) 2005, for GeeXboX Team.\n"
-msgstr "Benjamin Zores (C) 2005, pour l'équipe GeeXboX.\n"
+msgid "Benjamin Zores (C) 2005-2006, for GeeXboX Team.\n"
+msgstr "Benjamin Zores (C) 2005-2006, pour l'équipe GeeXboX.\n"
 
-#: src/ushare.c:457
+#: src/ushare.c:465
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr "Voir http://ushare.geexbox.org/ pour les mises à jour.\n"
 
-#: src/ushare.c:483
+#: src/ushare.c:491
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr "Attention : impossible de lire le fichier \"%s\".\n"
 
-#: src/ushare.c:526
+#: src/ushare.c:534
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr "Erreur : impossible de démoniser le programme : %s\n"
@@ -103,60 +103,81 @@ msgstr "Recherche des fichiers dans le répertoire de contenus : %s\n"
 msgid "Found %d files and subdirectories.\n"
 msgstr "%d fichiers et sous-répertoires trouvés.\n"
 
-#: src/cfgparser.c:203
+#: src/cfgparser.c:209
 #, c-format
 msgid ""
-"Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"
+"Usage: ushare [-n name] [-i interface] [-p port] [-c directory] [[-c "
+"directory]...]\n"
 msgstr ""
-"Usage : ushare [-n nom] [-i interface] [-c répertoire] [[-c répertoire]...]\n"
+"Usage : ushare [-n nom] [-i interface] [-p port] [-c répertoire] [[-c "
+"répertoire]...]\n"
 
-#: src/cfgparser.c:204
+#: src/cfgparser.c:210
 #, c-format
 msgid "Options:\n"
 msgstr "Options :\n"
 
-#: src/cfgparser.c:205
+#: src/cfgparser.c:211
 #, c-format
 msgid " -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"
 msgstr " -n, --name=NOM\t\tDéfini le nom UPnP ('%s' par défaut)\n"
 
-#: src/cfgparser.c:207
+#: src/cfgparser.c:213
 #, c-format
 msgid " -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"
 msgstr ""
 " -i, --interface=IFACE\tUtiliser l'interface réseau IFACE ('%s' par défaut)\n"
 
-#: src/cfgparser.c:209
+#: src/cfgparser.c:215
+#, c-format
+msgid " -p, --port=PORT\tForces the HTTP server to run on PORT\n"
+msgstr " -p, --port=PORT\tForce le serveur HTTP à utiliser ce PORT\n"
+
+#: src/cfgparser.c:216
 #, c-format
 msgid " -c, --content=DIR\tShare the content of DIR directory\n"
 msgstr " -c, --content=REP\tPartage le contenu du répertoire REP\n"
 
-#: src/cfgparser.c:210
+#: src/cfgparser.c:217
 #, c-format
 msgid " -w, --no-web\t\tDisable the control web page (enabled by default)\n"
 msgstr ""
 " -w, --no-web\t\tDésactive la page de contrôle web (activée par défaut)\n"
 
-#: src/cfgparser.c:211
+#: src/cfgparser.c:218
 #, c-format
 msgid " -v, --verbose\t\tSet verbose display\n"
 msgstr " -v, --verbose\t\tMode bavard\n"
 
-#: src/cfgparser.c:212
+#: src/cfgparser.c:219
 #, c-format
 msgid " -D, --daemon\t\tRun as a daemon\n"
 msgstr " -D, --daemon\t\tDémarrer en mode démon\n"
 
-#: src/cfgparser.c:213
+#: src/cfgparser.c:220
 #, c-format
 msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
 msgstr ""
 " -V, --version\t\tAffiche la version de uShare et quitte le programme\n"
 
-#: src/cfgparser.c:214
+#: src/cfgparser.c:221
 #, c-format
 msgid " -h, --help\t\tDisplay this help\n"
 msgstr " -h, --help\t\tAffiche cette aide\n"
+
+#: src/cfgparser.c:286
+#, c-format
+msgid "Warning: port doesn't fit IANA port assignements.\n"
+msgstr "Attention : ce port ne suit pas les recommendations IANA.\n"
+
+#: src/cfgparser.c:288
+#, c-format
+msgid ""
+"Warning : Only Dynamic or Private Ports can be used (from 49152 through "
+"65535)\n"
+msgstr ""
+"Attention : seuls les ports dynamiques ou privés peuvent être utilisés (de "
+"49152 à 65535)\n"
 
 #: src/presentation.c:105 src/presentation.c:143
 msgid "uShare Information Page"

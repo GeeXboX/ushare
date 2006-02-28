@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2005-12-19 20:19+0100\n"
+"POT-Creation-Date: 2006-02-19 17:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,76 +16,76 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ushare.c:189
+#: src/ushare.c:190
 msgid "Stopping UPnP Service ...\n"
 msgstr ""
 
-#: src/ushare.c:211
+#: src/ushare.c:212
 msgid "Initializing UPnP subsystem ...\n"
 msgstr ""
 
-#: src/ushare.c:215
+#: src/ushare.c:216
 msgid "Cannot initialize UPnP subsystem\n"
 msgstr ""
 
-#: src/ushare.c:219
+#: src/ushare.c:221
 #, c-format
 msgid "UPnP MediaServer listening on %s:%d\n"
 msgstr ""
 
-#: src/ushare.c:227
+#: src/ushare.c:229
 msgid "Cannot set virtual directory callbacks\n"
 msgstr ""
 
-#: src/ushare.c:235
+#: src/ushare.c:237
 msgid "Cannot add virtual directory for web server\n"
 msgstr ""
 
-#: src/ushare.c:245 src/ushare.c:263
+#: src/ushare.c:247 src/ushare.c:265
 msgid "Cannot register UPnP device\n"
 msgstr ""
 
-#: src/ushare.c:253
+#: src/ushare.c:255
 msgid "Cannot unregister UPnP device\n"
 msgstr ""
 
-#: src/ushare.c:268
+#: src/ushare.c:270
 msgid "Sending UPnP advertisement for device ...\n"
 msgstr ""
 
-#: src/ushare.c:271
+#: src/ushare.c:273
 msgid "Listening for control point connections ...\n"
 msgstr ""
 
-#: src/ushare.c:399
+#: src/ushare.c:401
 msgid "Reloading configuration...\n"
 msgstr ""
 
-#: src/ushare.c:446 src/ushare.c:501
+#: src/ushare.c:454 src/ushare.c:509
 msgid "Error: no content directory to be shared.\n"
 msgstr ""
 
-#: src/ushare.c:454
+#: src/ushare.c:462
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr ""
 
-#: src/ushare.c:456
+#: src/ushare.c:464
 #, c-format
-msgid "Benjamin Zores (C) 2005, for GeeXboX Team.\n"
+msgid "Benjamin Zores (C) 2005-2006, for GeeXboX Team.\n"
 msgstr ""
 
-#: src/ushare.c:457
+#: src/ushare.c:465
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr ""
 
-#: src/ushare.c:483
+#: src/ushare.c:491
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr ""
 
-#: src/ushare.c:526
+#: src/ushare.c:534
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr ""
@@ -104,55 +104,73 @@ msgstr ""
 msgid "Found %d files and subdirectories.\n"
 msgstr ""
 
-#: src/cfgparser.c:203
-#, c-format
-msgid ""
-"Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory]...]\n"
-msgstr ""
-
-#: src/cfgparser.c:204
-#, c-format
-msgid "Options:\n"
-msgstr ""
-
-#: src/cfgparser.c:205
-#, c-format
-msgid " -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"
-msgstr ""
-
-#: src/cfgparser.c:207
-#, c-format
-msgid " -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"
-msgstr ""
-
 #: src/cfgparser.c:209
 #, c-format
-msgid " -c, --content=DIR\tShare the content of DIR directory\n"
+msgid ""
+"Usage: ushare [-n name] [-i interface] [-p port] [-c directory] [[-c "
+"directory]...]\n"
 msgstr ""
 
 #: src/cfgparser.c:210
 #, c-format
-msgid " -w, --no-web\t\tDisable the control web page (enabled by default)\n"
+msgid "Options:\n"
 msgstr ""
 
 #: src/cfgparser.c:211
 #, c-format
-msgid " -v, --verbose\t\tSet verbose display\n"
-msgstr ""
-
-#: src/cfgparser.c:212
-#, c-format
-msgid " -D, --daemon\t\tRun as a daemon\n"
+msgid " -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"
 msgstr ""
 
 #: src/cfgparser.c:213
 #, c-format
+msgid " -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"
+msgstr ""
+
+#: src/cfgparser.c:215
+#, c-format
+msgid " -p, --port=PORT\tForces the HTTP server to run on PORT\n"
+msgstr ""
+
+#: src/cfgparser.c:216
+#, c-format
+msgid " -c, --content=DIR\tShare the content of DIR directory\n"
+msgstr ""
+
+#: src/cfgparser.c:217
+#, c-format
+msgid " -w, --no-web\t\tDisable the control web page (enabled by default)\n"
+msgstr ""
+
+#: src/cfgparser.c:218
+#, c-format
+msgid " -v, --verbose\t\tSet verbose display\n"
+msgstr ""
+
+#: src/cfgparser.c:219
+#, c-format
+msgid " -D, --daemon\t\tRun as a daemon\n"
+msgstr ""
+
+#: src/cfgparser.c:220
+#, c-format
 msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
 msgstr ""
 
-#: src/cfgparser.c:214
+#: src/cfgparser.c:221
 #, c-format
 msgid " -h, --help\t\tDisplay this help\n"
+msgstr ""
+
+#: src/cfgparser.c:286
+#, c-format
+msgid "Warning: port doesn't fit IANA port assignements.\n"
+msgstr ""
+
+#: src/cfgparser.c:288
+#, c-format
+msgid ""
+"Warning : Only Dynamic or Private Ports can be used (from 49152 through "
+"65535)\n"
 msgstr ""
 
 #: src/presentation.c:105 src/presentation.c:143
