@@ -40,6 +40,7 @@
 #include "services.h"
 #include "cds.h"
 #include "cms.h"
+#include "msr.h"
 #include "metadata.h"
 #include "http.h"
 #include "minmax.h"
@@ -91,6 +92,16 @@ http_get_info (const char *filename, struct File_Info *info)
   if (!strcmp (filename, CMS_LOCATION))
   {
     info->file_length = CMS_DESCRIPTION_LEN;
+    info->last_modified = 0;
+    info->is_directory = 0;
+    info->is_readable = 1;
+    info->content_type = ixmlCloneDOMString (SERVICE_CONTENT_TYPE);
+    return 0;
+  }
+
+  if (!strcmp (filename, MSR_LOCATION))
+  {
+    info->file_length = MSR_DESCRIPTION_LEN;
     info->last_modified = 0;
     info->is_directory = 0;
     info->is_readable = 1;
@@ -188,6 +199,17 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
     file->type = FILE_MEMORY;
     file->detail.memory.contents = strdup (CMS_DESCRIPTION);
     file->detail.memory.len = CMS_DESCRIPTION_LEN;
+    return ((UpnpWebFileHandle) file);
+  }
+
+  if (!strcmp (filename, MSR_LOCATION))
+  {
+    file = malloc (sizeof (struct web_file_t));
+    file->fullpath = strdup (MSR_LOCATION);
+    file->pos = 0;
+    file->type = FILE_MEMORY;
+    file->detail.memory.contents = strdup (MSR_DESCRIPTION);
+    file->detail.memory.len = MSR_DESCRIPTION_LEN;
     return ((UpnpWebFileHandle) file);
   }
 

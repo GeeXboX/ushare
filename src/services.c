@@ -33,10 +33,12 @@
 #include "services.h"
 #include "cms.h"
 #include "cds.h"
+#include "msr.h"
 #include "trace.h"
 
 extern struct service_action_t cds_service_actions[];
 extern struct service_action_t cms_service_actions[];
+extern struct service_action_t msr_service_actions[];
 
 static struct service_t services[] = {
   {
@@ -48,6 +50,11 @@ static struct service_t services[] = {
     CMS_SERVICE_ID,
     CMS_SERVICE_TYPE,
     cms_service_actions
+  },
+  {
+    MSR_SERVICE_ID,
+    MSR_SERVICE_TYPE,
+    msr_service_actions
   },
   { NULL, NULL, NULL }
 };

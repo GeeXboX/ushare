@@ -64,6 +64,13 @@
 "        <controlURL>/web/cds_control</controlURL>" \
 "        <eventSubURL>/web/cds_event</eventSubURL>" \
 "      </service>" \
+"      <service>" \
+"        <serviceType>urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1</serviceType>\n" \
+"        <serviceId>urn:microsoft.com:serviceId:X_MS_MediaReceiverRegistrar</serviceId>\n" \
+"        <SCPDURL>/web/msr.xml</SCPDURL>" \
+"        <controlURL>/web/msr_control</controlURL>" \
+"        <eventSubURL>/web/msr_event</eventSubURL>" \
+"      </service>\n" \
 "    </serviceList>" \
 "    <presentationURL>/web/ushare.html</presentationURL>" \
 "  </device>" \
