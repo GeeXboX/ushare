@@ -1,3 +1,9 @@
+2006-03-07  Benjamin Zores  <ben@geexbox.org>
+
+	* modify configure.ac to check for functions in libupnp that
+	  only comes with releases >= 1.3.1
+	  (previous versions of the library are buggy and should not be used).
+
 2006-02-27  Benjamin Zores  <ben@geexbox.org>
 
 	* applied suggestions from Julien Lincy

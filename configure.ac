@@ -49,8 +49,9 @@ AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([memset socket strcasecmp strchr strrchr strdup strndup strerror])
 
 # Checks for libraries.
-AC_SEARCH_LIBS(ixmlCloneDOMString, ixml, [], [exit])
-AC_SEARCH_LIBS(UpnpInit, upnp, [], [exit])
+AC_SEARCH_LIBS(ixmlRelaxParser, ixml, [], [exit])
+AC_SEARCH_LIBS(ThreadPoolAdd, threadutil, [], [exit])
+AC_SEARCH_LIBS(UpnpSetMaxContentLength, upnp, [], [exit])
 
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -W -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
