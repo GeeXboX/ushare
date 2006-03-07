@@ -278,6 +278,71 @@ init_upnp (struct ushare_t *ut)
   return 0;
 }
 
+static bool
+has_iface (char *interface)
+{
+  int sock, i, n;
+  struct ifconf ifc;
+  struct ifreq ifr;
+  char buff[8192];
+
+  if (!interface)
+    return false;
+
+  /* determine UDN according to MAC address */
+  sock = socket (AF_INET, SOCK_STREAM, 0);
+  if (sock < 0)
+  {
+    perror ("socket");
+    exit (-1);
+  }
+
+  /* get list of available interfaces */
+  ifc.ifc_len = sizeof (buff);
+  ifc.ifc_buf = buff;
+
+  if (ioctl (sock, SIOCGIFCONF, &ifc) < 0)
+  {
+    perror ("ioctl");
+    close (sock);
+    exit (-1);
+  }
+
+  n = ifc.ifc_len / sizeof (struct ifreq);
+  for ( i = n-1 ; i >= 0 ; i--)
+  {
+    ifr = ifc.ifc_req[i];
+
+    if ( strncmp (ifr.ifr_name, interface, IFNAMSIZ))
+      continue;
+
+    if (ioctl (sock, SIOCGIFFLAGS, &ifr) < 0)
+    {
+      perror ("ioctl");
+      close (sock);
+      exit (-1);
+    }
+
+    if (!(ifr.ifr_flags & IFF_UP)) {
+      /* interface is down */
+      log_error (_("Interface %s is down.\n"),interface);
+      log_error (_("Recheck uShare's configuration and try again !\n"));
+      close (sock);
+      return false;
+    }
+
+    /* found right interface */
+    close (sock);
+    return true;
+  }
+
+  log_error (_("Can't find interface %s.\n"),interface);
+  log_error (_("Recheck uShare's configuration and try again !\n"));
+
+  close (sock);
+  return false;
+}
+
 static char *
 create_udn (char *interface)
 {
@@ -344,10 +409,11 @@ get_iface_address (char *interface)
   if (ioctl (sock, SIOCGIFADDR, &ifr) < 0)
   {
     perror ("ioctl");
+    close (sock);
     exit (-1);
   }
 
-  val = (char *) malloc (16);
+  val = (char *) malloc (16 * sizeof (char));
   ip = ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr;
   ip = ntohl (ip);
   sprintf (val, "%d.%d.%d.%d",
@@ -417,10 +483,18 @@ reload_config (int s __attribute__ ((unused)))
 
   if (ut->interface && strcmp (ut->interface, ut2->interface))
   {
-    free (ut->interface);
-    ut->interface = ut2->interface;
-    ut2->interface = NULL;
-    reload = true;
+    if (!has_iface (ut2->interface))
+    {
+      ushare_free (ut2);
+      raise (SIGINT);
+    }
+    else
+    {
+      free (ut->interface);
+      ut->interface = ut2->interface;
+      ut2->interface = NULL;
+      reload = true;
+    }
   }
 
   if (ut->port != ut2->port)
@@ -507,6 +581,12 @@ main (int argc, char **argv)
   if (!ut->contentlist)
   {
     log_error (_("Error: no content directory to be shared.\n"));
+    ushare_free (ut);
+    return EXIT_FAILURE;
+  }
+
+  if (!has_iface (ut->interface))
+  {
     ushare_free (ut);
     return EXIT_FAILURE;
   }
