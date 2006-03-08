@@ -38,7 +38,7 @@
 struct mime_type_t MIME_Type_List[] = {
   /* Video files */
   { "asf", UPNP_VIDEO, "http-get:*:video/x-ms-asf:*"},
-  { "avi", UPNP_VIDEO, "http-get:*:video/avi:*"},
+  { "avi", UPNP_VIDEO, "http-get:*:video/x-msvideo:*"},
   { "dv", UPNP_VIDEO, "http-get:*:video/x-dv:*"},
   { "divx", UPNP_VIDEO, "http-get:*:video/x-msvideo:*"},
   { "wmv", UPNP_VIDEO, "http-get:*:video/x-ms-wmv:*"},
