@@ -30,9 +30,6 @@ AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([limits.h fcntl.h sys/ioctl.h syslog.h])
-AC_CHECK_HEADERS([upnp/upnp.h upnp/upnptools.h], [], [
-  AC_MSG_ERROR(*** You need libupnp to build this program ! ***)
-])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -48,10 +45,38 @@ AC_FUNC_STAT
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([memset socket strcasecmp strchr strrchr strdup strndup strerror])
 
-# Checks for libraries.
+#############################
+#     Check for libupnp     #
+#############################
+upnpdir=""
+AC_ARG_WITH(libupnp-prefix,
+  [  --with-libupnp-prefix=DIR  search for libupnp in DIR/include and DIR/lib],
+  upnpdir="$withval"
+)
+
+if test "x$upnpdir" = "x"; then
+  PKG_CHECK_MODULES(libupnp,
+    libupnp >= 1.3.1,
+    [
+      CFLAGS="$libupnp_CFLAGS $CFLAGS"
+      LDFLAGS="$libupnp_LIBS $LDFLAGS"
+    ])
+else
+  CFLAGS="-I$upnpdir/include $CFLAGS"
+  LDFLAGS="-L$upnpdir/lib $LDFLAGS"
+fi
+
+# Checks for upnp headers.
+AC_CHECK_HEADERS([upnp/upnp.h upnp/upnptools.h], [], [
+  AC_MSG_ERROR(*** You need libupnp to build this program ! ***)
+])
+
+# Checks for upnp libraries.
 AC_SEARCH_LIBS(ixmlRelaxParser, ixml, [], [exit])
 AC_SEARCH_LIBS(ThreadPoolAdd, threadutil, [], [exit])
 AC_SEARCH_LIBS(UpnpSetMaxContentLength, upnp, [], [exit])
+
+
 
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -W -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
