@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(uShare, 0.9.6, ushare@geexbox.org)
+AC_INIT(uShare, 0.9.7, ushare@geexbox.org)
 AM_INIT_AUTOMAKE([gnits std-options check-news dist-bzip2 no-dist-gzip])
 AC_CONFIG_HEADERS([config.h])
 

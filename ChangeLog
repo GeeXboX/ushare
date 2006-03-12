@@ -1,3 +1,7 @@
+2006-03-12  Benjamin Zores  <ben@geexbox.org>
+
+	* new public release (Version 0.9.7)
+
 2006-03-07  Benjamin Zores  <ben@geexbox.org>
 
 	* modify configure.ac to check for functions in libupnp that

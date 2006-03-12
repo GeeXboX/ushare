@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ushare 0.9.5\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2006-02-19 17:21+0100\n"
+"POT-Creation-Date: 2006-03-12 14:06+0100\n"
 "PO-Revision-Date: 2006-02-28 11:30+0100\n"
 "Last-Translator: Alexis Saettler <asbin@asbin.org>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -56,35 +56,49 @@ msgstr "Envoit des informations UPnP du périphérique ...\n"
 msgid "Listening for control point connections ...\n"
 msgstr "Attente de connexions ...\n"
 
-#: src/ushare.c:401
+#: src/ushare.c:328
+#, c-format
+msgid "Interface %s is down.\n"
+msgstr ""
+
+#: src/ushare.c:329 src/ushare.c:340
+msgid "Recheck uShare's configuration and try again !\n"
+msgstr ""
+
+#: src/ushare.c:339
+#, c-format
+msgid "Can't find interface %s.\n"
+msgstr ""
+
+#: src/ushare.c:467
 msgid "Reloading configuration...\n"
 msgstr "Rechargement de la configuration...\n"
 
-#: src/ushare.c:454 src/ushare.c:509
+#: src/ushare.c:528 src/ushare.c:583
 msgid "Error: no content directory to be shared.\n"
 msgstr "Erreur : aucun répertoire de contenus à partager.\n"
 
-#: src/ushare.c:462
+#: src/ushare.c:536
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr "%s (version %s), un serveur mutlimédia UPnP léger.\n"
 
-#: src/ushare.c:464
+#: src/ushare.c:538
 #, c-format
 msgid "Benjamin Zores (C) 2005-2006, for GeeXboX Team.\n"
 msgstr "Benjamin Zores (C) 2005-2006, pour l'équipe GeeXboX.\n"
 
-#: src/ushare.c:465
+#: src/ushare.c:539
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr "Voir http://ushare.geexbox.org/ pour les mises à jour.\n"
 
-#: src/ushare.c:491
+#: src/ushare.c:565
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr "Attention : impossible de lire le fichier \"%s\".\n"
 
-#: src/ushare.c:534
+#: src/ushare.c:614
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr "Erreur : impossible de démoniser le programme : %s\n"

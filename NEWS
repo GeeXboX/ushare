@@ -1,3 +1,14 @@
+2006-03-12 : GeeXboX uShare 0.9.7 released.
+ Added new Microsoft Registrar service which fakes the authorization
+  required to be able to stream to MS compliant Media Renderers.
+ Updated AVI file MIME type for better compliance with UPnP devices.
+ Better UPnP CDS compliance when request count and index are 0.
+ Removed the nasty characters from UDN naming for compatibility issues.
+ Force usage of libupnp >= 1.3.1
+  (previous versions of the library are buggy and should not be used).
+ Support for XboX 360, D-Link DSM-320 and Roku SoundBridge M2000
+  Network Music Player devices.
+
 2006-02-19 : GeeXboX uShare 0.9.6 released.
  Added Fedora RPM build and startup init scripts.
  Support for for large files (2GB+ files).
