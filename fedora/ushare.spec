@@ -1,6 +1,6 @@
 Summary: UPnP (TM) A/V Media Server
 Name: ushare
-Version: 0.9.6
+Version: 0.9.7
 Release: 1%{?dist}
 License: GPL
 Group: Applications/Multimedia
@@ -68,6 +68,9 @@ fi
 %attr(770,ushare,ushare) %dir %{_var}/lib/ushare/
 
 %changelog
+* Sun Mar 12 2006 Eric Tanguy <eric.tanguy@univ-nantes.fr> - 0.9.7-1
+- Update to 0.9.7
+
 * Tue Feb 14 2006 Eric Tanguy <eric.tanguy@univ-nantes.fr> - 0.9.6-1
 - Update to 0.9.6
 
