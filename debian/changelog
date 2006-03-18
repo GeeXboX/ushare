@@ -1,3 +1,10 @@
+ushare (0.9.7-0ubuntu1) dapper; urgency=low
+
+  * new updtram version
+  * depend on libupnp 1.3.1
+
+ -- Alexis Saettler <alexis@saettler.org>  Mon, 13 Mar 2006 22:43:57 +0100
+
 ushare (0.9.6-0ubuntu2) dapper; urgency=low
 
   * remove build-dep on build-essential

@@ -16,6 +16,8 @@ update_conf() {
 
 if [ -e $CONFIGFILE ]; then
   . $CONFIGFILE || true
+else
+  cp /usr/share/ushare/ushare.conf $CONFIGFILE
 fi
 
 db_get ushare/name

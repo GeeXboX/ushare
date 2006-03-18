@@ -9,6 +9,7 @@ DEB_BUILDDIR:=debbuild
 # copy init script, to use with dh_installinit
 install/ushare::
 	cp $(CURDIR)/scripts/ushare $(CURDIR)/debian/ushare.init
+	mv $(CURDIR)/debian/ushare/etc/ushare.conf $(CURDIR)/debian/ushare/usr/share/ushare/
 
 cleanbuilddir::
 	-rm $(CURDIR)/debian/ushare.init
