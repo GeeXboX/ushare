@@ -257,7 +257,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
   {
     struct upnp_entry_t *child = NULL;
 
-    child = upnp_entry_new (ut, name, file, entry, (int) st.st_size, 0);
+    child = upnp_entry_new (ut, name, file, entry, (int) st.st_size, false);
     if (child)
       upnp_entry_add_child (entry, child);
   }
@@ -309,7 +309,7 @@ metadata_add_container (struct ushare_t *ut,
       struct upnp_entry_t *child = NULL;
 
       child = upnp_entry_new (ut, namelist[i]->d_name,
-                              fullpath, entry, 0, 1);
+                              fullpath, entry, 0, true);
       metadata_add_container (ut, child, fullpath);
       upnp_entry_add_child (entry, child);
     }
@@ -340,7 +340,7 @@ build_metadata_list (struct ushare_t *ut)
 
   /* build root entry */
   if (!ut->root_entry)
-    ut->root_entry = upnp_entry_new (ut, "root", NULL, NULL, -1, 1);
+    ut->root_entry = upnp_entry_new (ut, "root", NULL, NULL, -1, true);
 
   /* add files from content directory */
   for (i=0 ; i < ut->contentlist->count ; i++)
@@ -365,7 +365,7 @@ build_metadata_list (struct ushare_t *ut)
     }
 
     entry = upnp_entry_new (ut, title, ut->contentlist->content[i],
-                            ut->root_entry, -1, 1);
+                            ut->root_entry, -1, true);
 
     if (!entry)
       continue;
