@@ -157,7 +157,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
     if (!strcmp (title, "")) /* DIDL dc:title can't be empty */
     {
-      free (entry->title);
+      free (title);
       entry->title = strdup (TITLE_UNKNOWN);
     }
   }
@@ -257,7 +257,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
   {
     struct upnp_entry_t *child = NULL;
 
-    child = upnp_entry_new (ut, name, file, entry, st.st_size, 0);
+    child = upnp_entry_new (ut, name, file, entry, (int) st.st_size, 0);
     if (child)
       upnp_entry_add_child (entry, child);
   }
@@ -268,59 +268,58 @@ metadata_add_container (struct ushare_t *ut,
                         struct upnp_entry_t *entry, const char *container)
 {
   struct dirent **namelist;
-  int n;
+  int n,i;
 
   if (!entry || !container)
     return;
 
   n = scandir (container, &namelist, 0, alphasort);
   if (n < 0)
-    perror ("scandir");
-  else
   {
-    int i;
+    perror ("scandir");
+    return;
+  }
 
-    for (i = 0; i < n; i++)
+  for (i = 0; i < n; i++)
+  {
+    struct stat st;
+    char *fullpath = NULL;
+
+    if (namelist[i]->d_name[0] == '.')
     {
-      struct stat st;
-      char *fullpath = NULL;
+      free (namelist[i]);
+      continue;
+    }
 
-      if (namelist[i]->d_name[0] == '.')
-      {
-        free (namelist[i]);
-        continue;
-      }
+    fullpath = (char *)
+      malloc (strlen (container) + strlen (namelist[i]->d_name) + 2);
+    sprintf (fullpath, "%s/%s", container, namelist[i]->d_name);
 
-      fullpath = (char *)
-        malloc (strlen (container) + strlen (namelist[i]->d_name) + 2);
-      sprintf (fullpath, "%s/%s", container, namelist[i]->d_name);
+    log_verbose ("%s\n", fullpath);
 
-      log_verbose ("%s\n", fullpath);
-
-      if (stat (fullpath, &st) < 0)
-      {
-        free (namelist[i]);
-        free (fullpath);
-        continue;
-      }
-
-      if (S_ISDIR (st.st_mode))
-      {
-        struct upnp_entry_t *child = NULL;
-
-        child = upnp_entry_new (ut, namelist[i]->d_name,
-                                fullpath, entry, 0, 1);
-        metadata_add_container (ut, child, fullpath);
-        upnp_entry_add_child (entry, child);
-      }
-      else
-        metadata_add_file (ut, entry, fullpath, namelist[i]->d_name);
-
+    if (stat (fullpath, &st) < 0)
+    {
       free (namelist[i]);
       free (fullpath);
+      continue;
     }
-    free (namelist);
+
+    if (S_ISDIR (st.st_mode))
+    {
+      struct upnp_entry_t *child = NULL;
+
+      child = upnp_entry_new (ut, namelist[i]->d_name,
+                              fullpath, entry, 0, 1);
+      metadata_add_container (ut, child, fullpath);
+      upnp_entry_add_child (entry, child);
+    }
+    else
+      metadata_add_file (ut, entry, fullpath, namelist[i]->d_name);
+
+    free (namelist[i]);
+    free (fullpath);
   }
+  free (namelist);
 }
 
 void
