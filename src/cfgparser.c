@@ -159,6 +159,35 @@ ushare_set_port (struct ushare_t *ut, const char *port)
   }
 }
 
+static u_configline_t configline[] = {
+  {USHARE_NAME, ushare_set_name},
+  {USHARE_IFACE, ushare_set_interface},
+  {USHARE_PORT, ushare_set_port},
+  {USHARE_DIR, ushare_set_dir},
+  {NULL, NULL},
+};
+
+static void
+parse_config_line (struct ushare_t *ut, const char *line,
+                   u_configline_t *configline)
+{
+  char *s = NULL;
+
+  s = strchr (line, '=');
+  if (s && s[1] != '\0')
+  {
+    int i;
+    for (i=0 ; configline[i].name ; i++)
+    {
+      if (!strncmp (line, configline[i].name, strlen (configline[i].name)))
+      {
+        configline[i].set_var (ut, s + 1);
+        break;
+      }
+    }
+  }
+}
+
 int
 parse_config_file (struct ushare_t *ut)
 {
@@ -168,7 +197,6 @@ parse_config_file (struct ushare_t *ut)
   int line_number = 0;
   size_t size = 0, len;
   ssize_t read;
-  char *s = NULL;
 
   if (!ut)
     return -1;
@@ -193,34 +221,7 @@ parse_config_file (struct ushare_t *ut)
     while (line[0] == ' ' || line[0] == '\t')
       line++;
 
-    if (!strncmp (line, USHARE_NAME, strlen (USHARE_NAME)))
-    {
-      s = strchr (line, '=') + 1;
-      if (s && s[0] != '\0')
-      {
-        ushare_set_name (ut, s);
-      }
-    }
-    else if (!strncmp (line, USHARE_IFACE, strlen (USHARE_IFACE)))
-    {
-      s = strchr (line, '=') + 1;
-      if (s && s[0] != '\0')
-      {
-        ushare_set_interface (ut, s);
-      }
-    }
-    else if (!strncmp (line, USHARE_PORT, strlen (USHARE_PORT)))
-    {
-      s = strchr (line, '=') + 1;
-      if (s && s[0] != '\0')
-        ushare_set_port (ut, s);
-    }
-    else if (!strncmp (line, USHARE_DIR, strlen (USHARE_DIR)))
-    {
-      s = strchr (line, '=') + 1;
-      if (s && s[0] != '\0')
-        ushare_set_dir (ut, s);
-    }
+    parse_config_line (ut, line, configline);
   }
 
   fclose (conffile);
