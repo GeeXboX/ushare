@@ -120,6 +120,24 @@ ushare_add_contentdir (struct ushare_t *ut, const char *dir)
   ut->contentlist = add_content (ut->contentlist, dir);
 }
 
+static void
+ushare_set_port (struct ushare_t *ut, const char *port)
+{
+  if (!ut || !port)
+    return;
+
+  ut->port = atoi (port);
+  if (ut->port <= 49152)
+  {
+    fprintf (stderr,
+             _("Warning: port doesn't fit IANA port assignements.\n"));
+
+    fprintf (stderr, _("Warning: Only Dynamic or Private Ports can be used "
+                       "(from 49152 through 65535)\n"));
+    ut->port = 0;
+  }
+}
+
 int
 parse_config_file (struct ushare_t *ut)
 {
@@ -174,7 +192,7 @@ parse_config_file (struct ushare_t *ut)
     {
       s = strchr (line, '=') + 1;
       if (s && s[0] != '\0')
-        ut->port = atoi (s);
+        ushare_set_port (ut, s);
     }
     else if (!strncmp (line, USHARE_DIR, strlen (USHARE_DIR)))
     {
@@ -283,15 +301,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
       break;
 
     case 'p':
-      ut->port = atoi (optarg);
-      if (ut->port <= 49152)
-      {
-        fprintf (stderr,
-                 _("Warning: port doesn't fit IANA port assignements.\n"));
-
-        fprintf (stderr, _("Warning : Only Dynamic or Private Ports can be used (from 49152 through 65535)\n"));
-        ut->port = 0;
-      }
+      ushare_set_port (ut, optarg);
       break;
 
     case 'c':
