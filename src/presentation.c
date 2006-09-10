@@ -54,29 +54,27 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
   if (strncmp (cgiargs, CGI_ACTION, strlen (CGI_ACTION)))
     return -1;
 
-  action = strdup ((char *) cgiargs + strlen (CGI_ACTION));
-  strtok ((char *) action, "&");
+  action = cgiargs + strlen (CGI_ACTION);
 
-  if (!strcmp (action, CGI_ACTION_ADD))
+  if (!strncmp (action, CGI_ACTION_ADD, strlen (CGI_ACTION_ADD)))
   {
     char *path = NULL;
-    path = strdup (cgiargs + strlen (CGI_ACTION) + strlen (action) + 1);
+    path = action + strlen (CGI_ACTION_ADD) + 1;
 
     if (path && !strncmp (path, CGI_PATH"=", strlen (CGI_PATH) + 1))
     {
       ut->contentlist = add_content (ut->contentlist,
                                      path + strlen (CGI_PATH) + 1);
       refresh = 1;
-      free (path);
     }
   }
-  else if (!strcmp (action, CGI_ACTION_DEL))
+  else if (!strncmp (action, CGI_ACTION_DEL, strlen (CGI_ACTION_DEL)))
   {
     char *shares,*share;
     int num, shift=0;
 
-    shares = strdup (cgiargs + strlen (CGI_ACTION) + strlen (action) + 1);
-    for (share = strtok (shares, "&"); share ; share = strtok (NULL, "&"))
+    shares = strdup (action + strlen (CGI_ACTION_DEL) + 1);
+    for (share = strtok (shares, "&") ; share ; share = strtok (NULL, "&"))
     {
       if (sscanf (share, CGI_SHARE"[%d]=on", &num) < 0)
         continue;
@@ -86,7 +84,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
     refresh = 1;
     free (shares);
   }
-  else if (!strcmp (action, CGI_ACTION_REFRESH))
+  else if (!strncmp (action, CGI_ACTION_REFRESH, strlen (CGI_ACTION_REFRESH)))
     refresh = 1;
 
   if (refresh && ut->contentlist)
@@ -111,9 +109,6 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
                  "<meta http-equiv=\"refresh\" content=\"0; URL=/web/ushare.html\"/>");
   buffer_append (ut->presentation, "</head>");
   buffer_append (ut->presentation, "</html>");
-
-  if (action)
-    free (action);
 
   return 0;
 }
