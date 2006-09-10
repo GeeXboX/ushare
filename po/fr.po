@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ushare 0.9.5\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2006-03-12 14:06+0100\n"
+"POT-Creation-Date: 2006-09-10 12:33+0200\n"
 "PO-Revision-Date: 2006-02-28 11:30+0100\n"
 "Last-Translator: Alexis Saettler <asbin@asbin.org>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -59,16 +59,16 @@ msgstr "Attente de connexions ...\n"
 #: src/ushare.c:328
 #, c-format
 msgid "Interface %s is down.\n"
-msgstr ""
+msgstr "L'interface %s est arrêtée.\n"
 
 #: src/ushare.c:329 src/ushare.c:340
 msgid "Recheck uShare's configuration and try again !\n"
-msgstr ""
+msgstr "Revérifiez la configuration de uShare et recommencez !\n"
 
 #: src/ushare.c:339
 #, c-format
 msgid "Can't find interface %s.\n"
-msgstr ""
+msgstr "Impossible de trouver l'interface %s.\n"
 
 #: src/ushare.c:467
 msgid "Reloading configuration...\n"
@@ -103,21 +103,35 @@ msgstr "Attention : impossible de lire le fichier \"%s\".\n"
 msgid "Error: failed to daemonize program : %s\n"
 msgstr "Erreur : impossible de démoniser le programme : %s\n"
 
-#: src/metadata.c:417
+#: src/metadata.c:339
 msgid "Building Metadata List ...\n"
 msgstr "Création de la liste de données\n"
 
-#: src/metadata.c:430
+#: src/metadata.c:352
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr "Recherche des fichiers dans le répertoire de contenus : %s\n"
 
-#: src/metadata.c:454
+#: src/metadata.c:376
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr "%d fichiers et sous-répertoires trouvés.\n"
 
-#: src/cfgparser.c:209
+#: src/cfgparser.c:161
+#, c-format
+msgid "Warning: port doesn't fit IANA port assignements.\n"
+msgstr "Attention : ce port ne suit pas les recommendations IANA.\n"
+
+#: src/cfgparser.c:163
+#, c-format
+msgid ""
+"Warning: Only Dynamic or Private Ports can be used (from 49152 through "
+"65535)\n"
+msgstr ""
+"Attention : seuls les ports dynamiques ou privés peuvent être utilisés (de "
+"49152 à 65535)\n"
+
+#: src/cfgparser.c:243
 #, c-format
 msgid ""
 "Usage: ushare [-n name] [-i interface] [-p port] [-c directory] [[-c "
@@ -126,113 +140,99 @@ msgstr ""
 "Usage : ushare [-n nom] [-i interface] [-p port] [-c répertoire] [[-c "
 "répertoire]...]\n"
 
-#: src/cfgparser.c:210
+#: src/cfgparser.c:244
 #, c-format
 msgid "Options:\n"
 msgstr "Options :\n"
 
-#: src/cfgparser.c:211
+#: src/cfgparser.c:245
 #, c-format
 msgid " -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"
 msgstr " -n, --name=NOM\t\tDéfini le nom UPnP ('%s' par défaut)\n"
 
-#: src/cfgparser.c:213
+#: src/cfgparser.c:247
 #, c-format
 msgid " -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"
 msgstr ""
 " -i, --interface=IFACE\tUtiliser l'interface réseau IFACE ('%s' par défaut)\n"
 
-#: src/cfgparser.c:215
+#: src/cfgparser.c:249
 #, c-format
 msgid " -p, --port=PORT\tForces the HTTP server to run on PORT\n"
 msgstr " -p, --port=PORT\tForce le serveur HTTP à utiliser ce PORT\n"
 
-#: src/cfgparser.c:216
+#: src/cfgparser.c:250
 #, c-format
 msgid " -c, --content=DIR\tShare the content of DIR directory\n"
 msgstr " -c, --content=REP\tPartage le contenu du répertoire REP\n"
 
-#: src/cfgparser.c:217
+#: src/cfgparser.c:251
 #, c-format
 msgid " -w, --no-web\t\tDisable the control web page (enabled by default)\n"
 msgstr ""
 " -w, --no-web\t\tDésactive la page de contrôle web (activée par défaut)\n"
 
-#: src/cfgparser.c:218
+#: src/cfgparser.c:252
 #, c-format
 msgid " -v, --verbose\t\tSet verbose display\n"
 msgstr " -v, --verbose\t\tMode bavard\n"
 
-#: src/cfgparser.c:219
+#: src/cfgparser.c:253
 #, c-format
 msgid " -D, --daemon\t\tRun as a daemon\n"
 msgstr " -D, --daemon\t\tDémarrer en mode démon\n"
 
-#: src/cfgparser.c:220
+#: src/cfgparser.c:254
 #, c-format
 msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
 msgstr ""
 " -V, --version\t\tAffiche la version de uShare et quitte le programme\n"
 
-#: src/cfgparser.c:221
+#: src/cfgparser.c:255
 #, c-format
 msgid " -h, --help\t\tDisplay this help\n"
 msgstr " -h, --help\t\tAffiche cette aide\n"
 
-#: src/cfgparser.c:286
-#, c-format
-msgid "Warning: port doesn't fit IANA port assignements.\n"
-msgstr "Attention : ce port ne suit pas les recommendations IANA.\n"
-
-#: src/cfgparser.c:288
-#, c-format
-msgid ""
-"Warning : Only Dynamic or Private Ports can be used (from 49152 through "
-"65535)\n"
-msgstr ""
-"Attention : seuls les ports dynamiques ou privés peuvent être utilisés (de "
-"49152 à 65535)\n"
-
-#: src/presentation.c:105 src/presentation.c:143
+#: src/presentation.c:111 src/presentation.c:146
 msgid "uShare Information Page"
 msgstr "Page d'information de uShare"
 
-#: src/presentation.c:155
+#: src/presentation.c:158
 msgid "uShare UPnP A/V Media Server"
 msgstr "uShare - Serveur Multimédia A/V UPnP"
 
-#: src/presentation.c:156
+#: src/presentation.c:159
 msgid "Information Page"
 msgstr "Page d'information"
 
-#: src/presentation.c:163
+#: src/presentation.c:166
 msgid "Version"
 msgstr "Version"
 
-#: src/presentation.c:166
+#: src/presentation.c:169
 msgid "Device UDN"
 msgstr "Périphérique UDN"
 
-#: src/presentation.c:168
+#: src/presentation.c:171
 msgid "Number of shared files and directories"
 msgstr "Nombre de fichiers et sous-répertoires partagés"
 
-#: src/presentation.c:178
+#: src/presentation.c:181
 msgid "Share"
 msgstr "Partage"
 
-#: src/presentation.c:184
+#: src/presentation.c:187
 msgid "unShare!"
 msgstr "Départager!"
 
-#: src/presentation.c:190
+#: src/presentation.c:193
 msgid "Add a new share :  "
 msgstr "Ajouter un partage :  "
 
-#: src/presentation.c:196
+#: src/presentation.c:199
 msgid "Share!"
 msgstr "Partager !"
 
-#: src/presentation.c:207
+#: src/presentation.c:210
 msgid "Refresh Shares ..."
 msgstr "Rafraîchir les partages ..."
