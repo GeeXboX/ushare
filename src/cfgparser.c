@@ -121,6 +121,27 @@ ushare_add_contentdir (struct ushare_t *ut, const char *dir)
 }
 
 static void
+ushare_set_dir (struct ushare_t *ut, const char *dirlist)
+{
+  char *x = NULL, *token = NULL;
+
+  if (!ut || !dirlist)
+    return;
+
+  x = strdup_trim (dirlist);
+  if (x)
+  {
+    token = strtok (x, USHARE_DIR_DELIM);
+    while (token)
+    {
+      ushare_add_contentdir (ut, token);
+      token = strtok (NULL, USHARE_DIR_DELIM);
+    }
+    free (x);
+  }
+}
+
+static void
 ushare_set_port (struct ushare_t *ut, const char *port)
 {
   if (!ut || !port)
@@ -147,7 +168,7 @@ parse_config_file (struct ushare_t *ut)
   int line_number = 0;
   size_t size = 0, len;
   ssize_t read;
-  char *s = NULL, *token = NULL;
+  char *s = NULL;
 
   if (!ut)
     return -1;
@@ -198,20 +219,7 @@ parse_config_file (struct ushare_t *ut)
     {
       s = strchr (line, '=') + 1;
       if (s && s[0] != '\0')
-      {
-        char *x = NULL;
-        x = strdup_trim (s);
-        if (x)
-        {
-          token = strtok (x, USHARE_DIR_DELIM);
-          while (token)
-          {
-            ushare_add_contentdir (ut, token);
-            token = strtok (NULL, USHARE_DIR_DELIM);
-          }
-          free (x);
-        }
-      }
+        ushare_set_dir (ut, s);
     }
   }
 
