@@ -48,120 +48,43 @@
 static char *
 getExtension (const char *filename)
 {
-  char *delimiter =".";
-  char *str, *token, *extension;
+  char *str = NULL;
 
-  if (!filename)
-    return NULL;
+  str = strrchr (filename, '.');
+  if (str)
+    str++;
 
-  str = strdup (filename);
-  token = strtok (str, delimiter);
-  extension = strdup (token);
-
-  while (token)
-  {
-    token = strtok (NULL, delimiter);
-    if (token)
-    {
-      if (extension)
-        free (extension);
-      extension = strdup (token);
-    }
-  }
-
-  free (str);
-
-  return extension;
+  return str;
 }
 
-static char *
-getUpnpClass (const char *filename)
+static struct mime_type_t *
+getMimeType (const char *extension)
 {
   extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list;
-  char *extension = NULL;
 
-  if (!filename)
-    return NULL;
-
-  extension = getExtension (filename);
   if (!extension)
     return NULL;
 
   list = MIME_Type_List;
-
   while (list->extension)
   {
-    if (!strcasecmp ((*list).extension, extension))
-    {
-      free (extension);
-      return strdup ((*list).class);
-    }
+    if (!strcasecmp (list->extension, extension))
+      return list;
     *list++;
   }
-
-  free (extension);
-
-  return NULL;
-}
-
-static char *
-getUpnpProtocol (const char *filename)
-{
-  extern struct mime_type_t MIME_Type_List[];
-  struct mime_type_t *list;
-  char *extension;
-
-  if (!filename)
-    return NULL;
-
-  extension = getExtension (filename);
-  if (!extension)
-    return NULL;
-
-  list = MIME_Type_List;
-
-  while (list->extension)
-  {
-    if (!strcasecmp ((*list).extension, extension))
-    {
-      free (extension);
-      return strdup ((*list).protocol);
-    }
-    *list++;
-  }
-
-  free (extension);
 
   return NULL;
 }
 
 static bool
-is_valid_extension (const char *filename)
+is_valid_extension (const char *extension)
 {
-  extern struct mime_type_t MIME_Type_List[];
-  struct mime_type_t *list;
-  char *extension = NULL;
-
-  if (!filename)
-    return false;
-
-  extension = getExtension (filename);
   if (!extension)
     return false;
 
-  list = MIME_Type_List;
-  while (list->extension)
-  {
-    if (!strcasecmp ((*list).extension, extension))
-    {
-      free (extension);
-      return true;
-    }
-    *list++;
-  }
-
-  free (extension);
+  if (getMimeType (extension))
+    return true;
 
   return false;
 }
@@ -177,6 +100,9 @@ get_list_length (void *list)
 
   return n;
 }
+
+static struct mime_type_t Container_MIME_Type =
+  { NULL, "object.container", NULL};
 
 static struct upnp_entry_t *
 upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
@@ -202,8 +128,9 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   if (!dir) /* item */
     {
-      entry->class = getUpnpClass (name);
-      entry->protocol = getUpnpProtocol (name);
+      struct mime_type_t *mime = getMimeType (getExtension (name));
+      entry->class = mime->class;
+      entry->protocol = mime->protocol;
       entry->url = (char *) malloc (1024 * sizeof (char));
       sprintf (entry->url, "http://%s:%d%s/%d",
                UpnpGetServerIpAddress (), ut->port,
@@ -211,8 +138,8 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
     }
   else /* container */
     {
-      entry->class = strdup ("object.container");
-      entry->protocol = NULL;
+      entry->class = Container_MIME_Type.class;
+      entry->protocol = Container_MIME_Type.protocol;
       entry->url = NULL;
     }
 
@@ -259,10 +186,6 @@ upnp_entry_free (struct upnp_entry_t *entry)
 
   if (entry->fullpath)
     free (entry->fullpath);
-  if (entry->class)
-    free (entry->class);
-  if (entry->protocol)
-    free (entry->protocol);
   if (entry->title)
     free (entry->title);
   if (entry->url)
@@ -330,7 +253,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
   if (stat (file, &st) < 0)
     return;
 
-  if (is_valid_extension (file))
+  if (is_valid_extension (getExtension (file)))
   {
     struct upnp_entry_t *child = NULL;
 
