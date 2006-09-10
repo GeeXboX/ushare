@@ -124,6 +124,7 @@ static void
 ushare_set_dir (struct ushare_t *ut, const char *dirlist)
 {
   char *x = NULL, *token = NULL;
+  char *m_buffer = NULL, *buffer;
 
   if (!ut || !dirlist)
     return;
@@ -131,11 +132,17 @@ ushare_set_dir (struct ushare_t *ut, const char *dirlist)
   x = strdup_trim (dirlist);
   if (x)
   {
-    token = strtok (x, USHARE_DIR_DELIM);
-    while (token)
+    m_buffer = (char*) malloc (strlen (x) * sizeof (char));
+    if (m_buffer)
     {
-      ushare_add_contentdir (ut, token);
-      token = strtok (NULL, USHARE_DIR_DELIM);
+      buffer = m_buffer;
+      token = strtok_r (x, USHARE_DIR_DELIM, &buffer);
+      while (token)
+      {
+        ushare_add_contentdir (ut, token);
+        token = strtok_r (NULL, USHARE_DIR_DELIM, &buffer);
+      }
+      free (m_buffer);
     }
     free (x);
   }

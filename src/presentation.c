@@ -71,14 +71,22 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
   else if (!strncmp (action, CGI_ACTION_DEL, strlen (CGI_ACTION_DEL)))
   {
     char *shares,*share;
+    char *m_buffer = NULL, *buffer;
     int num, shift=0;
 
     shares = strdup (action + strlen (CGI_ACTION_DEL) + 1);
-    for (share = strtok (shares, "&") ; share ; share = strtok (NULL, "&"))
+    m_buffer = (char*) malloc (strlen (shares) * sizeof (char));
+    if (m_buffer)
     {
-      if (sscanf (share, CGI_SHARE"[%d]=on", &num) < 0)
-        continue;
-      ut->contentlist = del_content (ut->contentlist, num - shift++);
+      buffer = m_buffer;
+      for (share = strtok_r (shares, "&", &buffer) ; share ;
+           share = strtok_r (NULL, "&", &buffer))
+      {
+        if (sscanf (share, CGI_SHARE"[%d]=on", &num) < 0)
+          continue;
+        ut->contentlist = del_content (ut->contentlist, num - shift++);
+      }
+      free (m_buffer);
     }
 
     refresh = 1;
