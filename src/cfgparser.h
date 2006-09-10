@@ -28,7 +28,7 @@
 #define USHARE_PORT "USHARE_PORT"
 #define USHARE_DIR "USHARE_DIR"
 
-#define USHARE_CONFIG_FILE "/etc/ushare.conf"
+#define USHARE_CONFIG_FILE "ushare.conf"
 #define DEFAULT_USHARE_NAME "uShare"
 #define DEFAULT_USHARE_IFACE "eth0"
 #define DEFAULT_USHARE_LOGFILE "/var/log/ushare.log"

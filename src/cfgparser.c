@@ -29,6 +29,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #include "gettext.h"
 #include "cfgparser.h"
@@ -122,6 +123,7 @@ ushare_add_contentdir (struct ushare_t *ut, const char *dir)
 int
 parse_config_file (struct ushare_t *ut)
 {
+  char filename[PATH_MAX];
   FILE *conffile;
   char *line = NULL;
   int line_number = 0;
@@ -132,7 +134,9 @@ parse_config_file (struct ushare_t *ut)
   if (!ut)
     return -1;
 
-  conffile = fopen (USHARE_CONFIG_FILE, "r");
+  snprintf (filename, PATH_MAX, "%s/%s", SYSCONFDIR, USHARE_CONFIG_FILE);
+
+  conffile = fopen (filename, "r");
   if (!conffile)
     return -1;
 

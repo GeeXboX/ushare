@@ -563,7 +563,7 @@ main (int argc, char **argv)
   {
     /* fprintf here, because syslog not yet ready */
     fprintf (stderr, _("Warning: can't parse file \"%s\".\n"),
-             USHARE_CONFIG_FILE);
+             SYSCONFDIR "/" USHARE_CONFIG_FILE);
   }
 
   if (parse_command_line (ut, argc, argv) < 0)
