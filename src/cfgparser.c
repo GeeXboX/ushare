@@ -208,13 +208,11 @@ parse_config_file (struct ushare_t *ut)
 
   while ((read = getline (&line, &size, conffile)) != -1)
   {
-    len = strlen (line);
-
     if (ignore_line (line))
       continue;
 
-    if (line[len-1] == '\n')
-      line[len-1] = '\0';
+    if (line[read-1] == '\n')
+      line[read-1] = '\0';
 
     while (line[0] == ' ' || line[0] == '\t')
       line++;
