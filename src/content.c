@@ -83,17 +83,17 @@ void
 free_content(content_list *list)
 {
   int i;
-  if (list)
+  if (!list)
+    return;
+
+  if (list->content)
   {
-    if (list->content)
+    for (i=0 ; i < list->count ; i++)
     {
-      for (i=0 ; i < list->count ; i++)
-      {
-        if (list->content[i])
-          free (list->content[i]);
-      }
-      free (list->content);
+      if (list->content[i])
+        free (list->content[i]);
     }
-    free (list);
+    free (list->content);
   }
+  free (list);
 }
