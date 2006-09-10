@@ -1,6 +1,12 @@
+ushare (0.9.7-0ubuntu2) dapper; urgency=low
+
+  * rewrite debconf scripts according to lsb
+
+ -- Alexis Saettler <alexis@saettler.org>  Tue, 08 Sep 2006 13:15:37 +0200
+
 ushare (0.9.7-0ubuntu1) dapper; urgency=low
 
-  * new updtram version
+  * new upstream version
   * depend on libupnp 1.3.1
 
  -- Alexis Saettler <alexis@saettler.org>  Mon, 13 Mar 2006 22:43:57 +0100

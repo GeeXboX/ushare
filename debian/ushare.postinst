@@ -1,6 +1,5 @@
 #!/bin/sh
 CONFIGFILE=/etc/ushare.conf
-DEFAULT_USHARE_NAME=uShare
 
 set -e
 . /usr/share/debconf/confmodule
@@ -10,14 +9,14 @@ update_conf() {
   OLD=$2
   NEW=$3
   if [ "$OLD" != "$NEW" ]; then
-    sed -i -e "s%^ *$VARIABLE=.*%$VARIABLE=$NEW%" $CONFIGFILE
+    sed -i -e "s%^[[:space:]]*$VARIABLE=.*%$VARIABLE=$NEW%" $CONFIGFILE
   fi
 }
 
 if [ -e $CONFIGFILE ]; then
   . $CONFIGFILE || true
 else
-  cp /usr/share/ushare/ushare.conf $CONFIGFILE
+  install -m 644 /usr/share/ushare/ushare.conf $CONFIGFILE
 fi
 
 db_get ushare/name

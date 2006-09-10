@@ -5,14 +5,17 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
 DEB_BUILDDIR:=debbuild
+DEB_INSTALL_DIRS_ushare:=/usr/share/ushare
 
 # copy init script, to use with dh_installinit
 install/ushare::
 	cp $(CURDIR)/scripts/ushare $(CURDIR)/debian/ushare.init
 	mv $(CURDIR)/debian/ushare/etc/ushare.conf $(CURDIR)/debian/ushare/usr/share/ushare/
+	sed -i -e "s%\(/etc/ushare.conf\)%\1\n# Edit this file with 'dpkg-reconfigure ushare'%" \
+		$(CURDIR)/debian/ushare/usr/share/ushare/ushare.conf
 
 cleanbuilddir::
-	-rm $(CURDIR)/debian/ushare.init
+	-$(RM) $(CURDIR)/debian/ushare.init
 
 clean::
 	debconf-updatepo
