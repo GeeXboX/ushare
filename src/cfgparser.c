@@ -194,7 +194,6 @@ parse_config_file (struct ushare_t *ut)
   char filename[PATH_MAX];
   FILE *conffile;
   char *line = NULL;
-  int line_number = 0;
   size_t size = 0, len;
   ssize_t read;
 
@@ -209,7 +208,6 @@ parse_config_file (struct ushare_t *ut)
 
   while ((read = getline (&line, &size, conffile)) != -1)
   {
-    line_number++;
     len = strlen (line);
 
     if (ignore_line (line))
