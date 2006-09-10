@@ -13,7 +13,7 @@ DAEMON=/usr/bin/ushare
 NAME=ushare
 DESC="uShare UPnP A/V Media Server"
 PIDFILE=/var/run/ushare.pid
-CONFIGFILE=/etc/default/ushare
+CONFIGFILE=/etc/ushare.conf
 
 # abort if no executable exists
 [ -x $DAEMON ] || exit 0
@@ -21,6 +21,8 @@ CONFIGFILE=/etc/default/ushare
 # Get lsb functions
 . /lib/lsb/init-functions
 . /etc/default/rcS
+
+[ -f /etc/default/ushare ] && . /etc/default/ushare
 
 checkpid() {
   [ -e $PIDFILE ] || touch $PIDFILE
@@ -31,29 +33,7 @@ check_shares() {
     . $CONFIGFILE
     [ -n "$USHARE_DIR" ] && return 0
   fi
-  if [ -r "/etc/ushare.conf" ]; then
-    . /etc/ushare.conf
-    [ -n "$USHARE_DIR" ] && return 0
-  fi
   return -1
-}
-
-get_opts() {
-  [ ! -r "$CONFIGFILE" ] && return
-  . $CONFIGFILE || true
-  echo -n " --daemon"
-  if [ -n "$USHARE_NAME" ]; then
-    echo -n " -n \"$USHARE_NAME\""
-  fi
-  if [ -n "$USHARE_IFACE" ]; then
-    echo -n " -i \"$USHARE_IFACE\""
-  fi
-  if [ -n "$USHARE_PORT" ]; then
-    echo -n " -p \"$USHARE_PORT\""
-  fi
-  if [ -n "$USHARE_DIR" ]; then
-    echo -n " -c \""$(echo "$USHARE_DIR" | sed -e "s/,/\" -c \"/g")"\""
-  fi
 }
 
 case "$1" in
@@ -64,8 +44,7 @@ case "$1" in
       log_end_msg 1
     else
       checkpid
-      USHARE_OPTIONS=$(get_opts)
-      start-stop-daemon --start --quiet --oknodo \
+      start-stop-daemon --start --quiet --background --oknodo \
         --make-pidfile --pidfile $PIDFILE \
         --exec $DAEMON -- $USHARE_OPTIONS
       log_end_msg $?
