@@ -1,3 +1,8 @@
+2006-09-10  Alexis Saettler <alexis@saettler.org>
+
+	* Use sysconfdir (from configure) to set /etc destination
+	* update init script to use lsb functions
+
 2006-03-12  Benjamin Zores  <ben@geexbox.org>
 
 	* new public release (Version 0.9.7)
