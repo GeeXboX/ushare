@@ -42,10 +42,10 @@
 #define SERVICE_CMS_ACTION_CON_INFO "GetCurrentConnectionInfo"
 
 /* Represent the CMS SOURCE argument. */
-#define SERVICE_CMS_ARG_SOURCE "SOURCE"
+#define SERVICE_CMS_ARG_SOURCE "Source"
 
 /* Represent the CMS SINK argument. */
-#define SERVICE_CMS_ARG_SINK "SINK"
+#define SERVICE_CMS_ARG_SINK "Sink"
 
 /* Represent the CMS ConnectionIDs argument. */
 #define SERVICE_CMS_ARG_CONNECTION_IDS "ConnectionIDs"
@@ -90,19 +90,42 @@ static bool
 cms_get_protocol_info (struct action_event_t *event)
 {
   extern struct mime_type_t MIME_Type_List[];
-  struct mime_type_t *list = MIME_Type_List;
+  struct mime_type_t *list;
+  char *respText = NULL, *respPtr;
+  size_t respLen = 0, len;
 
   if (!event)
     return false;
 
+  // calculating length of response
+  list = MIME_Type_List;
   while (list->extension)
   {
-    upnp_add_response (event, SERVICE_CMS_ARG_SOURCE, list->protocol);
+    respLen += strlen (list->protocol) + 1;
     list++;
   }
 
+  respText = (char*) malloc (respLen * sizeof (char));
+  if (!respText)
+    return event->status;
+
+  list = MIME_Type_List;
+  respPtr = respText;
+  while (list->extension)
+  {
+    len = strlen (list->protocol);
+    strncpy (respPtr, list->protocol, len);
+    respPtr += len;
+    list++;
+    if (list->extension)
+      strcpy (respPtr++, ",");
+  }
+  *respPtr = '\0';
+
+  upnp_add_response (event, SERVICE_CMS_ARG_SOURCE, respText);
   upnp_add_response (event, SERVICE_CMS_ARG_SINK, "");
 
+  free (respText);
   return event->status;
 }
 
