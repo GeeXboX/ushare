@@ -327,14 +327,14 @@ cds_browse_directchildren (struct action_event_t *event,
   childs = entry->childs;
   for (s = 0; s < index; s++)
     if (*childs)
-      *childs++;
+      childs++;
 
   /* UPnP CDS compliance : If starting index = 0 and requested count = 0
      then all children must be returned */
   if (index == 0 && count == 0)
     count = entry->child_count;
   
-  for (; *childs; *childs++)
+  for (; *childs; childs++)
   {
     if (count == 0 || result_count < count)
       /* only fetch the requested count number or all entries if count = 0 */

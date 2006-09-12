@@ -71,7 +71,7 @@ getMimeType (const char *extension)
   {
     if (!strcasecmp (list->extension, extension))
       return list;
-    *list++;
+    list++;
   }
 
   return NULL;
@@ -95,7 +95,7 @@ get_list_length (void *list)
   void **l = list;
   int n = 0;
 
-  while (*l++)
+  while (*(l++))
     n++;
 
   return n;
@@ -191,7 +191,7 @@ upnp_entry_free (struct upnp_entry_t *entry)
   if (entry->url)
     free (entry->url);
 
-  for (childs = entry->childs; *childs; *childs++)
+  for (childs = entry->childs; *childs; childs++)
     upnp_entry_free (*childs);
   free (entry->childs);
 
@@ -207,7 +207,7 @@ upnp_entry_add_child (struct upnp_entry_t *entry, struct upnp_entry_t *child)
   if (!entry || !child)
     return;
 
-  for (childs = entry->childs; *childs; *childs++)
+  for (childs = entry->childs; *childs; childs++)
     if (*childs == child)
       return;
 
@@ -231,7 +231,7 @@ upnp_get_entry (struct upnp_entry_t *entry, int id)
   if (entry->id == id)
     return entry;
 
-  for (entries = entry->childs; *entries; *entries++)
+  for (entries = entry->childs; *entries; entries++)
   {
     result = upnp_get_entry (*entries, id);
     if (result)

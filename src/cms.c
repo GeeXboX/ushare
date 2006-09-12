@@ -97,8 +97,8 @@ cms_get_protocol_info (struct action_event_t *event)
 
   while (list->extension)
   {
-    upnp_add_response (event, SERVICE_CMS_ARG_SOURCE, (*list).protocol);
-    *list++;
+    upnp_add_response (event, SERVICE_CMS_ARG_SOURCE, list->protocol);
+    list++;
   }
 
   upnp_add_response (event, SERVICE_CMS_ARG_SINK, "");
@@ -134,8 +134,8 @@ cms_get_current_connection_info (struct action_event_t *event)
 
   while (list->extension)
   {
-    upnp_add_response (event, SERVICE_CMS_ARG_PROT_INFO, (*list).protocol);
-    *list++;
+    upnp_add_response (event, SERVICE_CMS_ARG_PROT_INFO, list->protocol);
+    list++;
   }
 
   upnp_add_response (event, SERVICE_CMS_ARG_PEER_CON_MANAGER, "");
