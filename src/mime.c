@@ -85,7 +85,7 @@ struct mime_type_t MIME_Type_List[] = {
   { "pcm", UPNP_AUDIO, "http-get:*:audio/l16:*"},
   { "lpcm", UPNP_AUDIO, "http-get:*:audio/l16:*"},
   { "l16", UPNP_AUDIO, "http-get:*:audio/l16:*"},
-  { "wma", UPNP_AUDIO, "http-get:*:audio/audio/x-ms-wma:*"},
+  { "wma", UPNP_AUDIO, "http-get:*:audio/x-ms-wma:*"},
   { "mka", UPNP_AUDIO, "http-get:*:audio/mpeg:*"},
   { "ra", UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:*"},
   { "rm", UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:*"},
