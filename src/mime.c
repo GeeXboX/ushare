@@ -63,6 +63,8 @@ struct mime_type_t MIME_Type_List[] = {
   { "rmvb", UPNP_VIDEO, "http-get:*:video/mpeg:*"},
   { "mov", UPNP_VIDEO, "http-get:*:video/quicktime:*"},
   { "qt", UPNP_VIDEO, "http-get:*:video/quicktime:*"},
+  { "bin", UPNP_VIDEO, "http-get:*:video/mpeg2:*"},
+  { "iso", UPNP_VIDEO, "http-get:*:video/mpeg2:*"},
 
   /* Audio files */
   { "aac", UPNP_AUDIO, "http-get:*:audio/x-aac:*"},
