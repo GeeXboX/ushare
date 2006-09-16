@@ -201,7 +201,7 @@ parse_config_file (struct ushare_t *ut)
   char filename[PATH_MAX];
   FILE *conffile;
   char *line = NULL;
-  size_t size = 0, len;
+  size_t size = 0;
   ssize_t read;
 
   if (!ut)
