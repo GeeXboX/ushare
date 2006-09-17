@@ -1,4 +1,10 @@
-2006-09-10  Alexis Saettler <alexis@saettler.org>
+2006-09-17  Alexis Saettler <asbin@asbin.org>
+
+	* add iso and bin mime types.
+	* convert special xml characters to xml (like & => &amp;)
+	  (reported by Frank Scholz).
+
+2006-09-10  Alexis Saettler <asbin@asbin.org>
 
 	* Use sysconfdir (from configure) to set /etc destination
 	* update init script to use lsb functions

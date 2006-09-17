@@ -43,6 +43,11 @@ struct upnp_entry_t {
   int fd;
 };
 
+typedef struct xml_convert_s {
+  char charac;
+  char *xml;
+} xml_convert_t;
+
 void free_metadata_list (struct ushare_t *ut);
 void build_metadata_list (struct ushare_t *ut);
 struct upnp_entry_t * upnp_get_entry (struct upnp_entry_t *entry, int id);

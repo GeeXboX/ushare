@@ -101,6 +101,61 @@ get_list_length (void *list)
   return n;
 }
 
+static xml_convert_t xml_convert[] = {
+  {'"', "&quot;"},
+  {'&', "&amp;"},
+  {'\'', "&apos;"},
+  {'<', "&lt;"},
+  {'>', "&gt;"},
+  {0, NULL},
+};
+
+static char *
+get_xmlconvert (int c)
+{
+  int j;
+  for (j = 0; xml_convert[j].xml; j++)
+  {
+    if (c == xml_convert[j].charac)
+      return xml_convert[j].xml;
+  }
+  return NULL;
+}
+
+static char *
+convert_xml (const char *title)
+{
+  char *newtitle, *s, *t, *xml;
+  int nbconvert = 0;
+
+  /* calculate extra size needed */
+  for (t = (char*) title; *t; t++)
+  {
+    xml = get_xmlconvert (*t);
+    if (xml)
+      nbconvert += strlen (xml) - 1;
+  }
+  if (!nbconvert)
+    return NULL;
+
+  newtitle = s = (char*) malloc (strlen (title) + nbconvert + 1);
+
+  for (t = (char*) title; *t; t++)
+  {
+    xml = get_xmlconvert (*t);
+    if (xml)
+    {
+      strcpy (s, xml);
+      s += strlen (xml);
+    }
+    else
+      *s++ = *t;
+  }
+  *s = '\0';
+
+  return newtitle;
+}
+
 static struct mime_type_t Container_MIME_Type =
   { NULL, "object.container", NULL};
 
@@ -109,7 +164,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
                 struct upnp_entry_t *parent, int size, int dir)
 {
   struct upnp_entry_t *entry = NULL;
-  char *title = NULL;
+  char *title = NULL, *x = NULL;
 
   if (!name)
     return NULL;
@@ -148,10 +203,15 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   {
     if (!dir)
     {
-      char *x = NULL;
       x = strrchr (title, '.');
       if (x)  /* avoid displaying file extension */
         *x = '\0';
+    }
+    x = convert_xml (title);
+    if (x)
+    {
+      free (title);
+      title = x;
     }
     entry->title = title;
 
