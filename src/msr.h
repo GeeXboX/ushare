@@ -58,7 +58,7 @@
 "        <relatedStateVariable>A_ARG_TYPE_RegistrationRespMsg</relatedStateVariable>" \
 "      </argument>" \
 "    </argumentList>" \
-"  </action>" \
+"  </action>" \
 "  <action>" \
 "    <name>IsValidated</name>" \
 "    <argumentList>" \
