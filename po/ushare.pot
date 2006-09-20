@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2006-09-10 12:33+0200\n"
+"POT-Creation-Date: 2006-09-20 22:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,16 +104,16 @@ msgstr ""
 msgid "Error: failed to daemonize program : %s\n"
 msgstr ""
 
-#: src/metadata.c:339
+#: src/metadata.c:399
 msgid "Building Metadata List ...\n"
 msgstr ""
 
-#: src/metadata.c:352
+#: src/metadata.c:412
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr ""
 
-#: src/metadata.c:376
+#: src/metadata.c:436
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr ""
