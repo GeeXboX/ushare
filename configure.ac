@@ -13,7 +13,7 @@ AC_PROG_INSTALL
 # Checks for l10n availability.
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.14.5)
-ALL_LINGUAS="fr"
+ALL_LINGUAS="fr de"
 
 LOCALEDIR="${datadir}/locale"
 eval LOCALEPATH="$LOCALEDIR"

@@ -1,0 +1,244 @@
+# German translations for uShare package.
+# Copyright (C) 2006 http://ushare.geexbox.org
+# This file is distributed under the same license as the uShare package.
+# uShare Team <ushare@geexbox.org>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: uShare 0.9.7\n"
+"Report-Msgid-Bugs-To: ushare@geexbox.org\n"
+"POT-Creation-Date: 2006-09-20 22:31+0200\n"
+"PO-Revision-Date: 2006-09-20 22:12+0200\n"
+"Last-Translator: German uShare Team <ushare@geexbox.org>\n"
+"Language-Team: German uShare Team <ushare@geexbox.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/ushare.c:190
+msgid "Stopping UPnP Service ...\n"
+msgstr "UPnP Service wird gestoppt ...\n"
+
+#: src/ushare.c:212
+msgid "Initializing UPnP subsystem ...\n"
+msgstr "Initialisiere UPnP Subsystem ...\n"
+
+#: src/ushare.c:216
+msgid "Cannot initialize UPnP subsystem\n"
+msgstr "Kann UPnP Subsystem nicht initialisieren\n"
+
+#: src/ushare.c:221
+#, c-format
+msgid "UPnP MediaServer listening on %s:%d\n"
+msgstr "UPnP MediaServer lauscht auf %s:%d\n"
+
+#: src/ushare.c:229
+msgid "Cannot set virtual directory callbacks\n"
+msgstr "Kann virtuelle Verzeichnis-Callbacks nicht setzen\n"
+
+#: src/ushare.c:237
+msgid "Cannot add virtual directory for web server\n"
+msgstr "Kann virtuelles Verzeichnis für den Webserver nicht zurücksetzen\n"
+
+#: src/ushare.c:247 src/ushare.c:265
+msgid "Cannot register UPnP device\n"
+msgstr "Kann Upnp Gerät nicht registrieren\n"
+
+#: src/ushare.c:255
+msgid "Cannot unregister UPnP device\n"
+msgstr "Kann UpnP Gerät nicht deregistrieren\n"
+
+#: src/ushare.c:270
+msgid "Sending UPnP advertisement for device ...\n"
+msgstr "Sende UpnP Advertisement für Gerät...\n"
+
+#: src/ushare.c:273
+msgid "Listening for control point connections ...\n"
+msgstr "Lausche auf Control Point Verbindungen...\n"
+
+#: src/ushare.c:328
+#, c-format
+msgid "Interface %s is down.\n"
+msgstr "Interface %s ist down.\n"
+
+#: src/ushare.c:329 src/ushare.c:340
+msgid "Recheck uShare's configuration and try again !\n"
+msgstr "Überprüfe uShare's Konfiguration und versuche es erneut!\n"
+
+#: src/ushare.c:339
+#, c-format
+msgid "Can't find interface %s.\n"
+msgstr "Kann Interface %s nicht finden.\n"
+
+#: src/ushare.c:467
+msgid "Reloading configuration...\n"
+msgstr "Lade Konfiguration erneut...\n"
+
+#: src/ushare.c:528 src/ushare.c:583
+msgid "Error: no content directory to be shared.\n"
+msgstr "Fehler: Kein Content Verzeichnis zum sharen.\n"
+
+#: src/ushare.c:536
+#, c-format
+msgid "%s (version %s), a lightweight UPnP Media Server.\n"
+msgstr "%s (Version %s), ein leichtgewichtiger UPnP Media Server.\n"
+
+#: src/ushare.c:538
+#, c-format
+msgid "Benjamin Zores (C) 2005-2006, for GeeXboX Team.\n"
+msgstr "Benjamin Zores (C) 2005-2006, für das GeeXboX Team.\n"
+
+#: src/ushare.c:539
+#, c-format
+msgid "See http://ushare.geexbox.org/ for updates.\n"
+msgstr "Für Updates gehe auf http://ushare.geexbox.org/.\n"
+
+#: src/ushare.c:565
+#, c-format
+msgid "Warning: can't parse file \"%s\".\n"
+msgstr "Warnung: Kann Datei nicht parsen \"%s\".\n"
+
+#: src/ushare.c:614
+#, c-format
+msgid "Error: failed to daemonize program : %s\n"
+msgstr "Fehler: Daemonisierung des Programms nicht möglich: %s\n"
+
+#: src/metadata.c:399
+msgid "Building Metadata List ...\n"
+msgstr "Erzeuge Metadata List ...\n"
+
+#: src/metadata.c:412
+#, c-format
+msgid "Looking for files in content directory : %s\n"
+msgstr "Suche nach Dateien im Content Verzeichnis : %s\n"
+
+#: src/metadata.c:436
+#, c-format
+msgid "Found %d files and subdirectories.\n"
+msgstr "Fand %d Dateien und Unterverzeichnisse.\n"
+
+#: src/cfgparser.c:161
+#, c-format
+msgid "Warning: port doesn't fit IANA port assignements.\n"
+msgstr "Warnung: Port passt nicht zur IANA Port Zuordnung.\n"
+
+#: src/cfgparser.c:163
+#, c-format
+msgid ""
+"Warning: Only Dynamic or Private Ports can be used (from 49152 through "
+"65535)\n"
+msgstr ""
+"Warnung: Nur dynamische und private Ports können benutzt werden (von 49152 "
+"bis 65535)\n"
+
+#: src/cfgparser.c:243
+#, c-format
+msgid ""
+"Usage: ushare [-n name] [-i interface] [-p port] [-c directory] [[-c "
+"directory]...]\n"
+msgstr ""
+"Usage: ushare [-n Name] [-i Interface] [-p Port] [-c Verzeichnis] [[-c "
+"Verzeichnis]...]\n"
+
+#: src/cfgparser.c:244
+#, c-format
+msgid "Options:\n"
+msgstr "Optionen:\n"
+
+#: src/cfgparser.c:245
+#, c-format
+msgid " -n, --name=NAME\tSet UPnP Friendly Name (default is '%s')\n"
+msgstr " -n, --name=NAME\tSet UPnP-freundlicher Name (vorgegeben ist '%s')\n"
+
+#: src/cfgparser.c:247
+#, c-format
+msgid " -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"
+msgstr ""
+" -i, --interface=IFACE\tBenutze IFACE Netzwerk Interface (vorgegeben ist '%"
+"s')\n"
+
+#: src/cfgparser.c:249
+#, c-format
+msgid " -p, --port=PORT\tForces the HTTP server to run on PORT\n"
+msgstr ""
+" -p, --port=PORT\tLegt das PORT fest, auf dem der HTTP Server laufen soll\n"
+
+#: src/cfgparser.c:250
+#, c-format
+msgid " -c, --content=DIR\tShare the content of DIR directory\n"
+msgstr ""
+" -c, --content=DIR\tShare den Inhalt des folgenden Content Verzeichnisses"
+"(DIR)\n"
+
+#: src/cfgparser.c:251
+#, c-format
+msgid " -w, --no-web\t\tDisable the control web page (enabled by default)\n"
+msgstr ""
+" -w, --no-web\t\tDeaktiviere die Kontrollwebseite (Vorgabe: Webseite ist "
+"aktiviert)\n"
+
+#: src/cfgparser.c:252
+#, c-format
+msgid " -v, --verbose\t\tSet verbose display\n"
+msgstr " -v, --verbose\t\tSetze Verbose Display\n"
+
+#: src/cfgparser.c:253
+#, c-format
+msgid " -D, --daemon\t\tRun as a daemon\n"
+msgstr " -D, --daemon\t\tAusführen des Porgramms in Daemon Mode\n"
+
+#: src/cfgparser.c:254
+#, c-format
+msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
+msgstr ""
+" -V, --version\t\tZeigt die uShare Version an und beendet uShare danach\n"
+
+#: src/cfgparser.c:255
+#, c-format
+msgid " -h, --help\t\tDisplay this help\n"
+msgstr " -h, --help\t\tZeigt diese Hilfe an\n"
+
+#: src/presentation.c:111 src/presentation.c:146
+msgid "uShare Information Page"
+msgstr "uShare Informationsseite"
+
+#: src/presentation.c:158
+msgid "uShare UPnP A/V Media Server"
+msgstr "uShare UPnP A/V Media Server"
+
+#: src/presentation.c:159
+msgid "Information Page"
+msgstr "Informationsseite"
+
+#: src/presentation.c:166
+msgid "Version"
+msgstr "Version"
+
+#: src/presentation.c:169
+msgid "Device UDN"
+msgstr "Gerät UDN"
+
+#: src/presentation.c:171
+msgid "Number of shared files and directories"
+msgstr "Anzahl der geshareten Dateien und Verzeichnisse"
+
+#: src/presentation.c:181
+msgid "Share"
+msgstr "Share"
+
+#: src/presentation.c:187
+msgid "unShare!"
+msgstr "unShare!"
+
+#: src/presentation.c:193
+msgid "Add a new share :  "
+msgstr "Füge neues Share hinzu :  "
+
+#: src/presentation.c:199
+msgid "Share!"
+msgstr "Share!"
+
+#: src/presentation.c:210
+msgid "Refresh Shares ..."
+msgstr "Erneuere Shares ..."
