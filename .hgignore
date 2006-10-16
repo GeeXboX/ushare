@@ -1,0 +1,32 @@
+syntax :regexp
+
+# general
+\.o
+\.deps
+Makefile
+Makefile.in
+
+# automake
+ABOUT-NLS
+INSTALL
+aclocal.m4
+autom4te\..*
+config\..*
+configure
+depcomp
+install-sh
+m4
+missing
+mkinstalldirs
+
+# po files
+POTFILES
+Makevars.template
+Rules-quot
+\.sed
+\.header
+\.sin
+stamp-.*
+
+# exec files
+ushare$
