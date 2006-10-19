@@ -158,6 +158,43 @@
 /* Represent the CDS DIDL Message Container Title value. */
 #define DIDL_CONTAINER_TITLE "dc:title"
 
+static bool
+filter_has_val (const char *filter, const char *val)
+{
+  char *x = NULL, *token = NULL;
+  char *m_buffer = NULL, *buffer;
+  int len = strlen (val);
+  bool ret = false;
+
+  if (!strcmp (filter, "*"))
+    return true;
+
+  x = strdup (filter);
+  if (x)
+  {
+    m_buffer = (char*) malloc (strlen (x));
+    if (m_buffer)
+    {
+      buffer = m_buffer;
+      token = strtok_r (x, ",", &buffer);
+      while (token)
+      {
+        if (*val == '@')
+          token = strchr (token, '@');
+        if (token && !strncmp (token, val, len))
+        {
+          ret = true;
+          break;
+        }
+        token = strtok_r (NULL, ",", &buffer);
+      }
+      free (m_buffer);
+    }
+    free (x);
+  }
+  return ret;
+}
+
 /* UPnP ContentDirectory Service actions */
 static bool
 cds_get_search_capabilities (struct action_event_t *event)
@@ -230,14 +267,18 @@ didl_add_item (struct buffer_t *out, int item_id,
   didl_add_tag (out, DIDL_ITEM_CLASS, class);
   didl_add_tag (out, DIDL_ITEM_TITLE, title);
 
-  buffer_appendf (out, "<%s", DIDL_RES);
-  didl_add_param (out, DIDL_RES_INFO, protocol_info);
-  if (size >= 0)
-    didl_add_value (out, DIDL_RES_SIZE, size);
-  buffer_append (out, ">");
-  if (url)
-    buffer_append (out, url);
-  buffer_appendf (out, "</%s>", DIDL_RES);
+  if (filter_has_val (filter, DIDL_RES))
+  {
+    buffer_appendf (out, "<%s", DIDL_RES);
+    // protocolInfo is required :
+    didl_add_param (out, DIDL_RES_INFO, protocol_info);
+    if (filter_has_val (filter, "@"DIDL_RES_SIZE))
+      didl_add_value (out, DIDL_RES_SIZE, size);
+    buffer_append (out, ">");
+    if (url)
+      buffer_append (out, url);
+    buffer_appendf (out, "</%s>", DIDL_RES);
+  }
   buffer_appendf (out, "</%s>", DIDL_ITEM);
 }
 
