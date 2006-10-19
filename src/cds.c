@@ -317,9 +317,9 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
   {
     didl_add_header (out);
     didl_add_item (out, entry->id, entry->parent
-                   ? entry->parent->id : -1, "0", entry->class,
-                   entry->title, entry->protocol, -1, entry->url,
-                   filter);
+                   ? entry->parent->id : -1, "false", entry->class,
+                   entry->title, entry->protocol, entry->size,
+                   entry->url, filter);
     didl_add_footer (out);
 
     for (c = index; c < MIN (index + count, entry->child_count); c++)
