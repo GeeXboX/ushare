@@ -387,7 +387,7 @@ cds_browse (struct action_event_t *event)
   /* check if metadatas have been well inited */
   if (!ut->init)
     return false;
-  
+
   /* Retrieve Browse arguments */
   index = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_START_INDEX);
   count = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_REQUEST_COUNT);
@@ -433,10 +433,10 @@ cds_browse (struct action_event_t *event)
       cds_browse_directchildren (event, out, index, count, entry);
 
   if (result_count < 0)
-    {
-      buffer_free (out);
-      return false;
-    }
+  {
+    buffer_free (out);
+    return false;
+  }
 
   buffer_free (out);
   upnp_add_response (event, SERVICE_CDS_DIDL_UPDATE_ID,
