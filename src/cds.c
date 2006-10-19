@@ -219,7 +219,7 @@ didl_add_value (struct buffer_t *out, char *param, int value)
 static void
 didl_add_item (struct buffer_t *out, int item_id,
                int parent_id, char *restricted, char *class, char *title,
-               char *protocol_info, int size, char *url)
+               char *protocol_info, int size, char *url, char *filter)
 {
   buffer_appendf (out, "<%s", DIDL_ITEM);
   didl_add_value (out, DIDL_ITEM_ID, item_id);
@@ -264,7 +264,8 @@ didl_add_container (struct buffer_t *out, int id, int parent_id,
 
 static int
 cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
-                     int index, int count, struct upnp_entry_t *entry)
+                     int index, int count, struct upnp_entry_t *entry,
+                     char *filter)
 {
   int result_count = 0, c = 0;
 
@@ -276,7 +277,8 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
     didl_add_header (out);
     didl_add_item (out, entry->id, entry->parent
                    ? entry->parent->id : -1, "0", entry->class,
-                   entry->title, entry->protocol, -1, entry->url);
+                   entry->title, entry->protocol, -1, entry->url,
+                   filter);
     didl_add_footer (out);
 
     for (c = index; c < MIN (index + count, entry->child_count); c++)
@@ -312,7 +314,7 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
 static int
 cds_browse_directchildren (struct action_event_t *event,
                            struct buffer_t *out, int index,
-                           int count, struct upnp_entry_t *entry)
+                           int count, struct upnp_entry_t *entry, char *filter)
 {
   struct upnp_entry_t **childs;
   int s, result_count = 0;
@@ -350,7 +352,7 @@ cds_browse_directchildren (struct action_event_t *event,
                        (*childs)->parent ? (*childs)->parent->id : -1,
                        "true", (*childs)->class, (*childs)->title,
                        (*childs)->protocol, (*childs)->size,
-                       (*childs)->url);
+                       (*childs)->url, filter);
       }
       result_count++;
     }
@@ -374,6 +376,7 @@ cds_browse (struct action_event_t *event)
   struct upnp_entry_t *entry = NULL;
   int result_count = 0, index, count, id, sort_criteria;
   char *flag = NULL;
+  char *filter = NULL;
   struct buffer_t *out = NULL;
   bool metadata;
 
@@ -393,9 +396,10 @@ cds_browse (struct action_event_t *event)
   count = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_REQUEST_COUNT);
   id = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_OBJECT_ID);
   flag = upnp_get_string (event->request, SERVICE_CDS_ARG_BROWSE_FLAG);
+  filter = upnp_get_string (event->request, SERVICE_CDS_ARG_FILTER);
   sort_criteria = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_SORT_CRIT);
 
-  if (!flag)
+  if (!flag || !filter)
     return false;
 
   /* Check arguments validity */
@@ -427,10 +431,10 @@ cds_browse (struct action_event_t *event)
 
   if (metadata)
     result_count =
-      cds_browse_metadata (event, out, index, count, entry);
+      cds_browse_metadata (event, out, index, count, entry, filter);
   else
     result_count =
-      cds_browse_directchildren (event, out, index, count, entry);
+      cds_browse_directchildren (event, out, index, count, entry, filter);
 
   if (result_count < 0)
   {
