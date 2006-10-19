@@ -324,10 +324,6 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
 
     for (c = index; c < MIN (index + count, entry->child_count); c++)
       result_count++;
-
-    upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
-    upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, "1");
-    upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, "1");
   }
   else  /* container : directory */
   {
@@ -338,16 +334,12 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
                         "true", "true", entry->title, entry->class);
     didl_add_footer (out);
 
-    for (c = index; c < MIN (index + count, entry->child_count); c++)
-      result_count++;
-
-    upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
-    sprintf (tmp, "%d", result_count);
-    upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, tmp);
-    
-    sprintf (tmp, "%d", entry->child_count);
-    upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, tmp);
+    result_count = 1;
   }
+
+  upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
+  upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, "1");
+  upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, "1");
 
   return result_count;
 }
