@@ -1,3 +1,8 @@
+2006-10-19  Alexis Saettler <asbin@asbin.org>
+	* add German translation (thanks to Robin H.).
+	* fix filtering and browse capabilities : now uShare is conform to
+	ContentDirectory:1 Service Template Standard.
+
 2006-09-17  Alexis Saettler <asbin@asbin.org>
 
 	* add iso and bin mime types.
