@@ -1,3 +1,11 @@
+ushare (0.9.7-0ubuntu3) edgy; urgency=low
+
+  * change for edgy
+  * add copyright from gettext file
+  * update Standards-Version to 3.7.2
+
+ -- Alexis Saettler <alexis@saettler.org>  Sun, 17 Sep 2006 15:54:46 +0200
+
 ushare (0.9.7-0ubuntu2) dapper; urgency=low
 
   * rewrite debconf scripts according to lsb

@@ -1,21 +1,30 @@
 #!/usr/bin/make -f
 
 include /usr/share/cdbs/1/rules/debhelper.mk
-#include /usr/share/cdbs/1/rules/simple-patchsys.mk
+include /usr/share/cdbs/1/rules/langpack.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
 DEB_BUILDDIR:=debbuild
 DEB_INSTALL_DIRS_ushare:=/usr/share/ushare
 
+USHARE_INIT:=$(CURDIR)/debian/ushare.init
+
 # copy init script, to use with dh_installinit
 install/ushare::
-	cp $(CURDIR)/scripts/ushare $(CURDIR)/debian/ushare.init
-	mv $(CURDIR)/debian/ushare/etc/ushare.conf $(CURDIR)/debian/ushare/usr/share/ushare/
-	sed -i -e "s%\(/etc/ushare.conf\)%\1\n# Edit this file with 'dpkg-reconfigure ushare'%" \
-		$(CURDIR)/debian/ushare/usr/share/ushare/ushare.conf
+	cp $(CURDIR)/scripts/ushare $(USHARE_INIT)
+	mv $(CURDIR)/debian/$(cdbs_curpkg)/etc/ushare.conf $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/ushare/
+	sed -i -e "s%\(/etc/ushare.conf\)%\1\n# Edit this file with 'dpkg-reconfigure $(cdbs_curpkg)'%" \
+		$(CURDIR)/debian/$(cdbs_curpkg)/usr/share/ushare/ushare.conf
 
 cleanbuilddir::
-	-$(RM) $(CURDIR)/debian/ushare.init
+	-$(RM) $(USHARE_INIT)
 
 clean::
 	debconf-updatepo
+
+# used to build a debian package
+#  run 'debian/rules dpkg-buildpackage'
+dpkg-buildpackage:
+	dpkg-buildpackage -rfakeroot -i"(?:^|/)(?:debug|.hg*)$$"
+
+.PHONY: dpkg-buildpackage
