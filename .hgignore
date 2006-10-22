@@ -27,6 +27,7 @@ Rules-quot
 \.header
 \.sin
 stamp-.*
+\.gmo
 
 # exec files
 ushare$
