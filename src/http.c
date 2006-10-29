@@ -73,6 +73,7 @@ http_get_info (const char *filename, struct File_Info *info)
   struct upnp_entry_t *entry = NULL;
   struct stat st;
   int upnp_id = 0;
+  char *content_type = NULL;
 
   if (!filename || !info)
     return -1;
@@ -159,7 +160,16 @@ http_get_info (const char *filename, struct File_Info *info)
   info->file_length = st.st_size;
   info->last_modified = st.st_mtime;
   info->is_directory = S_ISDIR (st.st_mode);
-  info->content_type = strdup ("");
+
+  content_type = entry->protocol + strlen ("http-get:*:");
+  content_type = strndup (content_type, strlen(content_type) - strlen (":*"));
+  if (content_type)
+  {
+    info->content_type = ixmlCloneDOMString (content_type);
+    free (content_type);
+  }
+  else
+    info->content_type = ixmlCloneDOMString ("");
 
   return 0;
 }
