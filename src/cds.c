@@ -328,7 +328,6 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
   }
   else  /* container : directory */
   {
-    char tmp[32];
     didl_add_header (out);
     didl_add_container (out, entry->id, entry->parent
                         ? entry->parent->id : -1, entry->child_count,
