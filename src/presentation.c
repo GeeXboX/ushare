@@ -24,6 +24,8 @@
 #error "Missing config.h file : run configure again"
 #endif
 
+#include <stdlib.h>
+
 #if HAVE_LANGINFO_CODESET
 # include <langinfo.h>
 #endif

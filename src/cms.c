@@ -25,6 +25,7 @@
 #error "Missing config.h file : run configure again"
 #endif
 
+#include <stdlib.h>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 
