@@ -289,7 +289,7 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
   if (len >= 0)
     file->pos += len;
 
-  log_verbose ("Read %d bytes.\n", len);
+  log_verbose ("Read %zd bytes.\n", len);
 
   return len;
 }
@@ -318,17 +318,17 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
   switch (origin)
   {
   case SEEK_SET:
-    log_verbose ("Attempting to seek to %ld (was at %d) in %s\n",
+    log_verbose ("Attempting to seek to %ld (was at %zd) in %s\n",
                 offset, file->pos, file->fullpath);
     newpos = offset;
     break;
   case SEEK_CUR:
-    log_verbose ("Attempting to seek by %ld from %d in %s\n",
+    log_verbose ("Attempting to seek by %ld from %zd in %s\n",
                 offset, file->pos, file->fullpath);
     newpos = file->pos + offset;
     break;
   case SEEK_END:
-    log_verbose ("Attempting to seek by %ld from end (was at %d) in %s\n",
+    log_verbose ("Attempting to seek by %ld from end (was at %zd) in %s\n",
                 offset, file->pos, file->fullpath);
 
     if (file->type == FILE_LOCAL)
