@@ -114,7 +114,7 @@ http_get_info (const char *filename, struct File_Info *info)
   {
     if (build_presentation_page (ut) < 0)
       return -1;
-    
+   
     set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
@@ -123,7 +123,7 @@ http_get_info (const char *filename, struct File_Info *info)
   {
     if (process_cgi (ut, (char *) (filename + strlen (USHARE_CGI) + 1)) < 0)
       return -1;
-    
+   
    set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }

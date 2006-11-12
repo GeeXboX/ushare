@@ -133,6 +133,6 @@ struct mime_type_t MIME_Type_List[] = {
   /* Miscellaneous text files */
   { "bup", UPNP_TEXT, "http-get:*:text/bup:*"}, /* DVD backup */
   { "ifo", UPNP_TEXT, "http-get:*:text/ifo:*"}, /* DVD information */
-  
+ 
   { NULL, NULL, NULL}
 };

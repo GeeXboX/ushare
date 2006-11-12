@@ -368,7 +368,7 @@ cds_browse_directchildren (struct action_event_t *event,
      then all children must be returned */
   if (index == 0 && count == 0)
     count = entry->child_count;
-  
+ 
   for (; *childs; childs++)
   {
     if (count == 0 || result_count < count)
