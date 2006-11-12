@@ -66,6 +66,18 @@ struct web_file_t {
   } detail;
 };
 
+
+static inline void
+set_info_file (struct File_Info *info, const size_t length,
+               const char *content_type)
+{
+  info->file_length = length;
+  info->last_modified = 0;
+  info->is_directory = 0;
+  info->is_readable = 1;
+  info->content_type = ixmlCloneDOMString (content_type);
+}
+
 static int
 http_get_info (const char *filename, struct File_Info *info)
 {
@@ -82,31 +94,19 @@ http_get_info (const char *filename, struct File_Info *info)
 
   if (!strcmp (filename, CDS_LOCATION))
   {
-    info->file_length = CDS_DESCRIPTION_LEN;
-    info->last_modified = 0;
-    info->is_directory = 0;
-    info->is_readable = 1;
-    info->content_type = ixmlCloneDOMString (SERVICE_CONTENT_TYPE);
+    set_info_file (info, CDS_DESCRIPTION_LEN, SERVICE_CONTENT_TYPE);
     return 0;
   }
 
   if (!strcmp (filename, CMS_LOCATION))
   {
-    info->file_length = CMS_DESCRIPTION_LEN;
-    info->last_modified = 0;
-    info->is_directory = 0;
-    info->is_readable = 1;
-    info->content_type = ixmlCloneDOMString (SERVICE_CONTENT_TYPE);
+    set_info_file (info, CMS_DESCRIPTION_LEN, SERVICE_CONTENT_TYPE);
     return 0;
   }
 
   if (!strcmp (filename, MSR_LOCATION))
   {
-    info->file_length = MSR_DESCRIPTION_LEN;
-    info->last_modified = 0;
-    info->is_directory = 0;
-    info->is_readable = 1;
-    info->content_type = ixmlCloneDOMString (SERVICE_CONTENT_TYPE);
+    set_info_file (info, MSR_DESCRIPTION_LEN, SERVICE_CONTENT_TYPE);
     return 0;
   }
 
@@ -115,11 +115,7 @@ http_get_info (const char *filename, struct File_Info *info)
     if (build_presentation_page (ut) < 0)
       return -1;
     
-    info->file_length = ut->presentation->len;
-    info->last_modified = 0;
-    info->is_directory = 0;
-    info->is_readable = 1;
-    info->content_type = ixmlCloneDOMString (PRESENTATION_PAGE_CONTENT_TYPE);
+    set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
 
@@ -128,11 +124,7 @@ http_get_info (const char *filename, struct File_Info *info)
     if (process_cgi (ut, (char *) (filename + strlen (USHARE_CGI) + 1)) < 0)
       return -1;
     
-    info->file_length = ut->presentation->len;
-    info->last_modified = 0;
-    info->is_directory = 0;
-    info->is_readable = 1;
-    info->content_type = ixmlCloneDOMString (PRESENTATION_PAGE_CONTENT_TYPE);
+   set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
 
@@ -175,6 +167,22 @@ http_get_info (const char *filename, struct File_Info *info)
 }
 
 static UpnpWebFileHandle
+get_file_memory (const char *fullpath, const char *description,
+                 const size_t length)
+{
+  struct web_file_t *file;
+
+  file = malloc (sizeof (struct web_file_t));
+  file->fullpath = strdup (fullpath);
+  file->pos = 0;
+  file->type = FILE_MEMORY;
+  file->detail.memory.contents = strdup (description);
+  file->detail.memory.len = length;
+
+  return ((UpnpWebFileHandle) file);
+}
+
+static UpnpWebFileHandle
 http_open (const char *filename, enum UpnpOpenFileMode mode)
 {
   extern struct ushare_t *ut;
@@ -191,49 +199,18 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
     return NULL;
 
   if (!strcmp (filename, CDS_LOCATION))
-  {
-    file = malloc (sizeof (struct web_file_t));
-    file->fullpath = strdup (CDS_LOCATION);
-    file->pos = 0;
-    file->type = FILE_MEMORY;
-    file->detail.memory.contents = strdup (CDS_DESCRIPTION);
-    file->detail.memory.len = CDS_DESCRIPTION_LEN;
-    return ((UpnpWebFileHandle) file);
-  }
+    return get_file_memory (CDS_LOCATION, CDS_DESCRIPTION, CDS_DESCRIPTION_LEN);
 
   if (!strcmp (filename, CMS_LOCATION))
-  {
-    file = malloc (sizeof (struct web_file_t));
-    file->fullpath = strdup (CMS_LOCATION);
-    file->pos = 0;
-    file->type = FILE_MEMORY;
-    file->detail.memory.contents = strdup (CMS_DESCRIPTION);
-    file->detail.memory.len = CMS_DESCRIPTION_LEN;
-    return ((UpnpWebFileHandle) file);
-  }
+    return get_file_memory (CMS_LOCATION, CMS_DESCRIPTION, CMS_DESCRIPTION_LEN);
 
   if (!strcmp (filename, MSR_LOCATION))
-  {
-    file = malloc (sizeof (struct web_file_t));
-    file->fullpath = strdup (MSR_LOCATION);
-    file->pos = 0;
-    file->type = FILE_MEMORY;
-    file->detail.memory.contents = strdup (MSR_DESCRIPTION);
-    file->detail.memory.len = MSR_DESCRIPTION_LEN;
-    return ((UpnpWebFileHandle) file);
-  }
+    return get_file_memory (MSR_LOCATION, MSR_DESCRIPTION, MSR_DESCRIPTION_LEN);
 
   if (ut->use_presentation && ( !strcmp (filename, USHARE_PRESENTATION_PAGE)
       || !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI))))
-  {
-    file = malloc (sizeof (struct web_file_t));
-    file->fullpath = strdup (USHARE_PRESENTATION_PAGE);
-    file->pos = 0;
-    file->type = FILE_MEMORY;
-    file->detail.memory.contents = strdup (ut->presentation->buf);
-    file->detail.memory.len = ut->presentation->len;
-    return ((UpnpWebFileHandle) file);
-  }
+    return get_file_memory (USHARE_PRESENTATION_PAGE, ut->presentation->buf,
+                            ut->presentation->len);
 
   upnp_id = atoi (strrchr (filename, '/') + 1);
   entry = upnp_get_entry (ut->root_entry, upnp_id);
