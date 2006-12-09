@@ -102,11 +102,14 @@ get_list_length (void *list)
 }
 
 static xml_convert_t xml_convert[] = {
-  {'"', "&quot;"},
-  {'&', "&amp;"},
+  {'"' , "&quot;"},
+  {'&' , "&amp;"},
   {'\'', "&apos;"},
-  {'<', "&lt;"},
-  {'>', "&gt;"},
+  {'<' , "&lt;"},
+  {'>' , "&gt;"},
+  {'\n', "&#xA;"},
+  {'\r', "&#xD;"},
+  {'\t', "&#x9;"},
   {0, NULL},
 };
 
