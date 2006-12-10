@@ -141,17 +141,16 @@
       <h3>Fedora Package</h3>
       If you're using Fedora FC4 GNU/Linux distribution, you can also grab the <a href="http://ushare.geexbox.org/releases/ushare-0.9.7-1.fc4.i386.rpm">binary for i386</a>.<br/>
       <h3>Development Tree</h3>
-      The latest uShare development tree can be grabbed using <a href="http://www.gnu.org/software/gnu-arch/">GNU Arch</a>, a revision control system, similar in purpose to tools such as CVS, SCCS, and Subversion. It is used to keep track of the changes made to a source tree and to help programmers combine and otherwise manipulate changes made by multiple people or at different times.<br/>
+      The latest uShare development tree can be grabbed using <a href="http://www.selenic.com/mercurial/">Mercurial</a>, a revision control system, similar in purpose to tools such as CVS, SCCS, and Subversion. It is used to keep track of the changes made to a source tree and to help programmers combine and otherwise manipulate changes made by multiple people or at different times.<br/>
       <br/>
-      There are currently 2 ways of accessing the Arch tree : via command-line or Web-Arch (to just have a look to some changes on a specific file, for example). You can directly access to the Web-Arch with your browser from :<br/>
+      There are currently 2 ways of accessing the Mercurial tree: via command-line or web interface (to just have a look to some changes on a specific file, for example). You can directly access to the web interface with your browser from:<br/>
       <br/>
-      <a href="http://www.geexbox.org/archzoom/devel@geexbox.org--2004/ushare--main--0">uShare Web-Arch</a><br/>
+      <a href="http://hg.geexbox.org/ushare/">uShare Mercurial</a><br/>
       <br/>
-      In order to access to Arch via command line, create and enter a new directory and do the following (be sure that you have installed the TLA package) :
+      In order to access to Mercurial via command line, create and enter a new directory and do the following (be sure that you have installed the mercurial package) :
       <pre style="background-color: rgb(220, 220, 220)">
-      * <b>tla register-archive devel@geexbox.org--2004 http://www.geexbox.org/arch</b> - <i>To register with the GeeXboX's Arch repository</i>.
-      * <b>tla get -A devel@geexbox.org--2004 ushare--main--0</b> - <i>To fetch all the files from the directory geexbox</i>.
-      * <b>tla update</b> - <i>To update your local copy of the Arch, synchronizing with our server</i>.
+      * <b>hg clone http://hg.geexbox.org/ushare</b> - <i>To get a local copy of the uShare's Mercurial repository.</i>.
+      * <b>hg pull --update</b> - <i>To update your local copy of the Mercurial, synchronizing with our server</i>.
       </pre>
       <h3>Old Releases</h3>
       Old releases of uShare can be found on our <a href="http://ushare.geexbox.org/releases/">releases depository</a>.
