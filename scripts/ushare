@@ -33,7 +33,7 @@ check_shares() {
     . $CONFIGFILE
     [ -n "$USHARE_DIR" ] && return 0
   fi
-  return -1
+  return 1
 }
 
 case "$1" in
@@ -41,7 +41,7 @@ case "$1" in
     log_daemon_msg "Starting $DESC: $NAME"
     if ! $(check_shares); then
       log_warning_msg "No shares avalaible ..."
-      log_end_msg 1
+      log_end_msg 0
     else
       checkpid
       start-stop-daemon --start --quiet --background --oknodo \
