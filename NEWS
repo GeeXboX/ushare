@@ -1,3 +1,11 @@
+2006-12-10 : GeeXboX uShare 0.9.8 released.
+ Added German translation.
+ Convert special xml characters to xml (like & => &amp;).
+ Added iso and bin mime types.
+ Better filtering and browse capabilities: now uShare is conform to
+  ContentDirectory:1 Service Template Standard.
+ Updated init script to use lsb functions.
+
 2006-03-12 : GeeXboX uShare 0.9.7 released.
  Added new Microsoft Registrar service which fakes the authorization
   required to be able to stream to MS compliant Media Renderers.
