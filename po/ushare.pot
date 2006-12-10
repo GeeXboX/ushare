@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2006-09-20 22:31+0200\n"
+"POT-Creation-Date: 2006-12-09 13:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,16 +104,16 @@ msgstr ""
 msgid "Error: failed to daemonize program : %s\n"
 msgstr ""
 
-#: src/metadata.c:399
+#: src/metadata.c:402
 msgid "Building Metadata List ...\n"
 msgstr ""
 
-#: src/metadata.c:412
+#: src/metadata.c:415
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr ""
 
-#: src/metadata.c:436
+#: src/metadata.c:439
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr ""
@@ -187,46 +187,46 @@ msgstr ""
 msgid " -h, --help\t\tDisplay this help\n"
 msgstr ""
 
-#: src/presentation.c:111 src/presentation.c:146
+#: src/presentation.c:113 src/presentation.c:148
 msgid "uShare Information Page"
 msgstr ""
 
-#: src/presentation.c:158
+#: src/presentation.c:160
 msgid "uShare UPnP A/V Media Server"
 msgstr ""
 
-#: src/presentation.c:159
+#: src/presentation.c:161
 msgid "Information Page"
 msgstr ""
 
-#: src/presentation.c:166
+#: src/presentation.c:168
 msgid "Version"
 msgstr ""
 
-#: src/presentation.c:169
+#: src/presentation.c:171
 msgid "Device UDN"
 msgstr ""
 
-#: src/presentation.c:171
+#: src/presentation.c:173
 msgid "Number of shared files and directories"
 msgstr ""
 
-#: src/presentation.c:181
+#: src/presentation.c:183
 msgid "Share"
 msgstr ""
 
-#: src/presentation.c:187
+#: src/presentation.c:189
 msgid "unShare!"
 msgstr ""
 
-#: src/presentation.c:193
+#: src/presentation.c:195
 msgid "Add a new share :  "
 msgstr ""
 
-#: src/presentation.c:199
+#: src/presentation.c:201
 msgid "Share!"
 msgstr ""
 
-#: src/presentation.c:210
+#: src/presentation.c:212
 msgid "Refresh Shares ..."
 msgstr ""
