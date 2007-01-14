@@ -174,7 +174,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
-  entry->id = ut->nr_entries++;
+  entry->id = ut->starting_id + ut->nr_entries++;
   entry->fullpath = fullpath ? strdup (fullpath) : NULL;
   entry->parent = parent;
   entry->child_count =  dir ? 0 : -1;

@@ -33,6 +33,9 @@
 #define XBOX_MODEL_NAME "Windows Media Connect Compatible"
 #define DEFAULT_UUID "898f9738-d930-4db4-a3cf"
 
+#define STARTING_ENTRY_ID_DEFAULT 0
+#define STARTING_ENTRY_ID_XBOX360 100000
+
 #define UPNP_DESCRIPTION \
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>" \
 "<root xmlns=\"urn:schemas-upnp-org:device-1-0\">" \
@@ -84,6 +87,7 @@ struct ushare_t {
   content_list *contentlist;
   struct upnp_entry_t *root_entry;
   int nr_entries;
+  int starting_id;
   int init;
   UpnpDevice_Handle dev;
   char *udn;

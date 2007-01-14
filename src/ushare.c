@@ -76,6 +76,7 @@ ushare_new (void)
   ut->contentlist = NULL;
   ut->root_entry = NULL;
   ut->nr_entries = 0;
+  ut->starting_id = STARTING_ENTRY_ID_DEFAULT;
   ut->init = 0;
   ut->dev = 0;
   ut->udn = NULL;
@@ -590,6 +591,8 @@ main (int argc, char **argv)
     free (ut->name);
     ut->name = strdup (name);
     free (name);
+
+    ut->starting_id = STARTING_ENTRY_ID_XBOX360;
   }
   
   if (ut->daemon)
