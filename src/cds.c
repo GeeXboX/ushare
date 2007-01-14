@@ -50,6 +50,9 @@
 /* Represent the CDS Browse action. */
 #define SERVICE_CDS_ACTION_BROWSE "Browse"
 
+/* Represent the CDS Search action. */
+#define SERVICE_CDS_ACTION_SEARCH "Search"
+
 /* Represent the CDS SearchCaps argument. */
 #define SERVICE_CDS_ARG_SEARCH_CAPS "SearchCaps"
 
@@ -76,6 +79,9 @@
 
 /* Represent the CDS SortCriteria argument. */
 #define SERVICE_CDS_ARG_SORT_CRIT "SortCriteria"
+
+/* Represent the CDS SearchCriteria argument. */
+#define SERVICE_CDS_ARG_SEARCH_CRIT "SearchCriteria"
 
 /* Represent the CDS Root Object ID argument. */
 #define SERVICE_CDS_ROOT_OBJECT_ID "0"
@@ -158,6 +164,15 @@
 
 /* Represent the CDS DIDL Message Container Title value. */
 #define DIDL_CONTAINER_TITLE "dc:title"
+
+/* Represent the "upnp:class" reserved keyword for Search action */
+#define SEARCH_CLASS_MATCH_KEYWORD "(upnp:class = \""
+
+/* Represent the "upnp:class derived from" reserved keyword */
+#define SEARCH_CLASS_DERIVED_KEYWORD "(upnp:class derivedfrom \""
+
+/* Represent the Search default keyword */
+#define SEARCH_OBJECT_KEYWORD "object"
 
 static bool
 filter_has_val (const char *filter, const char *val)
@@ -482,11 +497,228 @@ cds_browse (struct action_event_t *event)
   return event->status;
 }
 
+static bool
+matches_search (char *search_criteria, char *class)
+{
+  char keyword[256] = SEARCH_OBJECT_KEYWORD;
+  bool derived_from = false;
+  char *quote_closed = NULL;
+  
+  if (!strncmp (search_criteria, SEARCH_CLASS_MATCH_KEYWORD,
+                strlen (SEARCH_CLASS_MATCH_KEYWORD)))
+  {
+    strncpy (keyword, search_criteria
+             + strlen (SEARCH_CLASS_MATCH_KEYWORD), sizeof (keyword));
+    quote_closed = strchr (keyword, '"');
+    
+    if (quote_closed)
+      *quote_closed = '\0';
+  }
+  else if (!strncmp (search_criteria, SEARCH_CLASS_DERIVED_KEYWORD,
+                     strlen (SEARCH_CLASS_DERIVED_KEYWORD)))
+  {
+    derived_from = true;
+    strncpy (keyword, search_criteria
+             + strlen (SEARCH_CLASS_DERIVED_KEYWORD), sizeof (keyword));
+    quote_closed = strchr (keyword, '"');
+
+    if (quote_closed)
+      *quote_closed = '\0';
+  }
+
+  if (derived_from && !strncmp (class, keyword, strlen (keyword)))
+    return true;
+  else if (!strcmp (class, keyword))
+    return true;
+
+  return false;
+}
+
+static int
+cds_search_directchildren_recursive (struct buffer_t *out, int count,
+                                     struct upnp_entry_t *entry, char *filter,
+                                     char *search_criteria)
+{
+  struct upnp_entry_t **childs;
+  int result_count = 0;
+
+  if (entry->child_count == -1) /* item : file */
+    return -1;
+
+  /* go to the first child */
+  childs = entry->childs;
+
+  for (; *childs; childs++)
+  {
+    if (count == 0 || result_count < count)
+      /* only fetch the requested count number or all entries if count = 0 */
+    {
+      if ((*childs)->child_count >= 0) /* container */
+      {
+        int new_count;
+        new_count = cds_search_directchildren_recursive
+          (out, (count == 0) ? 0 : (count - result_count),
+           (*childs), filter, search_criteria);
+        result_count += new_count;
+      }
+      else /* item */
+      {
+        if (matches_search (search_criteria, (*childs)->class))
+        {
+          didl_add_item (out, (*childs)->id,
+                         (*childs)->parent ? (*childs)->parent->id : -1,
+                         "true", (*childs)->class, (*childs)->title,
+                         (*childs)->protocol, (*childs)->size,
+                         (*childs)->url, filter);
+          result_count++;
+        }
+      }
+    }
+  }
+
+  return result_count;
+}
+
+static int
+cds_search_directchildren (struct action_event_t *event,
+                           struct buffer_t *out, int index,
+                           int count, struct upnp_entry_t *entry,
+                           char *filter, char *search_criteria)
+{
+  struct upnp_entry_t **childs;
+  int s, result_count = 0;
+  char tmp[32];
+
+  index = 0;
+
+  if (entry->child_count == -1) /* item : file */
+    return -1;
+
+  didl_add_header (out);
+
+  /* go to the child pointed out by index */
+  childs = entry->childs;
+  for (s = 0; s < index; s++)
+    if (*childs)
+      childs++;
+
+  /* UPnP CDS compliance : If starting index = 0 and requested count = 0
+     then all children must be returned */
+  if (index == 0 && count == 0)
+    count = entry->child_count;
+
+  for (; *childs; childs++)
+  {
+    if (count == 0 || result_count < count)
+      /* only fetch the requested count number or all entries if count = 0 */
+    {
+      if ((*childs)->child_count >= 0) /* container */
+      {
+        int new_count;
+        new_count = cds_search_directchildren_recursive
+          (out, (count == 0) ? 0 : (count - result_count),
+           (*childs), filter, search_criteria);
+        result_count += new_count;
+      }
+      else /* item */
+      {
+        if (matches_search (search_criteria, (*childs)->class))
+        {
+          didl_add_item (out, (*childs)->id,
+                         (*childs)->parent ? (*childs)->parent->id : -1,
+                         "true", (*childs)->class, (*childs)->title,
+                         (*childs)->protocol, (*childs)->size,
+                         (*childs)->url, filter);
+          result_count++;
+        }
+      }
+    }
+  }
+
+  didl_add_footer (out);
+
+  upnp_add_response (event, SERVICE_CDS_DIDL_RESULT, out->buf);
+
+  sprintf (tmp, "%d", result_count);
+  upnp_add_response (event, SERVICE_CDS_DIDL_NUM_RETURNED, tmp);
+  sprintf (tmp, "%d", result_count);
+  upnp_add_response (event, SERVICE_CDS_DIDL_TOTAL_MATCH, tmp);
+
+  return result_count;
+}
+
+static bool
+cds_search (struct action_event_t *event)
+{
+  extern struct ushare_t *ut;
+  struct upnp_entry_t *entry = NULL;
+  int result_count = 0, index, count, id, sort_criteria;
+  char *search_criteria = NULL;
+  char *filter = NULL;
+  struct buffer_t *out = NULL;
+
+  if (!event)
+    return false;
+
+  /* Check for status */
+  if (!event->status)
+    return false;
+
+  /* check if metadatas have been well inited */
+  if (!ut->init)
+    return false;
+
+  /* Retrieve Browse arguments */
+  index = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_START_INDEX);
+  count = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_REQUEST_COUNT);
+  id = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_OBJECT_ID);
+
+  search_criteria = upnp_get_string (event->request,
+                                     SERVICE_CDS_ARG_SEARCH_CRIT);
+  filter = upnp_get_string (event->request, SERVICE_CDS_ARG_FILTER);
+  sort_criteria = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_SORT_CRIT);
+
+  if (!search_criteria || !filter)
+    return false;
+
+  entry = upnp_get_entry (ut->root_entry, id);
+
+  if (!entry && (id < ut->starting_id))
+    entry = upnp_get_entry (ut->root_entry, ut->starting_id);
+
+  if (!entry)
+    return false;
+
+  out = buffer_new ();
+  if (!out)
+    return false;
+
+  result_count =
+    cds_search_directchildren (event, out, index, count, entry,
+                               filter, search_criteria);
+
+  if (result_count < 0)
+  {
+    buffer_free (out);
+    return false;
+  }
+
+  buffer_free (out);
+  upnp_add_response (event, SERVICE_CDS_DIDL_UPDATE_ID,
+                     SERVICE_CDS_ROOT_OBJECT_ID);
+  
+  free (search_criteria);
+  free (filter);
+  
+  return event->status;
+}
+
 /* List of UPnP ContentDirectory Service actions */
 struct service_action_t cds_service_actions[] = {
   { SERVICE_CDS_ACTION_SEARCH_CAPS, cds_get_search_capabilities },
   { SERVICE_CDS_ACTION_SORT_CAPS, cds_get_sort_capabilities },
   { SERVICE_CDS_ACTION_UPDATE_ID, cds_get_system_update_id },
   { SERVICE_CDS_ACTION_BROWSE, cds_browse },
+  { SERVICE_CDS_ACTION_SEARCH, cds_search },
   { NULL, NULL }
 };
