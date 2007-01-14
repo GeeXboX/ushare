@@ -190,9 +190,9 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
       entry->class = mime->class;
       entry->protocol = mime->protocol;
       entry->url = (char *) malloc (1024 * sizeof (char));
-      sprintf (entry->url, "http://%s:%d%s/%d",
+      sprintf (entry->url, "http://%s:%d%s/%d.%s",
                UpnpGetServerIpAddress (), ut->port,
-               VIRTUAL_DIR, entry->id);
+               VIRTUAL_DIR, entry->id, getExtension (name));
     }
   else /* container */
     {
