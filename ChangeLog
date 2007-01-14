@@ -1,3 +1,7 @@
+2007-01-14  Benjamin Zores  <ben@geexbox.org>
+
+	* make libupnp >= 1.4.1 a requirement.
+
 2006-12-10  Alexis Saettler <asbin@asbin.org>
 
 	* new public release (Version 0.9.8).
