@@ -1,7 +1,7 @@
 /*
  * mime.h : GeeXboX uShare media file MIME-type association header.
  * Originally developped for the GeeXboX project.
- * Copyright (C) 2005-2006 Benjamin Zores <ben@geexbox.org>
+ * Copyright (C) 2005-2007 Benjamin Zores <ben@geexbox.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

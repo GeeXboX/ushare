@@ -2,7 +2,7 @@
  * ushare.c : GeeXboX uShare UPnP Media Server.
  * Originally developped for the GeeXboX project.
  * Parts of the code are originated from GMediaServer from Oskar Liljeblad.
- * Copyright (C) 2005-2006 Benjamin Zores <ben@geexbox.org>
+ * Copyright (C) 2005-2007 Benjamin Zores <ben@geexbox.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -535,7 +535,7 @@ display_headers (void)
 {
   printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
           PACKAGE_NAME, VERSION);
-  printf (_("Benjamin Zores (C) 2005-2006, for GeeXboX Team.\n"));
+  printf (_("Benjamin Zores (C) 2005-2007, for GeeXboX Team.\n"));
   printf (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
