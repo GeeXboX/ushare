@@ -36,6 +36,12 @@
 #include "msr.h"
 #include "trace.h"
 
+/* Represent the ObjectID argument. */
+#define ARG_OBJECT_ID "ObjectID"
+
+/* Represent the ContainerID argument. */
+#define ARG_CONTAINER_ID "ContainerID"
+
 extern struct service_action_t cds_service_actions[];
 extern struct service_action_t cms_service_actions[];
 extern struct service_action_t msr_service_actions[];
@@ -164,6 +170,9 @@ upnp_get_ui4 (struct Upnp_Action_Request *request, const char *key)
     return 0;
 
   value = upnp_get_string (request, key);
+  if (!value && !strcmp (key, ARG_OBJECT_ID))
+    value = upnp_get_string (request, ARG_CONTAINER_ID);
+
   if (!value)
     return 0;
 
