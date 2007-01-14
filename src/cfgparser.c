@@ -250,6 +250,7 @@ display_usage (void)
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
+  printf (_(" -x, --xbox\t\tUse XboX 360 compliant profile\n"));
   printf (_(" -D, --daemon\t\tRun as a daemon\n"));
   printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
   printf (_(" -h, --help\t\tDisplay this help\n"));
@@ -259,7 +260,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDwn:i:p:c:";
+  char short_options[] = "VhvDwxn:i:p:c:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -270,6 +271,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"port", required_argument, 0, 'p' },
     {"content", required_argument, 0, 'c' },
     {"no-web", no_argument, 0, 'w' },
+    {"xbox", no_argument, 0, 'x' },
     {0, 0, 0, 0 }
   };
 
@@ -322,6 +324,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'w':
       ut->use_presentation = false;
+      break;
+
+    case 'x':
+      ut->xbox360 = true;
       break;
 
     default:

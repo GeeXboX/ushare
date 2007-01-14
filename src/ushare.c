@@ -82,6 +82,7 @@ ushare_new (void)
   ut->port = 0; /* Randomly attributed by libupnp */
   ut->presentation = NULL;
   ut->use_presentation = true;
+  ut->xbox360 = false;
   ut->verbose = false;
   ut->daemon = false;
 
@@ -217,6 +218,9 @@ init_upnp (struct ushare_t *ut)
     return -1;
   }
 
+  if (ut->xbox360)
+    log_info (_("Starting in XboX 360 compliant profile ...\n"));
+  
   ut->port = UpnpGetServerPort();
   log_info (_("UPnP MediaServer listening on %s:%d\n"),
             UpnpGetServerIpAddress (), ut->port);
@@ -480,7 +484,7 @@ reload_config (int s __attribute__ ((unused)))
     ut2->name = NULL;
     reload = true;
   }
-
+ 
   if (ut->interface && strcmp (ut->interface, ut2->interface))
   {
     if (!has_iface (ut2->interface))
@@ -572,6 +576,17 @@ main (int argc, char **argv)
     return EXIT_SUCCESS;
   }
 
+  if (ut->xbox360)
+  {
+    char *name;
+
+    name = malloc (strlen (XBOX_MODEL_NAME) + strlen (ut->name) + 4);
+    sprintf (name, "%s (%s)", XBOX_MODEL_NAME, ut->name);
+    free (ut->name);
+    ut->name = strdup (name);
+    free (name);
+  }
+  
   if (ut->daemon)
   {
     /* starting syslog feature as soon as possible */

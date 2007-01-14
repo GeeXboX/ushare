@@ -30,6 +30,7 @@
 #include "buffer.h"
 
 #define VIRTUAL_DIR "/web"
+#define XBOX_MODEL_NAME "Windows Media Connect Compatible"
 
 #define UPNP_DESCRIPTION \
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>" \
@@ -89,6 +90,7 @@ struct ushare_t {
   unsigned short port;
   struct buffer_t *presentation;
   bool use_presentation;
+  bool xbox360;
   bool verbose;
   bool daemon;
 };
