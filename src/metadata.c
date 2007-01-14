@@ -160,7 +160,7 @@ convert_xml (const char *title)
 }
 
 static struct mime_type_t Container_MIME_Type =
-  { NULL, "object.container", NULL};
+  { NULL, "object.container.storageFolder", NULL};
 
 static struct upnp_entry_t *
 upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
