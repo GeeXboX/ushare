@@ -40,7 +40,7 @@
 "  </specVersion>" \
 "  <device>" \
 "    <deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>" \
-"    <friendlyName>%s</friendlyName>" \
+"    <friendlyName>%s: 1</friendlyName>" \
 "    <manufacturer>GeeXboX Team</manufacturer>" \
 "    <manufacturerURL>http://ushare.geexbox.org/</manufacturerURL>" \
 "    <modelDescription>GeeXboX uShare : UPnP Media Server</modelDescription>" \
