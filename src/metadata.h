@@ -39,7 +39,7 @@ struct upnp_entry_t {
   char *protocol;
   char *title;
   char *url;
-  int size;
+  off_t size;
   int fd;
 };
 

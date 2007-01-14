@@ -49,7 +49,7 @@
 
 struct web_file_t {
   char *fullpath;
-  size_t pos;
+  off_t pos;
   enum {
     FILE_LOCAL,
     FILE_MEMORY
@@ -61,7 +61,7 @@ struct web_file_t {
     } local;
     struct {
       char *contents;
-      size_t len;
+      off_t len;
     } memory;
   } detail;
 };
@@ -282,10 +282,11 @@ http_write (UpnpWebFileHandle fh __attribute__((unused)),
 }
 
 static int
-http_seek (UpnpWebFileHandle fh, long offset, int origin)
+http_seek (UpnpWebFileHandle fh, long off, int origin)
 {
   struct web_file_t *file = (struct web_file_t *) fh;
-  long newpos = -1;
+  off_t newpos = -1;
+  off_t offset = (off_t) off;
 
   log_verbose ("http_seek\n");
 
@@ -295,17 +296,17 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
   switch (origin)
   {
   case SEEK_SET:
-    log_verbose ("Attempting to seek to %ld (was at %zd) in %s\n",
+    log_verbose ("Attempting to seek to %lld (was at %lld) in %s\n",
                 offset, file->pos, file->fullpath);
     newpos = offset;
     break;
   case SEEK_CUR:
-    log_verbose ("Attempting to seek by %ld from %zd in %s\n",
+    log_verbose ("Attempting to seek by %lld from %lld in %s\n",
                 offset, file->pos, file->fullpath);
     newpos = file->pos + offset;
     break;
   case SEEK_END:
-    log_verbose ("Attempting to seek by %ld from end (was at %zd) in %s\n",
+    log_verbose ("Attempting to seek by %lld from end (was at %lld) in %s\n",
                 offset, file->pos, file->fullpath);
 
     if (file->type == FILE_LOCAL)
@@ -343,7 +344,7 @@ http_seek (UpnpWebFileHandle fh, long offset, int origin)
     }
     break;
   case FILE_MEMORY:
-    if (newpos < 0 || newpos > (long) file->detail.memory.len)
+    if (newpos < 0 || newpos > file->detail.memory.len)
     {
       log_verbose ("%s: cannot seek: %s\n", file->fullpath, strerror (EINVAL));
       return -1;

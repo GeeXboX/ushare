@@ -164,7 +164,7 @@ static struct mime_type_t Container_MIME_Type =
 
 static struct upnp_entry_t *
 upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
-                struct upnp_entry_t *parent, int size, int dir)
+                struct upnp_entry_t *parent, off_t size, int dir)
 {
   struct upnp_entry_t *entry = NULL;
   char *title = NULL, *x = NULL;
@@ -320,7 +320,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
   {
     struct upnp_entry_t *child = NULL;
 
-    child = upnp_entry_new (ut, name, file, entry, (int) st.st_size, false);
+    child = upnp_entry_new (ut, name, file, entry, st.st_size, false);
     if (child)
       upnp_entry_add_child (entry, child);
   }

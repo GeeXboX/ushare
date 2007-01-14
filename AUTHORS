@@ -11,5 +11,6 @@ With many contributions from :
 - Eric Tanguy for Fedora RPM build and startup scripts.
 - Julien Lincy for a better UPnP CDS respect and
   commercial UPnP players compliance.
+- Jonathan (no_dice at users.sourceforge.net) for large files support.
 
 Please send remarks, questions, bug reports to <ushare@geexbox.org>.
