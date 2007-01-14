@@ -2,6 +2,8 @@
 
 	* make libupnp >= 1.4.1 a requirement.
 	* fixed support for 2GB+ files (see http://sourceforge.net/tracker/index.php?func=detail&aid=1634927&group_id=151880&atid=782410)
+	* fixed support for XboX 360 (thanks to Mostafa Hosseini).
+	* added basic support for 'Search' action.
 	
 2006-12-10  Alexis Saettler <asbin@asbin.org>
 
