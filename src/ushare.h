@@ -31,6 +31,7 @@
 
 #define VIRTUAL_DIR "/web"
 #define XBOX_MODEL_NAME "Windows Media Connect Compatible"
+#define DEFAULT_UUID "898f9738-d930-4db4-a3cf"
 
 #define UPNP_DESCRIPTION \
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>" \

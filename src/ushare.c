@@ -381,7 +381,7 @@ create_udn (char *interface)
   memset (buf, 0, 64);
   ptr = (unsigned char *) ifr.ifr_hwaddr.sa_data;
 
-  snprintf (buf, 64, "%02X%02X%02X%02X%02X%02X",
+  snprintf (buf, 64, "%s-%02X%02X%02X%02X%02X%02X", DEFAULT_UUID,
             (ptr[0] & 0377), (ptr[1] & 0377), (ptr[2] & 0377),
             (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377));
 
