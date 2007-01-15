@@ -171,7 +171,7 @@ build_presentation_page (struct ushare_t *ut)
                   _("Device UDN"), ut->udn);
   buffer_appendf (ut->presentation, "<b>%s :</b> %d<br/>",
                   _("Number of shared files and directories"), ut->nr_entries);
-  buffer_append (ut->presentation, "<br/>");
+  buffer_append (ut->presentation, "</center><br/>");
 
   buffer_appendf (ut->presentation,
                   "<form method=\"get\" action=\"%s\">", USHARE_CGI);
