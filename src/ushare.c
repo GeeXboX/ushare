@@ -39,7 +39,6 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <fcntl.h>
-#include <ctype.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -353,7 +352,6 @@ static char *
 create_udn (char *interface)
 {
   int sock;
-  unsigned int i;
   struct ifreq ifr;
   char *buf;
   unsigned char *ptr;
@@ -382,13 +380,10 @@ create_udn (char *interface)
   memset (buf, 0, 64);
   ptr = (unsigned char *) ifr.ifr_hwaddr.sa_data;
 
-  snprintf (buf, 64, "%s-%02X%02X%02X%02X%02X%02X", DEFAULT_UUID,
+  snprintf (buf, 64, "%s-%02x%02x%02x%02x%02x%02x", DEFAULT_UUID,
             (ptr[0] & 0377), (ptr[1] & 0377), (ptr[2] & 0377),
             (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377));
 
-  for (i = 0; i < strlen (buf); i++)
-    buf[i] = tolower (buf[i]);
-  
   close (sock);
 
   return buf;
