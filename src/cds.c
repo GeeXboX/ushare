@@ -470,6 +470,9 @@ cds_browse (struct action_event_t *event)
   free (flag);
 
   entry = upnp_get_entry (ut->root_entry, id);
+  if (!entry && (id < ut->starting_id))
+    entry = upnp_get_entry (ut->root_entry, ut->starting_id);
+
   if (!entry)
     return false;
 
