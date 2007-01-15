@@ -72,6 +72,7 @@ ushare_new (void)
 
   ut->name = strdup (DEFAULT_USHARE_NAME);
   ut->interface = strdup (DEFAULT_USHARE_IFACE);
+  ut->model_name = strdup (DEFAULT_USHARE_NAME);
   ut->contentlist = NULL;
   ut->root_entry = NULL;
   ut->nr_entries = 0;
@@ -100,6 +101,8 @@ ushare_free (struct ushare_t *ut)
     free (ut->name);
   if (ut->interface)
     free (ut->interface);
+  if (ut->model_name)
+    free (ut->model_name);
   if (ut->contentlist)
     free_content (ut->contentlist);
   if (ut->root_entry)
@@ -206,10 +209,11 @@ init_upnp (struct ushare_t *ut)
   if (!ut || !ut->name || !ut->udn || !ut->ip)
     return -1;
 
-  len = strlen (UPNP_DESCRIPTION) + strlen (ut->name) + strlen (ut->udn) + 1;
+  len = strlen (UPNP_DESCRIPTION) + strlen (ut->name)
+    + strlen (ut->model_name) + strlen (ut->udn) + 1;
   description = (char *) malloc (len * sizeof (char));
   memset (description, 0, len);
-  sprintf (description, UPNP_DESCRIPTION, ut->name, ut->udn);
+  sprintf (description, UPNP_DESCRIPTION, ut->name, ut->model_name, ut->udn);
 
   log_info (_("Initializing UPnP subsystem ...\n"));
   res = UpnpInit (ut->ip, ut->port);
@@ -581,10 +585,10 @@ main (int argc, char **argv)
   {
     char *name;
 
-    name = malloc (strlen (XBOX_MODEL_NAME) + strlen (ut->name) + 4);
-    sprintf (name, "%s (%s)", XBOX_MODEL_NAME, ut->name);
-    free (ut->name);
-    ut->name = strdup (name);
+    name = malloc (strlen (XBOX_MODEL_NAME) + strlen (ut->model_name) + 4);
+    sprintf (name, "%s (%s)", XBOX_MODEL_NAME, ut->model_name);
+    free (ut->model_name);
+    ut->model_name = strdup (name);
     free (name);
 
     ut->starting_id = STARTING_ENTRY_ID_XBOX360;

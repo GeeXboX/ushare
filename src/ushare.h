@@ -49,7 +49,7 @@
 "    <manufacturer>GeeXboX Team</manufacturer>" \
 "    <manufacturerURL>http://ushare.geexbox.org/</manufacturerURL>" \
 "    <modelDescription>GeeXboX uShare : UPnP Media Server</modelDescription>" \
-"    <modelName>uShare</modelName>" \
+"    <modelName>%s</modelName>" \
 "    <modelNumber>001</modelNumber>" \
 "    <modelURL>http://ushare.geexbox.org/</modelURL>" \
 "    <serialNumber>GEEXBOX-USHARE-01</serialNumber>" \
@@ -84,6 +84,7 @@
 struct ushare_t {
   char *name;
   char *interface;
+  char *model_name;
   content_list *contentlist;
   struct upnp_entry_t *root_entry;
   int nr_entries;
