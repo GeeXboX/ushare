@@ -484,11 +484,17 @@ cds_browse (struct action_event_t *event)
     entry = upnp_get_entry (ut, ut->starting_id);
 
   if (!entry)
+  {
+    free (filter);
     return false;
+  }
 
   out = buffer_new ();
   if (!out)
+  {
+    free (filter);
     return false;
+  }
 
   if (metadata)
     result_count =
@@ -496,7 +502,8 @@ cds_browse (struct action_event_t *event)
   else
     result_count =
       cds_browse_directchildren (event, out, index, count, entry, filter);
-
+  free (filter);
+  
   if (result_count < 0)
   {
     buffer_free (out);
