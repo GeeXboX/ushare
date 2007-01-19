@@ -171,8 +171,14 @@
 /* Represent the "upnp:class derived from" reserved keyword */
 #define SEARCH_CLASS_DERIVED_KEYWORD "(upnp:class derivedfrom \""
 
+/* Represent the "res@protocolInfo contains" reserved keyword */
+#define SEARCH_PROTOCOL_CONTAINS_KEYWORD "(res@protocolInfo contains \""
+
 /* Represent the Search default keyword */
 #define SEARCH_OBJECT_KEYWORD "object"
+
+/* Represent the Search 'AND' connector keyword */
+#define SEARCH_AND ") and ("
 
 static bool
 filter_has_val (const char *filter, const char *val)
@@ -505,11 +511,11 @@ cds_browse (struct action_event_t *event)
 }
 
 static bool
-matches_search (char *search_criteria, char *class)
+matches_search (char *search_criteria, struct upnp_entry_t *entry)
 {
   char keyword[256] = SEARCH_OBJECT_KEYWORD;
-  bool derived_from = false;
-  char *quote_closed = NULL;
+  bool derived_from = false, protocol_contains = false, result = false;
+  char *quote_closed = NULL, *and_clause = NULL;
   
   if (!strncmp (search_criteria, SEARCH_CLASS_MATCH_KEYWORD,
                 strlen (SEARCH_CLASS_MATCH_KEYWORD)))
@@ -532,13 +538,31 @@ matches_search (char *search_criteria, char *class)
     if (quote_closed)
       *quote_closed = '\0';
   }
+  else if (!strncmp (search_criteria, SEARCH_PROTOCOL_CONTAINS_KEYWORD,
+                     strlen (SEARCH_PROTOCOL_CONTAINS_KEYWORD)))
+  {
+    protocol_contains = true;
+    strncpy (keyword, search_criteria
+             + strlen (SEARCH_PROTOCOL_CONTAINS_KEYWORD), sizeof (keyword));
+    quote_closed = strchr (keyword, '"');
 
-  if (derived_from && !strncmp (class, keyword, strlen (keyword)))
-    return true;
-  else if (!strcmp (class, keyword))
-    return true;
+    if (quote_closed)
+      *quote_closed = '\0';
+  }
+  
+  if (derived_from && !strncmp (entry->class, keyword, strlen (keyword)))
+    result = true;
+  else if (protocol_contains && strstr (entry->protocol, keyword))
+    result = true;
+  else if (!strcmp (entry->class, keyword))
+    result = true;
 
-  return false;
+  and_clause = strstr (search_criteria, SEARCH_AND);
+  if (and_clause)
+    return (result &&
+            matches_search (and_clause + strlen (SEARCH_AND) -1, entry));
+  
+  return true;
 }
 
 static int
@@ -570,7 +594,7 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
       }
       else /* item */
       {
-        if (matches_search (search_criteria, (*childs)->class))
+        if (matches_search (search_criteria, *childs))
         {
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
@@ -629,7 +653,7 @@ cds_search_directchildren (struct action_event_t *event,
       }
       else /* item */
       {
-        if (matches_search (search_criteria, (*childs)->class))
+        if (matches_search (search_criteria, *childs))
         {
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
