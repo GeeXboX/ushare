@@ -28,6 +28,7 @@
 
 #include "content.h"
 #include "buffer.h"
+#include "redblack.h"
 
 #define VIRTUAL_DIR "/web"
 #define XBOX_MODEL_NAME "Windows Media Connect Compatible"
@@ -86,6 +87,7 @@ struct ushare_t {
   char *interface;
   char *model_name;
   content_list *contentlist;
+  struct rbtree *rb;
   struct upnp_entry_t *root_entry;
   int nr_entries;
   int starting_id;

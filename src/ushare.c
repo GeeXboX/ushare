@@ -74,6 +74,7 @@ ushare_new (void)
   ut->interface = strdup (DEFAULT_USHARE_IFACE);
   ut->model_name = strdup (DEFAULT_USHARE_NAME);
   ut->contentlist = NULL;
+  ut->rb = rbinit (rb_compare, NULL);
   ut->root_entry = NULL;
   ut->nr_entries = 0;
   ut->starting_id = STARTING_ENTRY_ID_DEFAULT;
@@ -105,8 +106,10 @@ ushare_free (struct ushare_t *ut)
     free (ut->model_name);
   if (ut->contentlist)
     free_content (ut->contentlist);
+  if (ut->rb)
+    rbdestroy (ut->rb);
   if (ut->root_entry)
-    upnp_entry_free (ut->root_entry);
+    upnp_entry_free (ut, ut->root_entry);
   if (ut->udn)
     free (ut->udn);
   if (ut->ip)

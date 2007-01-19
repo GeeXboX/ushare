@@ -50,7 +50,8 @@ typedef struct xml_convert_s {
 
 void free_metadata_list (struct ushare_t *ut);
 void build_metadata_list (struct ushare_t *ut);
-struct upnp_entry_t * upnp_get_entry (struct upnp_entry_t *entry, int id);
-void upnp_entry_free (struct upnp_entry_t *entry);
+struct upnp_entry_t *upnp_get_entry (struct ushare_t *ut, int id);
+void upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry);
+int rb_compare (const void *pa, const void *pb, const void *config);
 
 #endif /* _METADATA_H_ */

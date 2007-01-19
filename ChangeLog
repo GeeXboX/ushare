@@ -1,3 +1,11 @@
+2007-01-19  Benjamin Zores  <ben@geexbox.org>
+
+	* use a RedBlack balanced tree searching and sorting algorithm
+	  instead of the recursive one. It avoids recursive calls, takes
+	  less memory (perfect for embedded systems) and executes in more
+	  "constant time" than the logarithmic style.
+	  Original patch by Phil Chandler.	
+
 2007-01-14  Benjamin Zores  <ben@geexbox.org>
 
 	* make libupnp >= 1.4.1 a requirement.

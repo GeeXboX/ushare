@@ -129,7 +129,7 @@ http_get_info (const char *filename, struct File_Info *info)
   }
 
   upnp_id = atoi (strrchr (filename, '/') + 1);
-  entry = upnp_get_entry (ut->root_entry, upnp_id);
+  entry = upnp_get_entry (ut, upnp_id);
   if (!entry)
     return -1;
 
@@ -213,7 +213,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
                             ut->presentation->len);
 
   upnp_id = atoi (strrchr (filename, '/') + 1);
-  entry = upnp_get_entry (ut->root_entry, upnp_id);
+  entry = upnp_get_entry (ut, upnp_id);
   if (!entry)
     return NULL;
 

@@ -45,6 +45,11 @@
 
 #define TITLE_UNKNOWN "unknown"
 
+struct upnp_entry_lookup_t {
+  int id;
+  struct upnp_entry_t *entry_ptr;
+};
+
 static char *
 getExtension (const char *filename)
 {
@@ -226,7 +231,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   }
   else
   {
-    upnp_entry_free (entry);
+    upnp_entry_free (ut, entry);
     return NULL;
   }
 
@@ -239,8 +244,12 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   return entry;
 }
 
-void
-upnp_entry_free (struct upnp_entry_t *entry)
+/* Seperate recursive free() function in order to avoid freeing off
+ * the parents child list within the freeing of the first child, as
+ * the only entry which is not part of a childs list is the root entry
+ */
+static void
+_upnp_entry_free (struct upnp_entry_t *entry)
 {
   struct upnp_entry_t **childs;
 
@@ -255,15 +264,64 @@ upnp_entry_free (struct upnp_entry_t *entry)
     free (entry->url);
 
   for (childs = entry->childs; *childs; childs++)
-    upnp_entry_free (*childs);
+    _upnp_entry_free (*childs);
   free (entry->childs);
 
   free (entry);
 }
 
-static void
-upnp_entry_add_child (struct upnp_entry_t *entry, struct upnp_entry_t *child)
+void
+upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
 {
+  if (!ut || !entry)
+    return;
+ 
+  /* Free all entries (i.e. children) */
+  if (entry == ut->root_entry)
+  {
+    struct upnp_entry_t *entry_found = NULL;
+    struct upnp_entry_lookup_t *lk = NULL;
+    RBLIST *rblist;
+    int i = 0;
+
+    rblist = rbopenlist (ut->rb);
+    lk = (struct upnp_entry_lookup_t *) rbreadlist (rblist);
+    
+    while (lk)
+    {
+      entry_found = lk->entry_ptr;
+      if (entry_found)
+      {
+ 	if (entry_found->fullpath)
+ 	  free (entry_found->fullpath);
+ 	if (entry_found->title)
+ 	  free (entry_found->title);
+ 	if (entry_found->url)
+ 	  free (entry_found->url);
+ 	
+	free (entry_found);
+ 	i++;
+      }
+       
+      free (lk); /* delete the lookup */
+      lk = (struct upnp_entry_lookup_t *) rbreadlist (rblist);
+    }
+ 
+    rbcloselist (rblist);
+    rbdestroy (ut->rb);
+    ut->rb = NULL;
+     
+    log_verbose ("Freed [%d] entries\n", i);
+  }
+  else
+    _upnp_entry_free (entry);
+}
+ 
+static void
+upnp_entry_add_child (struct ushare_t *ut,
+                      struct upnp_entry_t *entry, struct upnp_entry_t *child)
+{
+  struct upnp_entry_lookup_t *entry_lookup_ptr = NULL;
   struct upnp_entry_t **childs;
   int n;
 
@@ -280,27 +338,38 @@ upnp_entry_add_child (struct upnp_entry_t *entry, struct upnp_entry_t *child)
   entry->childs[n] = NULL;
   entry->childs[n - 1] = child;
   entry->child_count++;
+
+  entry_lookup_ptr = (struct upnp_entry_lookup_t *)
+    malloc (sizeof (struct upnp_entry_lookup_t));
+  entry_lookup_ptr->id = child->id;
+  entry_lookup_ptr->entry_ptr = child;
+ 
+  if (rbsearch ((void *) entry_lookup_ptr, ut->rb) == NULL)
+    log_info (_("Failed to add the RB lookup tree"));
 }
 
 struct upnp_entry_t *
-upnp_get_entry (struct upnp_entry_t *entry, int id)
+upnp_get_entry (struct ushare_t *ut, int id)
 {
-  struct upnp_entry_t *result = NULL;
-  struct upnp_entry_t **entries;
+  struct upnp_entry_lookup_t *res, entry_lookup;
+ 
+  log_verbose ("Looking for entry id %d\n", id);
+  if (id == 0) /* We do not store the root (id 0) as it is not a child */
+    return ut->root_entry;
 
-  if (!entry)
-    return NULL;
-
-  if (entry->id == id)
-    return entry;
-
-  for (entries = entry->childs; *entries; entries++)
+  entry_lookup.id = id;
+  res = (struct upnp_entry_lookup_t *)
+    rbfind ((void *) &entry_lookup, ut->rb);
+ 
+  if (res)
   {
-    result = upnp_get_entry (*entries, id);
-    if (result)
-      return result;
+    log_verbose ("Found at %p\n",
+                 ((struct upnp_entry_lookup_t *) res)->entry_ptr);
+    return ((struct upnp_entry_lookup_t *) res)->entry_ptr;
   }
 
+  log_verbose ("Not Found\n");
+  
   return NULL;
 }
 
@@ -322,7 +391,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
 
     child = upnp_entry_new (ut, name, file, entry, st.st_size, false);
     if (child)
-      upnp_entry_add_child (entry, child);
+      upnp_entry_add_child (ut, entry, child);
   }
 }
 
@@ -374,7 +443,7 @@ metadata_add_container (struct ushare_t *ut,
       child = upnp_entry_new (ut, namelist[i]->d_name,
                               fullpath, entry, 0, true);
       metadata_add_container (ut, child, fullpath);
-      upnp_entry_add_child (entry, child);
+      upnp_entry_add_child (ut, entry, child);
     }
     else
       metadata_add_file (ut, entry, fullpath, namelist[i]->d_name);
@@ -390,9 +459,19 @@ free_metadata_list (struct ushare_t *ut)
 {
   ut->init = 0;
   if (ut->root_entry)
-    upnp_entry_free (ut->root_entry);
+    upnp_entry_free (ut, ut->root_entry);
   ut->root_entry = NULL;
   ut->nr_entries = 0;
+
+  if (ut->rb)
+  {
+    rbdestroy (ut->rb);
+    ut->rb = NULL;
+  }
+
+  ut->rb = rbinit (rb_compare, NULL);
+  if (!ut->rb)
+    log_error (_("Cannot create RB tree for lookups\n"));
 }
 
 void
@@ -432,10 +511,29 @@ build_metadata_list (struct ushare_t *ut)
 
     if (!entry)
       continue;
-    upnp_entry_add_child (ut->root_entry, entry);
+    upnp_entry_add_child (ut, ut->root_entry, entry);
     metadata_add_container (ut, entry, ut->contentlist->content[i]);
   }
 
   log_info (_("Found %d files and subdirectories.\n"), ut->nr_entries);
   ut->init = 1;
 }
+
+int
+rb_compare (const void *pa, const void *pb,
+            const void *config __attribute__ ((unused)))
+{
+  struct upnp_entry_lookup_t *a, *b;
+
+  a = (struct upnp_entry_lookup_t *) pa;
+  b = (struct upnp_entry_lookup_t *) pb;
+  
+  if (a->id < b->id)
+    return -1;
+ 
+  if (a->id > b->id)
+    return 1;
+
+  return 0;
+}
+
