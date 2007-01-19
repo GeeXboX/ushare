@@ -45,6 +45,8 @@
 
 #define TITLE_UNKNOWN "unknown"
 
+#define MAX_URL_SIZE 32
+
 struct upnp_entry_lookup_t {
   int id;
   struct upnp_entry_t *entry_ptr;
@@ -173,6 +175,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 {
   struct upnp_entry_t *entry = NULL;
   char *title = NULL, *x = NULL;
+  char url_tmp[MAX_URL_SIZE] = { '\0' };
 
   if (!name)
     return NULL;
@@ -194,10 +197,12 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
       struct mime_type_t *mime = getMimeType (getExtension (name));
       entry->class = mime->class;
       entry->protocol = mime->protocol;
-      entry->url = (char *) malloc (1024 * sizeof (char));
-      sprintf (entry->url, "http://%s:%d%s/%d.%s",
-               UpnpGetServerIpAddress (), ut->port,
-               VIRTUAL_DIR, entry->id, getExtension (name));
+      if (snprintf (url_tmp, MAX_URL_SIZE, "%d.%s",
+                    entry->id, getExtension (name)) >= MAX_URL_SIZE)
+        log_error ("URL string too long for id %d, truncated!!", entry->id);
+
+      /* Only malloc() what we really need */
+      entry->url = strdup (url_tmp);
     }
   else /* container */
     {

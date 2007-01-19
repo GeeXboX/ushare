@@ -5,7 +5,10 @@
 	  less memory (perfect for embedded systems) and executes in more
 	  "constant time" than the logarithmic style.
 	  Original patch by Phil Chandler.	
-
+	* massive memory optimization (uShare now takes 75% less RAM ;-)
+	  only not using fixed size URL allocation buffer (a 16000+ files
+	  collection now only takes 5MB where it used to take 19MB).
+	  	
 2007-01-14  Benjamin Zores  <ben@geexbox.org>
 
 	* make libupnp >= 1.4.1 a requirement.
