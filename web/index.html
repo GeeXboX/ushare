@@ -49,14 +49,23 @@
 
     <h2>Latest News</h2>
     <div>
-      Latest release of uShare is 0.9.8.<br/>
+      Latest release of uShare is devel.<br/>
       See its ChangeLog :
       <ul>
-        <li>Added German translation.</li>
-        <li>Convert special xml characters to xml (like &amp; => &amp;amp;).</li>
-        <li>Added iso and bin mime types.</li>
-        <li>Better filtering and browse capabilities: now uShare is conform to ContentDirectory:1 Service Template Standard.</li>
-        <li>Updated init script to use lsb functions.</li>
+	<li>added support for FreeBSD.</li>
+        <li>fixed support for 2GB+ files.</li>
+	<li>added basic support for 'Search' action.</li>
+        <li>support for XboX 360 is finally working (please note that
+        to stream video to the XboX, the console should be running
+        dashboard version 2.0.4552.0 and only unprotected .wmv files
+        are supported</li>
+        <li>new RedBlack balanced tree searching and sorting algorithm used
+	  instead of the recursive one. It avoids recursive calls, takes
+	  less memory (perfect for embedded systems) and executes in more
+	  "constant time" than the logarithmic style.</li>
+	<li>massive memory optimization (uShare now takes 75% less RAM ;-)
+	  only not using fixed size URL allocation buffer (a 16000+ files
+	  collection now only takes 5MB where it used to take 19MB).</li>
       </ul>
     </div>
 
@@ -83,7 +92,7 @@
 
       <h4>The following UPnP library is required to build and run uShare:</h4>
       <dl class="list">
-        <dt>Linux SDK for UPnP Devices (libupnp), 1.3.1 or later.</dt>
+        <dt>Linux SDK for UPnP Devices (libupnp), 1.4.1 or later.</dt>
         <dd>
         The libupnp library is used to communicate using the UPnP protocol. libupnp can be downloaded from <a href="http://pupnp.sourceforge.net/">http://pupnp.sourceforge.net/</a>.
         </dd>
@@ -117,6 +126,7 @@ Options:
    -c, --content=DIR            Share the content of DIR directory (default is './')
    -w, --no-web                 Disable the control web page (enabled by default)
    -v, --verbose                Set verbose display.
+   -x, --xbox                   Use XboX 360 compliant profile
    -D, --daemon                 Run as a daemon.
    -V, --version                Display the version of uShare and exit
    -h, --help                   Display this help</pre>
