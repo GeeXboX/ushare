@@ -332,11 +332,11 @@ has_iface (char *interface)
   }
 
   n = ifc.ifc_len / sizeof (struct ifreq);
-  for ( i = n-1 ; i >= 0 ; i--)
+  for (i = n - 1 ; i >= 0 ; i--)
   {
     ifr = ifc.ifc_req[i];
 
-    if ( strncmp (ifr.ifr_name, interface, IFNAMSIZ))
+    if (strncmp (ifr.ifr_name, interface, IFNAMSIZ))
       continue;
 
     if (ioctl (sock, SIOCGIFFLAGS, &ifr) < 0)
@@ -346,9 +346,10 @@ has_iface (char *interface)
       return false;
     }
 
-    if (!(ifr.ifr_flags & IFF_UP)) {
+    if (!(ifr.ifr_flags & IFF_UP))
+    {
       /* interface is down */
-      log_error (_("Interface %s is down.\n"),interface);
+      log_error (_("Interface %s is down.\n"), interface);
       log_error (_("Recheck uShare's configuration and try again !\n"));
       close (sock);
       return false;
