@@ -317,7 +317,7 @@ has_iface (char *interface)
   if (sock < 0)
   {
     perror ("socket");
-    exit (-1);
+    return false;
   }
 
   /* get list of available interfaces */
@@ -328,7 +328,7 @@ has_iface (char *interface)
   {
     perror ("ioctl");
     close (sock);
-    exit (-1);
+    return false;
   }
 
   n = ifc.ifc_len / sizeof (struct ifreq);
@@ -343,7 +343,7 @@ has_iface (char *interface)
     {
       perror ("ioctl");
       close (sock);
-      exit (-1);
+      return false;
     }
 
     if (!(ifr.ifr_flags & IFF_UP)) {
@@ -395,20 +395,20 @@ create_udn (char *interface)
   if (mib[5] == 0)
   {
     perror ("if_nametoindex");
-    exit (-1);
+    return NULL;
   }
 
   if (sysctl (mib, 6, NULL, &len, NULL, 0) < 0)
   {
     perror ("sysctl");
-    exit (-1);
+    return NULL;
   }
 
   buf = malloc (len);
   if (sysctl (mib, 6, buf, &len, NULL, 0) < 0)
   {
     perror ("sysctl");
-    exit (-1);
+    return NULL;
   }
 
   ifm = (struct if_msghdr *) buf;
@@ -420,7 +420,7 @@ create_udn (char *interface)
   if (sock < 0)
   {
     perror ("socket");
-    exit (-1);
+    return NULL;
   }
 
   strcpy (ifr.ifr_name, interface);
@@ -429,7 +429,7 @@ create_udn (char *interface)
   if (ioctl (sock, SIOCGIFHWADDR, &ifr) < 0)
   {
     perror ("ioctl");
-    exit (-1);
+    return NULL;
   }
 
   buf = (char *) malloc (64 * sizeof (char));
@@ -463,7 +463,7 @@ get_iface_address (char *interface)
   if (sock < 0)
   {
     perror ("socket");
-    exit (-1);
+    return NULL;
   }
 
   strcpy (ifr.ifr_name, interface);
@@ -473,7 +473,7 @@ get_iface_address (char *interface)
   {
     perror ("ioctl");
     close (sock);
-    exit (-1);
+    return NULL;
   }
 
   val = (char *) malloc (16 * sizeof (char));
