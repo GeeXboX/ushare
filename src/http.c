@@ -46,6 +46,7 @@
 #include "minmax.h"
 #include "trace.h"
 #include "presentation.h"
+#include "osdep.h"
 
 struct web_file_t {
   char *fullpath;

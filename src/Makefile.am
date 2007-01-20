@@ -16,6 +16,7 @@ ushare_SOURCES= \
 	cfgparser.h cfgparser.c \
 	trace.h trace.c \
 	redblack.h redblack.c \
+	osdep.h osdep.c \
 	ushare.h ushare.c
 
 dist_man_MANS = ushare.1

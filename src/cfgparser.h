@@ -30,8 +30,13 @@
 
 #define USHARE_CONFIG_FILE "ushare.conf"
 #define DEFAULT_USHARE_NAME "uShare"
-#define DEFAULT_USHARE_IFACE "eth0"
 #define DEFAULT_USHARE_LOGFILE "/var/log/ushare.log"
+
+#if (defined(BSD) || defined(__FreeBSD__))
+#define DEFAULT_USHARE_IFACE "lnc0"
+#else /* Linux */
+#define DEFAULT_USHARE_IFACE "eth0"
+#endif
 
 int parse_config_file (struct ushare_t *ut)
     __attribute__ ((nonnull));

@@ -33,12 +33,23 @@
 #include <unistd.h>
 #include <errno.h>
 #include <getopt.h>
+
+#if (defined(BSD) || defined(__FreeBSD__))
+#include <sys/socket.h>
+#include <sys/sysctl.h>
+#include <net/if_dl.h>
+#endif
+
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <fcntl.h>
+
+#if (defined(__unix__) || defined(unix)) && !defined(USG)
+#include <sys/param.h>
+#endif
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -358,14 +369,52 @@ has_iface (char *interface)
 static char *
 create_udn (char *interface)
 {
-  int sock;
-  struct ifreq ifr;
+  int sock = 0;
   char *buf;
   unsigned char *ptr;
+
+#if (defined(BSD) || defined(__FreeBSD__))
+  int mib[6], len;
+  struct if_msghdr *ifm;
+  struct sockaddr_dl *sdl;
+#else /* Linux */
+  struct ifreq ifr;
+#endif
 
   if (!interface)
     return NULL;
 
+#if (defined(BSD) || defined(__FreeBSD__))
+  mib[0] = CTL_NET;
+  mib[1] = AF_ROUTE;
+  mib[2] = 0;
+  mib[3] = AF_LINK;
+  mib[4] = NET_RT_IFLIST;
+
+  mib[5] = if_nametoindex (interface);
+  if (mib[5] == 0)
+  {
+    perror ("if_nametoindex");
+    exit (-1);
+  }
+
+  if (sysctl (mib, 6, NULL, &len, NULL, 0) < 0)
+  {
+    perror ("sysctl");
+    exit (-1);
+  }
+
+  buf = malloc (len);
+  if (sysctl (mib, 6, buf, &len, NULL, 0) < 0)
+  {
+    perror ("sysctl");
+    exit (-1);
+  }
+
+  ifm = (struct if_msghdr *) buf;
+  sdl = (struct sockaddr_dl*) (ifm + 1);
+  ptr = (unsigned char *) LLADDR (sdl);
+#else /* Linux */
   /* determine UDN according to MAC address */
   sock = socket (AF_INET, SOCK_STREAM, 0);
   if (sock < 0)
@@ -386,12 +435,14 @@ create_udn (char *interface)
   buf = (char *) malloc (64 * sizeof (char));
   memset (buf, 0, 64);
   ptr = (unsigned char *) ifr.ifr_hwaddr.sa_data;
-
+#endif /* (defined(BSD) || defined(__FreeBSD__)) */
+  
   snprintf (buf, 64, "%s-%02x%02x%02x%02x%02x%02x", DEFAULT_UUID,
             (ptr[0] & 0377), (ptr[1] & 0377), (ptr[2] & 0377),
             (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377));
 
-  close (sock);
+  if (sock)
+    close (sock);
 
   return buf;
 }
@@ -557,7 +608,9 @@ setup_i18n(void)
 #if HAVE_SETLOCALE && ENABLE_NLS
   setlocale (LC_ALL, "");
 #endif
+#if (!defined(BSD) && !defined(__FreeBSD__))
   bindtextdomain (PACKAGE, LOCALEDIR);
+#endif
   textdomain (PACKAGE);
 }
 

@@ -1,3 +1,7 @@
+2007-01-20  Benjamin Zores  <ben@geexbox.org>
+
+	* added support for FreeBSD.
+
 2007-01-19  Benjamin Zores  <ben@geexbox.org>
 
 	* use a RedBlack balanced tree searching and sorting algorithm

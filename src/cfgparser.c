@@ -35,6 +35,7 @@
 #include "cfgparser.h"
 #include "ushare.h"
 #include "trace.h"
+#include "osdep.h"
 
 #define USHARE_DIR_DELIM ","
 
