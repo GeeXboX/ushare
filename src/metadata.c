@@ -271,8 +271,6 @@ _upnp_entry_free (struct upnp_entry_t *entry)
   for (childs = entry->childs; *childs; childs++)
     _upnp_entry_free (*childs);
   free (entry->childs);
-
-  free (entry);
 }
 
 void
@@ -320,6 +318,8 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
   }
   else
     _upnp_entry_free (entry);
+
+  free (entry);
 }
  
 static void
