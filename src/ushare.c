@@ -238,6 +238,9 @@ init_upnp (struct ushare_t *ut)
     return -1;
   }
 
+  if (UpnpSetMaxContentLength (UPNP_MAX_CONTENT_LENGTH) != UPNP_E_SUCCESS)
+    log_info (_("Could not set Max content UPnP\n"));
+  
   if (ut->xbox360)
     log_info (_("Starting in XboX 360 compliant profile ...\n"));
   

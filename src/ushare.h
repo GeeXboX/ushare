@@ -34,6 +34,8 @@
 #define XBOX_MODEL_NAME "Windows Media Connect Compatible"
 #define DEFAULT_UUID "898f9738-d930-4db4-a3cf"
 
+#define UPNP_MAX_CONTENT_LENGTH 4096
+
 #define STARTING_ENTRY_ID_DEFAULT 0
 #define STARTING_ENTRY_ID_XBOX360 100000
 
