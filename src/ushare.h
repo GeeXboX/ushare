@@ -104,6 +104,7 @@ struct ushare_t {
   bool verbose;
   bool daemon;
   bool override_iconv_err;
+  char *cfg_file;
 };
 
 struct action_event_t {

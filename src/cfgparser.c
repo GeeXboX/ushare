@@ -122,6 +122,15 @@ ushare_add_contentdir (struct ushare_t *ut, const char *dir)
 }
 
 static void
+ushare_set_cfg_file (struct ushare_t *ut, const char *file)
+{
+  if (!ut || !file)
+    return;
+
+  ut->cfg_file = strdup (file);
+}
+
+static void
 ushare_set_dir (struct ushare_t *ut, const char *dirlist)
 {
   char *x = NULL, *token = NULL;
@@ -223,8 +232,11 @@ parse_config_file (struct ushare_t *ut)
   if (!ut)
     return -1;
 
-  snprintf (filename, PATH_MAX, "%s/%s", SYSCONFDIR, USHARE_CONFIG_FILE);
-
+  if (!ut->cfg_file)
+    snprintf (filename, PATH_MAX, "%s/%s", SYSCONFDIR, USHARE_CONFIG_FILE); 
+  else
+    snprintf (filename, PATH_MAX, "%s", ut->cfg_file);
+  
   conffile = fopen (filename, "r");
   if (!conffile)
     return -1;
@@ -262,6 +274,7 @@ display_usage (void)
           DEFAULT_USHARE_NAME);
   printf (_(" -i, --interface=IFACE\tUse IFACE Network Interface (default is '%s')\n"),
           DEFAULT_USHARE_IFACE);
+  printf (_(" -f, --cfg=FILE\t\tConfig file to be used\n"));
   printf (_(" -p, --port=PORT\tForces the HTTP server to run on PORT\n"));
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
@@ -277,7 +290,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDowxn:i:p:c:";
+  char short_options[] = "VhvDowxn:i:p:c:f:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -290,6 +303,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"content", required_argument, 0, 'c' },
     {"no-web", no_argument, 0, 'w' },
     {"xbox", no_argument, 0, 'x' },
+    {"cfg", required_argument, 0, 'f' },
     {0, 0, 0, 0 }
   };
 
@@ -352,6 +366,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
       ut->xbox360 = true;
       break;
 
+    case 'f':
+      ushare_set_cfg_file (ut, optarg);
+      break;
+ 
     default:
       break;
     }

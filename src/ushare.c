@@ -100,6 +100,7 @@ ushare_new (void)
   ut->verbose = false;
   ut->daemon = false;
   ut->override_iconv_err = false;
+  ut->cfg_file = NULL;
 
   return ut;
 }
@@ -128,6 +129,8 @@ ushare_free (struct ushare_t *ut)
     free (ut->ip);
   if (ut->presentation)
     buffer_free (ut->presentation);
+  if (ut->cfg_file)
+    free (ut->cfg_file);
 
   free (ut);
 }
@@ -629,19 +632,20 @@ main (int argc, char **argv)
   setup_i18n();
   setup_iconv();
 
-  if (parse_config_file (ut) < 0)
-  {
-    /* fprintf here, because syslog not yet ready */
-    fprintf (stderr, _("Warning: can't parse file \"%s\".\n"),
-             SYSCONFDIR "/" USHARE_CONFIG_FILE);
-  }
-
+  /* Parse args before cfg file, as we may override the default file */
   if (parse_command_line (ut, argc, argv) < 0)
   {
     ushare_free (ut);
     return EXIT_SUCCESS;
   }
 
+  if (parse_config_file (ut) < 0)
+  {
+    /* fprintf here, because syslog not yet ready */
+    fprintf (stderr, _("Warning: can't parse file \"%s\".\n"),
+             SYSCONFDIR "/" USHARE_CONFIG_FILE);
+  }
+  
   if (ut->xbox360)
   {
     char *name;
