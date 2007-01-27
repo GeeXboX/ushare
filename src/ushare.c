@@ -629,8 +629,8 @@ main (int argc, char **argv)
   if (!ut)
     return EXIT_FAILURE;
 
-  setup_i18n();
-  setup_iconv();
+  setup_i18n ();
+  setup_iconv ();
 
   /* Parse args before cfg file, as we may override the default file */
   if (parse_command_line (ut, argc, argv) < 0)
