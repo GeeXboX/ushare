@@ -176,7 +176,8 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   struct upnp_entry_t *entry = NULL;
   char *title = NULL, *x = NULL;
   char url_tmp[MAX_URL_SIZE] = { '\0' };
-
+  char *title_or_name = NULL;
+  
   if (!name)
     return NULL;
 
@@ -211,33 +212,44 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
       entry->url = NULL;
     }
 
+  /* Try Iconv'ing the name but if it fails the end device
+     may still be able to handle it */
   title = iconv_convert (name);
   if (title)
-  {
-    if (!dir)
-    {
-      x = strrchr (title, '.');
-      if (x)  /* avoid displaying file extension */
-        *x = '\0';
-    }
-    x = convert_xml (title);
-    if (x)
-    {
-      free (title);
-      title = x;
-    }
-    entry->title = title;
-
-    if (!strcmp (title, "")) /* DIDL dc:title can't be empty */
-    {
-      free (title);
-      entry->title = strdup (TITLE_UNKNOWN);
-    }
-  }
+    title_or_name = title;
   else
   {
-    upnp_entry_free (ut, entry);
-    return NULL;
+    if (ut->override_iconv_err)
+    {
+      title_or_name = strdup (name);
+      log_error ("Entry invalid name id=%d [%s]\n", entry->id, name);
+    }
+    else
+    {
+      upnp_entry_free (ut, entry);
+      log_error ("Freeing entry invalid name id=%d [%s]\n", entry->id, name);
+      return NULL;
+    }
+  }
+  
+  if (!dir)
+  {
+    x = strrchr (title_or_name, '.');
+    if (x)  /* avoid displaying file extension */
+      *x = '\0';
+  }
+  x = convert_xml (title_or_name);
+  if (x)
+  {
+    free (title_or_name);
+    title_or_name = x;
+  }
+  entry->title = title_or_name;
+
+  if (!strcmp (title_or_name, "")) /* DIDL dc:title can't be empty */
+  {
+    free (title_or_name);
+    entry->title = strdup (TITLE_UNKNOWN);
   }
 
   entry->size = size;

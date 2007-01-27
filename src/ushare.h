@@ -101,6 +101,7 @@ struct ushare_t {
   bool xbox360;
   bool verbose;
   bool daemon;
+  bool override_iconv_err;
 };
 
 struct action_event_t {

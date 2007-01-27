@@ -99,6 +99,7 @@ ushare_new (void)
   ut->xbox360 = false;
   ut->verbose = false;
   ut->daemon = false;
+  ut->override_iconv_err = false;
 
   return ut;
 }

@@ -167,11 +167,26 @@ ushare_set_port (struct ushare_t *ut, const char *port)
   }
 }
 
+static void
+ushare_set_override_iconv_err (struct ushare_t *ut, const char *arg)
+{
+  if (!ut)
+    return;
+
+  ut->override_iconv_err = false;
+
+  if (!strcasecmp (arg, _("yes"))
+      || !strcasecmp (arg, _("true"))
+      || !strcmp (arg, "1"))
+    ut->override_iconv_err = true;
+}
+
 static u_configline_t configline[] = {
   {USHARE_NAME, ushare_set_name},
   {USHARE_IFACE, ushare_set_interface},
   {USHARE_PORT, ushare_set_port},
   {USHARE_DIR, ushare_set_dir},
+  {USHARE_OVERRIDE_ICONV_ERR, ushare_set_override_iconv_err},
   {NULL, NULL},
 };
 
@@ -250,6 +265,7 @@ display_usage (void)
   printf (_(" -p, --port=PORT\tForces the HTTP server to run on PORT\n"));
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
+  printf (_(" -o, --override-iconv-err\tIf iconv fails parsing name, still add to media contents (hoping the renderer can handle it)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
   printf (_(" -x, --xbox\t\tUse XboX 360 compliant profile\n"));
   printf (_(" -D, --daemon\t\tRun as a daemon\n"));
@@ -261,12 +277,13 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDwxn:i:p:c:";
+  char short_options[] = "VhvDowxn:i:p:c:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
     {"verbose", no_argument, 0, 'v' },
     {"daemon", no_argument, 0, 'D' },
+    {"override-iconv-err", no_argument, 0, 'o' },
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
     {"port", required_argument, 0, 'p' },
@@ -305,6 +322,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'D':
       ut->daemon = true;
+      break;
+
+    case 'o':
+      ut->override_iconv_err = true;
       break;
 
     case 'n':
