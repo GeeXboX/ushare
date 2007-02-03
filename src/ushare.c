@@ -377,7 +377,7 @@ has_iface (char *interface)
 static char *
 create_udn (char *interface)
 {
-  int sock = 0;
+  int sock = -1;
   char *buf;
   unsigned char *ptr;
 
