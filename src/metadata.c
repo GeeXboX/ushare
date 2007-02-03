@@ -459,8 +459,11 @@ metadata_add_container (struct ushare_t *ut,
 
       child = upnp_entry_new (ut, namelist[i]->d_name,
                               fullpath, entry, 0, true);
-      metadata_add_container (ut, child, fullpath);
-      upnp_entry_add_child (ut, entry, child);
+      if (child)
+      {
+        metadata_add_container (ut, child, fullpath);
+        upnp_entry_add_child (ut, entry, child);
+      }
     }
     else
       metadata_add_file (ut, entry, fullpath, namelist[i]->d_name);
