@@ -29,7 +29,7 @@
 
 #include "mime.h"
 
-#define UPNP_VIDEO "object.item.videoItem.movie"
+#define UPNP_VIDEO "object.item.videoItem"
 #define UPNP_AUDIO "object.item.audioItem.musicTrack"
 #define UPNP_PHOTO "object.item.imageItem.photo"
 #define UPNP_PLAYLIST "object.item.playlistItem"
