@@ -17,7 +17,7 @@
 .\" with this program; if not, write to the Free Software Foundation,
 .\" Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 .\"
-.TH USHARE 1 "December 28, 2005"
+.TH USHARE 1 "February 23, 2007"
 .SH NAME
 uShare \(hy a lightweight UPnP Media Server
 .SH SYNOPSIS
@@ -32,12 +32,6 @@ server of libupnp to stream the files to clients.
 .SH OPTIONS
 This program follow the usual GNU command line syntax.
 .TP
-\fB\-\-verbose (\-v)\fR
-Set verbose display.
-.TP
-\fB\-\-daemon (\-D)\fR
-Run as a daemon.
-.TP
 \fB\-\-name (\-n)\fR \fINAME\fR
 Set UPnP Friendly Name (display name of the media server).
 Default is 'uShare'.
@@ -45,6 +39,9 @@ Default is 'uShare'.
 \fB\-\-interface (\-i)\fR \fIINTERFACE\fR
 Set Network interface to listen on.
 Default is 'uShare'.
+.TP
+\fB\-\-cfg (\-p)\fR \fIFILE\fR
+Config file to be used.
 .TP
 \fB\-\-port (\-p)\fR \fIPORT\fR
 Set Network port to listen on.
@@ -56,8 +53,24 @@ Set directory to scan for multimedia files.
 \fB\-\-no\-web (\-w)\fR
 Disable the control web page (enabled by default).
 .TP
+\fB\-\-override-iconv-err (\-o)\fR
+If iconv fails parsing name, still add to media contents
+(hoping the renderer can handle it).
+.TP
+\fB\-\-verbose (\-v)\fR
+Set verbose display.
+.TP
+\fB\-\-xbox (\-x)\fR
+Use XboX 360 compliant profile.
+.TP
+\fB\-\-daemon (\-D)\fR
+Run as a daemon.
+.TP
 \fB\-\-version (\-V)\fR
 Display uShare version number.
+.TP
+\fB\-\-help (\-h)\fR
+Display help message.
 .SH "REMOTE CONTROL"
 You can also perform remote control of uShare UPnP Media Server through its
 web interface. This let you define new content locations at runtime or
