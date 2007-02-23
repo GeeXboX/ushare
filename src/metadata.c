@@ -196,8 +196,15 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   if (!dir) /* item */
     {
       struct mime_type_t *mime = getMimeType (getExtension (name));
-      entry->class = mime->class;
-      entry->protocol = mime->protocol;
+      if (!mime)
+      {
+        --ut->nr_entries; 
+        upnp_entry_free (ut, entry);
+        log_error ("Invalid Mime type for %s, entry ignored", name);
+        return NULL;
+      }
+      entry->mime_type = mime;
+
       if (snprintf (url_tmp, MAX_URL_SIZE, "%d.%s",
                     entry->id, getExtension (name)) >= MAX_URL_SIZE)
         log_error ("URL string too long for id %d, truncated!!", entry->id);
@@ -207,8 +214,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
     }
   else /* container */
     {
-      entry->class = Container_MIME_Type.class;
-      entry->protocol = Container_MIME_Type.protocol;
+      entry->mime_type = &Container_MIME_Type;
       entry->url = NULL;
     }
 
@@ -392,21 +398,16 @@ upnp_get_entry (struct ushare_t *ut, int id)
 
 static void
 metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
-                   const char *file, const char *name)
+                   const char *file, const char *name, struct stat *st_ptr)
 {
-  struct stat st;
-
   if (!entry || !file || !name)
-    return;
-
-  if (stat (file, &st) < 0)
     return;
 
   if (is_valid_extension (getExtension (file)))
   {
     struct upnp_entry_t *child = NULL;
 
-    child = upnp_entry_new (ut, name, file, entry, st.st_size, false);
+    child = upnp_entry_new (ut, name, file, entry, st_ptr->st_size, false);
     if (child)
       upnp_entry_add_child (ut, entry, child);
   }
@@ -466,7 +467,7 @@ metadata_add_container (struct ushare_t *ut,
       }
     }
     else
-      metadata_add_file (ut, entry, fullpath, namelist[i]->d_name);
+      metadata_add_file (ut, entry, fullpath, namelist[i]->d_name, &st);
 
     free (namelist[i]);
     free (fullpath);

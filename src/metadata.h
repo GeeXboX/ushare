@@ -36,8 +36,7 @@ struct upnp_entry_t {
   struct upnp_entry_t *parent;
   int child_count;
   struct upnp_entry_t **childs;
-  char *class;
-  char *protocol;
+  struct mime_type_t *mime_type;
   char *title;
   char *url;
   off_t size;

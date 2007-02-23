@@ -35,7 +35,7 @@
 #define UPNP_PLAYLIST "object.item.playlistItem"
 #define UPNP_TEXT "object.item.textItem"
 
-struct mime_type_t MIME_Type_List[] = {
+const struct mime_type_t MIME_Type_List[] = {
   /* Video files */
   { "asf", UPNP_VIDEO, "http-get:*:video/x-ms-asf:*"},
   { "avi", UPNP_VIDEO, "http-get:*:video/x-msvideo:*"},

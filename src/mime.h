@@ -23,8 +23,8 @@
 
 struct mime_type_t {
   char *extension;
-  char *class;
-  char *protocol;
+  char *mime_class;
+  char *mime_protocol;
 };
 
 #endif /* _MIME_H */

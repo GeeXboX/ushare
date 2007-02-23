@@ -47,6 +47,10 @@
 #include "trace.h"
 #include "presentation.h"
 #include "osdep.h"
+#include "mime.h"
+
+#define PROTOCOL_TYPE_PRE_SZ  11   /* for the str length of "http-get:*:" */
+#define PROTOCOL_TYPE_SUFF_SZ 2    /* for the str length of ":*" */
 
 struct web_file_t {
   char *fullpath;
@@ -87,6 +91,7 @@ http_get_info (const char *filename, struct File_Info *info)
   struct stat st;
   int upnp_id = 0;
   char *content_type = NULL;
+  char path[1024] = { '\0' };
 
   if (!filename || !info)
     return -1;
@@ -137,10 +142,15 @@ http_get_info (const char *filename, struct File_Info *info)
   if (!entry->fullpath)
     return -1;
 
-  if (stat (entry->fullpath, &st) < 0)
+  if (!entry->parent || entry->parent == ut->root_entry)
+    strcpy (path, entry->fullpath);
+  else
+    sprintf (path, "%s/%s", entry->parent->fullpath, entry->fullpath);
+  
+  if (stat (path, &st) < 0)
     return -1;
 
-  if (access (entry->fullpath, R_OK) < 0)
+  if (access (path, R_OK) < 0)
   {
     if (errno != EACCES)
       return -1;
@@ -154,8 +164,10 @@ http_get_info (const char *filename, struct File_Info *info)
   info->last_modified = st.st_mtime;
   info->is_directory = S_ISDIR (st.st_mode);
 
-  content_type = entry->protocol + strlen ("http-get:*:");
-  content_type = strndup (content_type, strlen(content_type) - strlen (":*"));
+  content_type =
+    strndup ((entry->mime_type->mime_protocol + PROTOCOL_TYPE_PRE_SZ),
+             strlen (entry->mime_type->mime_protocol) - PROTOCOL_TYPE_SUFF_SZ);
+  
   if (content_type)
   {
     info->content_type = ixmlCloneDOMString (content_type);
@@ -190,7 +202,8 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   struct upnp_entry_t *entry = NULL;
   struct web_file_t *file;
   int fd, upnp_id = 0;
-
+  char path[1024] = { '\0' };
+  
   if (!filename)
     return NULL;
 
@@ -221,14 +234,19 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   if (!entry->fullpath)
     return NULL;
 
-  log_verbose ("Fullpath : %s\n", entry->fullpath);
+  if (!entry->parent || entry->parent == ut->root_entry)
+    strcpy (path, entry->fullpath);
+  else
+    sprintf (path, "%s/%s", entry->parent->fullpath, entry->fullpath);
+  
+  log_verbose ("Fullpath : %s\n", path);
 
-  fd = open (entry->fullpath, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
+  fd = open (path, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
   if (fd < 0)
     return NULL;
 
   file = malloc (sizeof (struct web_file_t));
-  file->fullpath = strdup (entry->fullpath);
+  file->fullpath = strdup (path);
   file->pos = 0;
   file->type = FILE_LOCAL;
   file->detail.local.entry = entry;

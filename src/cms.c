@@ -102,7 +102,7 @@ cms_get_protocol_info (struct action_event_t *event)
   list = MIME_Type_List;
   while (list->extension)
   {
-    respLen += strlen (list->protocol) + 1;
+    respLen += strlen (list->mime_protocol) + 1;
     list++;
   }
 
@@ -114,8 +114,8 @@ cms_get_protocol_info (struct action_event_t *event)
   respPtr = respText;
   while (list->extension)
   {
-    len = strlen (list->protocol);
-    strncpy (respPtr, list->protocol, len);
+    len = strlen (list->mime_protocol);
+    strncpy (respPtr, list->mime_protocol, len);
     respPtr += len;
     list++;
     if (list->extension)
@@ -158,7 +158,7 @@ cms_get_current_connection_info (struct action_event_t *event)
 
   while (list->extension)
   {
-    upnp_add_response (event, SERVICE_CMS_ARG_PROT_INFO, list->protocol);
+    upnp_add_response (event, SERVICE_CMS_ARG_PROT_INFO, list->mime_protocol);
     list++;
   }
 

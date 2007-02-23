@@ -343,8 +343,9 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
   {
     didl_add_header (out);
     didl_add_item (out, entry->id, entry->parent
-                   ? entry->parent->id : -1, "false", entry->class,
-                   entry->title, entry->protocol, entry->size,
+                   ? entry->parent->id : -1, "false",
+                   entry->mime_type->mime_class, entry->title,
+                   (entry->mime_type)->mime_protocol, entry->size,
                    entry->url, filter);
     didl_add_footer (out);
 
@@ -356,7 +357,8 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
     didl_add_header (out);
     didl_add_container (out, entry->id, entry->parent
                         ? entry->parent->id : -1, entry->child_count,
-                        "true", "true", entry->title, entry->class);
+                        "true", "true", entry->title,
+                        entry->mime_type->mime_class);
     didl_add_footer (out);
 
     result_count = 1;
@@ -403,14 +405,15 @@ cds_browse_directchildren (struct action_event_t *event,
         didl_add_container (out, (*childs)->id, (*childs)->parent ?
                             (*childs)->parent->id : -1,
                             (*childs)->child_count, "true", NULL,
-                            (*childs)->title, (*childs)->class);
+                            (*childs)->title,
+                            (*childs)->mime_type->mime_class);
       else /* item */
       {
         didl_add_item (out, (*childs)->id,
                        (*childs)->parent ? (*childs)->parent->id : -1,
-                       "true", (*childs)->class, (*childs)->title,
-                       (*childs)->protocol, (*childs)->size,
-                       (*childs)->url, filter);
+                       "true", (*childs)->mime_type->mime_class,
+                       (*childs)->title, (*childs)->mime_type->mime_protocol,
+                       (*childs)->size, (*childs)->url, filter);
       }
       result_count++;
     }
@@ -557,11 +560,13 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
       *quote_closed = '\0';
   }
   
-  if (derived_from && !strncmp (entry->class, keyword, strlen (keyword)))
+  if (derived_from
+      && !strncmp (entry->mime_type->mime_class, keyword, strlen (keyword)))
     result = true;
-  else if (protocol_contains && strstr (entry->protocol, keyword))
+  else if (protocol_contains
+           && strstr (entry->mime_type->mime_protocol, keyword))
     result = true;
-  else if (!strcmp (entry->class, keyword))
+  else if (!strcmp (entry->mime_type->mime_class, keyword))
     result = true;
 
   and_clause = strstr (search_criteria, SEARCH_AND);
@@ -605,9 +610,9 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
         {
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
-                         "true", (*childs)->class, (*childs)->title,
-                         (*childs)->protocol, (*childs)->size,
-                         (*childs)->url, filter);
+                         "true", (*childs)->mime_type->mime_class,
+                         (*childs)->title, (*childs)->mime_type->mime_protocol,
+                         (*childs)->size, (*childs)->url, filter);
           result_count++;
         }
       }
@@ -664,9 +669,9 @@ cds_search_directchildren (struct action_event_t *event,
         {
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
-                         "true", (*childs)->class, (*childs)->title,
-                         (*childs)->protocol, (*childs)->size,
-                         (*childs)->url, filter);
+                         "true", (*childs)->mime_type->mime_class,
+                         (*childs)->title, (*childs)->mime_type->mime_protocol,
+                         (*childs)->size, (*childs)->url, filter);
           result_count++;
         }
       }
