@@ -301,11 +301,10 @@ http_write (UpnpWebFileHandle fh __attribute__((unused)),
 }
 
 static int
-http_seek (UpnpWebFileHandle fh, long off, int origin)
+http_seek (UpnpWebFileHandle fh, off_t offset, int origin)
 {
   struct web_file_t *file = (struct web_file_t *) fh;
   off_t newpos = -1;
-  off_t offset = (off_t) off;
 
   log_verbose ("http_seek\n");
 
