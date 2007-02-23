@@ -63,7 +63,7 @@ The following programs are required to build uShare:
 
 The following UPnP library is required to build and run uShare :
 
- * Linux SDK for UPnP Devices (libupnp), 1.4.1 or later
+ * Linux SDK for UPnP Devices (libupnp), 1.4.2 or later
 
    The libupnp library is used to communicate using the UPnP protocol.
    libupnp can be downloaded from http://pupnp.sourceforge.net/.

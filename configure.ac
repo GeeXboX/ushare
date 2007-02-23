@@ -61,7 +61,7 @@ AC_ARG_WITH(libupnp-prefix,
 
 if test "x$upnpdir" = "x"; then
   PKG_CHECK_MODULES(libupnp,
-    libupnp >= 1.4.1,
+    libupnp >= 1.4.2,
     [
       CFLAGS="$libupnp_CFLAGS $CFLAGS"
       LDFLAGS="$libupnp_LIBS $LDFLAGS"
