@@ -368,7 +368,7 @@ upnp_entry_add_child (struct ushare_t *ut,
   entry_lookup_ptr->entry_ptr = child;
  
   if (rbsearch ((void *) entry_lookup_ptr, ut->rb) == NULL)
-    log_info (_("Failed to add the RB lookup tree"));
+    log_info (_("Failed to add the RB lookup tree\n"));
 }
 
 struct upnp_entry_t *
