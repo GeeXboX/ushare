@@ -1,3 +1,15 @@
+ushare (0.9.9-0ubuntu1) feisty; urgency=low
+
+  * new upstream release
+
+ -- Alexis Saettler <alexis@saettler.org>  Sat, 24 Feb 2007 00:26:33 +0100
+
+ushare (0.9.8-0ubuntu1) feisty; urgency=low
+
+  * new upstream release
+
+ -- Alexis Saettler <alexis@saettler.org>  Sat,  10 Dec 2006 19:03:57 +0100
+
 ushare (0.9.7-0ubuntu4) feisty; urgency=low
 
   * change for feisty

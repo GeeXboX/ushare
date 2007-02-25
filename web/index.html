@@ -168,9 +168,15 @@ ushare -c /shares1 --content=/shares2</pre>
     <dl>
       <dt>Debian Package</dt>
       <dd>
-      If you're using Debian or Ubuntu GNU/Linux distribution, you can also grab the <a href="http://www.geexbox.org/debian/pool/main/ushare/ushare_0.9.8-0ubuntu1_i386.deb">binary for i386</a>.<br/>
+      If you're using Debian or Ubuntu GNU/Linux distribution, you can also grab the binaries for your architecture :
+      <ul>
+        <li>i386 arch : <a href="http://www.geexbox.org/debian/pool/main/ushare/ushare_0.9.9-0ubuntu1_i386.deb">ushare package</a>, <a href="http://www.geexbox.org/debian/pool/main/libupnp/libupnp2_1.4.2-1ubuntu0.1_i386.deb">libupnp package</a>.</li>
+        <li>amd64 arch : <a href="http://www.geexbox.org/debian/pool/main/ushare/ushare_0.9.9-0ubuntu1_amd64.deb">ushare package</a>, <a href="http://www.geexbox.org/debian/pool/main/libupnp/libupnp2_1.4.2-1ubuntu0.1_amd64.deb">libupnp package</a>.</li>
+      </ul>
       uShare is also available through <b>apt-get</b>. Simply add the following line to your <i>/etc/apt/sources.list</i> file :
       <pre class="code">deb http://www.geexbox.org/debian/ unstable main</pre>
+      and install ushare with :
+      <pre class="code">apt-get update &amp;&amp; apt-get install ushare</pre>
       </dd>
 
       <dt>Fedora Package</dt>
