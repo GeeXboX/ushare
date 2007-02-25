@@ -184,8 +184,8 @@ ushare_set_override_iconv_err (struct ushare_t *ut, const char *arg)
 
   ut->override_iconv_err = false;
 
-  if (!strcasecmp (arg, _("yes"))
-      || !strcasecmp (arg, _("true"))
+  if (!strcasecmp (arg, "yes")
+      || !strcasecmp (arg, "true")
       || !strcmp (arg, "1"))
     ut->override_iconv_err = true;
 }
