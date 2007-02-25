@@ -31,7 +31,6 @@
 
 #define USHARE_CONFIG_FILE "ushare.conf"
 #define DEFAULT_USHARE_NAME "uShare"
-#define DEFAULT_USHARE_LOGFILE "/var/log/ushare.log"
 
 #if (defined(BSD) || defined(__FreeBSD__))
 #define DEFAULT_USHARE_IFACE "lnc0"
