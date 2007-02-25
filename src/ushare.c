@@ -643,7 +643,7 @@ main (int argc, char **argv)
   {
     /* fprintf here, because syslog not yet ready */
     fprintf (stderr, _("Warning: can't parse file \"%s\".\n"),
-             SYSCONFDIR "/" USHARE_CONFIG_FILE);
+             ut->cfg_file ? ut->cfg_file : SYSCONFDIR "/" USHARE_CONFIG_FILE);
   }
   
   if (ut->xbox360)
