@@ -15,14 +15,22 @@ AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.14.5)
 ALL_LINGUAS="fr de"
 
-LOCALEDIR="${datadir}/locale"
-eval LOCALEPATH="$LOCALEDIR"
-AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEPATH",[Path where catalog files will be.])
+LOCALEDIR="${localedir}"
+while true; do
+ eval t="$LOCALEDIR"
+ test "$t" = "$LOCALEDIR" && break
+ LOCALEDIR="$t"
+done
+AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR",[Path where catalog files will be.])
 AC_SUBST(LOCALEDIR)
 
 SYSCONFDIR="${sysconfdir}"
-eval SYSCONFPATH="$SYSCONFDIR"
-AC_DEFINE_UNQUOTED(SYSCONFDIR, "$SYSCONFPATH",[Path where system configuration files will be.])
+while true; do
+ eval t="$SYSCONFDIR"
+ test "$t" = "$SYSCONFDIR" && break
+ SYSCONFDIR="$t"
+done
+AC_DEFINE_UNQUOTED(SYSCONFDIR, "$SYSCONFDIR",[Path where system configuration files will be.])
 AC_SUBST(SYSCONFDIR)
 
 AM_ICONV
