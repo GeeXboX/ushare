@@ -1,5 +1,6 @@
 2007-02-25  Alexis Saettler <asbin@asbin.org>
 
+	* new public release (Version 0.9.9).
 	* fixed bug with localization, use now --localedir configure's
 	  option to set location of .mo files.
 

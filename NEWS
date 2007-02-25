@@ -1,3 +1,25 @@
+2007-02-25 : GeeXboX uShare 0.9.9 released.
+ Added support for FreeBSD.
+ Use a RedBlack balanced tree searching and sorting algorithm
+  instead of the recursive one. It avoids recursive calls, takes
+  less memory (perfect for embedded systems) and executes in more
+  "constant time" than the logarithmic style.
+  Original patch by Phil Chandler.	
+ Massive memory optimization (uShare now takes 75% less RAM ;-)
+  only not using fixed size URL allocation buffer (a 16000+ files
+  collection now only takes 5MB where it used to take 19MB).
+ Improved search parsing and matching mechanism (patch by Mostafa
+  Hosseini). XboX360 support is now complete.
+  Please note that to stream video to the XboX, the console should
+  be running dashboard version 2.0.4552.0 and only unprotected
+  .wmv files are supported.
+ Fixed support for 2GB+ files (see http://sourceforge.net/tracker/index.php?func=detail&aid=1634927&group_id=151880&atid=782410)
+ Fixed support for XboX 360 (thanks to Mostafa Hosseini).
+ Added basic support for 'Search' action.
+ Fixed bug with localization, use now --localedir configure's
+  option to set location of .mo files.
+ Make libupnp >= 1.4.2 a requirement.
+
 2006-12-10 : GeeXboX uShare 0.9.8 released.
  Added German translation.
  Convert special xml characters to xml (like & => &amp;).
