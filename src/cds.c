@@ -395,7 +395,7 @@ cds_browse_directchildren (struct action_event_t *event,
      then all children must be returned */
   if (index == 0 && count == 0)
     count = entry->child_count;
- 
+
   for (; *childs; childs++)
   {
     if (count == 0 || result_count < count)
@@ -506,7 +506,7 @@ cds_browse (struct action_event_t *event)
     result_count =
       cds_browse_directchildren (event, out, index, count, entry, filter);
   free (filter);
-  
+
   if (result_count < 0)
   {
     buffer_free (out);
@@ -526,14 +526,14 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
   char keyword[256] = SEARCH_OBJECT_KEYWORD;
   bool derived_from = false, protocol_contains = false, result = false;
   char *quote_closed = NULL, *and_clause = NULL;
-  
+
   if (!strncmp (search_criteria, SEARCH_CLASS_MATCH_KEYWORD,
                 strlen (SEARCH_CLASS_MATCH_KEYWORD)))
   {
     strncpy (keyword, search_criteria
              + strlen (SEARCH_CLASS_MATCH_KEYWORD), sizeof (keyword));
     quote_closed = strchr (keyword, '"');
-    
+
     if (quote_closed)
       *quote_closed = '\0';
   }
@@ -559,7 +559,7 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
     if (quote_closed)
       *quote_closed = '\0';
   }
-  
+
   if (derived_from
       && !strncmp (entry->mime_type->mime_class, keyword, strlen (keyword)))
     result = true;
@@ -573,7 +573,7 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
   if (and_clause)
     return (result &&
             matches_search (and_clause + strlen (SEARCH_AND) -1, entry));
-  
+
   return true;
 }
 
@@ -749,10 +749,10 @@ cds_search (struct action_event_t *event)
   buffer_free (out);
   upnp_add_response (event, SERVICE_CDS_DIDL_UPDATE_ID,
                      SERVICE_CDS_ROOT_OBJECT_ID);
-  
+
   free (search_criteria);
   free (filter);
-  
+
   return event->status;
 }
 

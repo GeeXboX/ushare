@@ -243,10 +243,10 @@ init_upnp (struct ushare_t *ut)
 
   if (UpnpSetMaxContentLength (UPNP_MAX_CONTENT_LENGTH) != UPNP_E_SUCCESS)
     log_info (_("Could not set Max content UPnP\n"));
-  
+
   if (ut->xbox360)
     log_info (_("Starting in XboX 360 compliant profile ...\n"));
-  
+
   ut->port = UpnpGetServerPort();
   log_info (_("UPnP MediaServer listening on %s:%d\n"),
             UpnpGetServerIpAddress (), ut->port);
@@ -444,7 +444,7 @@ create_udn (char *interface)
   memset (buf, 0, 64);
   ptr = (unsigned char *) ifr.ifr_hwaddr.sa_data;
 #endif /* (defined(BSD) || defined(__FreeBSD__)) */
-  
+
   snprintf (buf, 64, "%s-%02x%02x%02x%02x%02x%02x", DEFAULT_UUID,
             (ptr[0] & 0377), (ptr[1] & 0377), (ptr[2] & 0377),
             (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377));
@@ -551,7 +551,7 @@ reload_config (int s __attribute__ ((unused)))
     ut2->name = NULL;
     reload = true;
   }
- 
+
   if (ut->interface && strcmp (ut->interface, ut2->interface))
   {
     if (!has_iface (ut2->interface))
@@ -645,7 +645,7 @@ main (int argc, char **argv)
     fprintf (stderr, _("Warning: can't parse file \"%s\".\n"),
              ut->cfg_file ? ut->cfg_file : SYSCONFDIR "/" USHARE_CONFIG_FILE);
   }
-  
+
   if (ut->xbox360)
   {
     char *name;
@@ -658,7 +658,7 @@ main (int argc, char **argv)
 
     ut->starting_id = STARTING_ENTRY_ID_XBOX360;
   }
-  
+
   if (ut->daemon)
   {
     /* starting syslog feature as soon as possible */

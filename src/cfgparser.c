@@ -236,7 +236,7 @@ parse_config_file (struct ushare_t *ut)
     snprintf (filename, PATH_MAX, "%s/%s", SYSCONFDIR, USHARE_CONFIG_FILE); 
   else
     snprintf (filename, PATH_MAX, "%s", ut->cfg_file);
-  
+
   conffile = fopen (filename, "r");
   if (!conffile)
     return -1;
@@ -369,7 +369,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     case 'f':
       ushare_set_cfg_file (ut, optarg);
       break;
- 
+
     default:
       break;
     }

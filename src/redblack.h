@@ -24,7 +24,7 @@
 /* Header file for redblack.c, should be included by any code that 
 ** uses redblack.c since it defines the functions 
 */ 
- 
+
 /* Stop multiple includes */
 #ifndef _REDBLACK_H
 
@@ -75,7 +75,7 @@ struct RB_ENTRY(lists) {
 const struct RB_ENTRY(node) *rootp; 
 const struct RB_ENTRY(node) *nextp; 
 }; 
- 
+
 #define RBLIST struct RB_ENTRY(lists) 
 
 struct RB_ENTRY(tree) {

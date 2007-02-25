@@ -120,7 +120,7 @@ http_get_info (const char *filename, struct File_Info *info)
   {
     if (build_presentation_page (ut) < 0)
       return -1;
-   
+
     set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
@@ -129,7 +129,7 @@ http_get_info (const char *filename, struct File_Info *info)
   {
     if (process_cgi (ut, (char *) (filename + strlen (USHARE_CGI) + 1)) < 0)
       return -1;
-   
+
    set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
@@ -146,7 +146,7 @@ http_get_info (const char *filename, struct File_Info *info)
     strcpy (path, entry->fullpath);
   else
     sprintf (path, "%s/%s", entry->parent->fullpath, entry->fullpath);
-  
+
   if (stat (path, &st) < 0)
     return -1;
 
@@ -167,7 +167,7 @@ http_get_info (const char *filename, struct File_Info *info)
   content_type =
     strndup ((entry->mime_type->mime_protocol + PROTOCOL_TYPE_PRE_SZ),
              strlen (entry->mime_type->mime_protocol) - PROTOCOL_TYPE_SUFF_SZ);
-  
+
   if (content_type)
   {
     info->content_type = ixmlCloneDOMString (content_type);
@@ -203,7 +203,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   struct web_file_t *file;
   int fd, upnp_id = 0;
   char path[1024] = { '\0' };
-  
+
   if (!filename)
     return NULL;
 
@@ -238,7 +238,7 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
     strcpy (path, entry->fullpath);
   else
     sprintf (path, "%s/%s", entry->parent->fullpath, entry->fullpath);
-  
+
   log_verbose ("Fullpath : %s\n", path);
 
   fd = open (path, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);

@@ -177,7 +177,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   char *title = NULL, *x = NULL;
   char url_tmp[MAX_URL_SIZE] = { '\0' };
   char *title_or_name = NULL;
-  
+
   if (!name)
     return NULL;
 
@@ -237,7 +237,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
       return NULL;
     }
   }
-  
+
   if (!dir)
   {
     x = strrchr (title_or_name, '.');
@@ -296,7 +296,7 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
 {
   if (!ut || !entry)
     return;
- 
+
   /* Free all entries (i.e. children) */
   if (entry == ut->root_entry)
   {
@@ -307,7 +307,7 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
 
     rblist = rbopenlist (ut->rb);
     lk = (struct upnp_entry_lookup_t *) rbreadlist (rblist);
-    
+
     while (lk)
     {
       entry_found = lk->entry_ptr;
@@ -319,19 +319,19 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
  	  free (entry_found->title);
  	if (entry_found->url)
  	  free (entry_found->url);
- 	
+
 	free (entry_found);
  	i++;
       }
-       
+
       free (lk); /* delete the lookup */
       lk = (struct upnp_entry_lookup_t *) rbreadlist (rblist);
     }
- 
+
     rbcloselist (rblist);
     rbdestroy (ut->rb);
     ut->rb = NULL;
-     
+
     log_verbose ("Freed [%d] entries\n", i);
   }
   else
@@ -339,7 +339,7 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
 
   free (entry);
 }
- 
+
 static void
 upnp_entry_add_child (struct ushare_t *ut,
                       struct upnp_entry_t *entry, struct upnp_entry_t *child)
@@ -366,7 +366,7 @@ upnp_entry_add_child (struct ushare_t *ut,
     malloc (sizeof (struct upnp_entry_lookup_t));
   entry_lookup_ptr->id = child->id;
   entry_lookup_ptr->entry_ptr = child;
- 
+
   if (rbsearch ((void *) entry_lookup_ptr, ut->rb) == NULL)
     log_info (_("Failed to add the RB lookup tree\n"));
 }
@@ -375,7 +375,7 @@ struct upnp_entry_t *
 upnp_get_entry (struct ushare_t *ut, int id)
 {
   struct upnp_entry_lookup_t *res, entry_lookup;
- 
+
   log_verbose ("Looking for entry id %d\n", id);
   if (id == 0) /* We do not store the root (id 0) as it is not a child */
     return ut->root_entry;
@@ -383,7 +383,7 @@ upnp_get_entry (struct ushare_t *ut, int id)
   entry_lookup.id = id;
   res = (struct upnp_entry_lookup_t *)
     rbfind ((void *) &entry_lookup, ut->rb);
- 
+
   if (res)
   {
     log_verbose ("Found at %p\n",
@@ -392,7 +392,7 @@ upnp_get_entry (struct ushare_t *ut, int id)
   }
 
   log_verbose ("Not Found\n");
-  
+
   return NULL;
 }
 
@@ -548,10 +548,10 @@ rb_compare (const void *pa, const void *pb,
 
   a = (struct upnp_entry_lookup_t *) pa;
   b = (struct upnp_entry_lookup_t *) pb;
-  
+
   if (a->id < b->id)
     return -1;
- 
+
   if (a->id > b->id)
     return 1;
 

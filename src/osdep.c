@@ -48,7 +48,7 @@ strndup (const char *s, size_t n)
     memcpy (sdup, s, len);
     sdup[len] = '\0';
   }
-  
+
   return sdup;
 }
 
@@ -61,7 +61,7 @@ getline (char **lineptr, size_t *n, FILE *stream)
 
   if (!lineptr || !n)
     return -1;
-  
+
   if (ferror (stream))
     return -1;
 
@@ -80,7 +80,7 @@ getline (char **lineptr, size_t *n, FILE *stream)
     ptr = realloc (*lineptr, 256);
     if (!ptr)
       return -1;
-    
+
     *lineptr = ptr;
     *n = 256;
   }

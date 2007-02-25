@@ -146,7 +146,7 @@ RB_STATIC struct RB_ENTRY(tree) *RB_ENTRY(init)(void)
 
 	if ((retval=(struct RB_ENTRY(tree) *) malloc(sizeof(struct RB_ENTRY(tree))))==NULL)
 		return(NULL);
-	
+
 #ifndef RB_CUSTOMIZE
 	retval->rb_cmp=cmp;
 	retval->rb_config=config;
@@ -165,7 +165,7 @@ RB_ENTRY(destroy)(struct RB_ENTRY(tree) *rbinfo)
 
 	if (rbinfo->rb_root!=RBNULL)
 		RB_ENTRY(_destroy)(rbinfo->rb_root);
-	
+
 	free(rbinfo);
 }
 #endif /* no_destroy */
@@ -496,10 +496,10 @@ RB_ENTRY(_lookup)(int mode, const RB_ENTRY(data_t) *key, struct RB_ENTRY(tree) *
 
 	if (found && (mode==RB_LUEQUAL || mode==RB_LUGTEQ || mode==RB_LULTEQ))
 		return(x);
-	
+
 	if (!found && (mode==RB_LUEQUAL || mode==RB_LUNEXT || mode==RB_LUPREV))
 		return(RBNULL);
-	
+
 	if (mode==RB_LUGTEQ || (!found && mode==RB_LUGREAT))
 	{
 		if (cmp>0)
@@ -521,7 +521,7 @@ RB_ENTRY(_lookup)(int mode, const RB_ENTRY(data_t) *key, struct RB_ENTRY(tree) *
 
 	if (mode==RB_LUPREV || (found && mode==RB_LULESS))
 		return(RB_ENTRY(_predecessor)(x));
-	
+
 	/* Shouldn't get here */
 	return(RBNULL);
 }
