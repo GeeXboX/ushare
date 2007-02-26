@@ -91,7 +91,6 @@ http_get_info (const char *filename, struct File_Info *info)
   struct stat st;
   int upnp_id = 0;
   char *content_type = NULL;
-  char path[1024] = { '\0' };
 
   if (!filename || !info)
     return -1;
@@ -142,15 +141,10 @@ http_get_info (const char *filename, struct File_Info *info)
   if (!entry->fullpath)
     return -1;
 
-  if (!entry->parent || entry->parent == ut->root_entry)
-    strcpy (path, entry->fullpath);
-  else
-    sprintf (path, "%s/%s", entry->parent->fullpath, entry->fullpath);
-
-  if (stat (path, &st) < 0)
+  if (stat (entry->fullpath, &st) < 0)
     return -1;
 
-  if (access (path, R_OK) < 0)
+  if (access (entry->fullpath, R_OK) < 0)
   {
     if (errno != EACCES)
       return -1;
@@ -202,7 +196,6 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   struct upnp_entry_t *entry = NULL;
   struct web_file_t *file;
   int fd, upnp_id = 0;
-  char path[1024] = { '\0' };
 
   if (!filename)
     return NULL;
@@ -234,19 +227,14 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   if (!entry->fullpath)
     return NULL;
 
-  if (!entry->parent || entry->parent == ut->root_entry)
-    strcpy (path, entry->fullpath);
-  else
-    sprintf (path, "%s/%s", entry->parent->fullpath, entry->fullpath);
+  log_verbose ("Fullpath : %s\n", entry->fullpath);
 
-  log_verbose ("Fullpath : %s\n", path);
-
-  fd = open (path, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
+  fd = open (entry->fullpath, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
   if (fd < 0)
     return NULL;
 
   file = malloc (sizeof (struct web_file_t));
-  file->fullpath = strdup (path);
+  file->fullpath = strdup (entry->fullpath);
   file->pos = 0;
   file->type = FILE_LOCAL;
   file->detail.local.entry = entry;
