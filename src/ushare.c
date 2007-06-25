@@ -96,6 +96,7 @@ ushare_new (void)
   ut->port = 0; /* Randomly attributed by libupnp */
   ut->presentation = NULL;
   ut->use_presentation = true;
+  ut->dlna = false;
   ut->xbox360 = false;
   ut->verbose = false;
   ut->daemon = false;
@@ -246,6 +247,9 @@ init_upnp (struct ushare_t *ut)
 
   if (ut->xbox360)
     log_info (_("Starting in XboX 360 compliant profile ...\n"));
+
+  if (ut->dlna)
+    log_info (_("Starting in DLNA compliant profile ...\n"));
 
   ut->port = UpnpGetServerPort();
   log_info (_("UPnP MediaServer listening on %s:%d\n"),

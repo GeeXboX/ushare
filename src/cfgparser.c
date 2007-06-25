@@ -281,6 +281,7 @@ display_usage (void)
   printf (_(" -o, --override-iconv-err\tIf iconv fails parsing name, still add to media contents (hoping the renderer can handle it)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
   printf (_(" -x, --xbox\t\tUse XboX 360 compliant profile\n"));
+  printf (_(" -d, --dlna\t\tUse DLNA compliant profile (PlayStation3 needs this)\n"));
   printf (_(" -D, --daemon\t\tRun as a daemon\n"));
   printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
   printf (_(" -h, --help\t\tDisplay this help\n"));
@@ -290,7 +291,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDowxn:i:p:c:f:";
+  char short_options[] = "VhvDowxdn:i:p:c:f:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -303,6 +304,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"content", required_argument, 0, 'c' },
     {"no-web", no_argument, 0, 'w' },
     {"xbox", no_argument, 0, 'x' },
+    {"dlna", no_argument, 0, 'd' },
     {"cfg", required_argument, 0, 'f' },
     {0, 0, 0, 0 }
   };
@@ -364,6 +366,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'x':
       ut->xbox360 = true;
+      break;
+
+    case 'd':
+      ut->dlna = true;
       break;
 
     case 'f':

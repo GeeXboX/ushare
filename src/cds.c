@@ -341,14 +341,17 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
 
   if (entry->child_count == -1) /* item : file */
   {
+    char *protocol = mime_get_protocol (entry->mime_type);
+    
     didl_add_header (out);
     didl_add_item (out, entry->id, entry->parent
                    ? entry->parent->id : -1, "false",
                    entry->mime_type->mime_class, entry->title,
-                   (entry->mime_type)->mime_protocol, entry->size,
+                   protocol, entry->size,
                    entry->url, filter);
     didl_add_footer (out);
-
+    free (protocol);
+    
     for (c = index; c < MIN (index + count, entry->child_count); c++)
       result_count++;
   }
@@ -409,11 +412,13 @@ cds_browse_directchildren (struct action_event_t *event,
                             (*childs)->mime_type->mime_class);
       else /* item */
       {
+        char *protocol = mime_get_protocol ((*childs)->mime_type);
         didl_add_item (out, (*childs)->id,
                        (*childs)->parent ? (*childs)->parent->id : -1,
                        "true", (*childs)->mime_type->mime_class,
-                       (*childs)->title, (*childs)->mime_type->mime_protocol,
+                       (*childs)->title, protocol,
                        (*childs)->size, (*childs)->url, filter);
+        free (protocol);
       }
       result_count++;
     }
@@ -526,7 +531,8 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
   char keyword[256] = SEARCH_OBJECT_KEYWORD;
   bool derived_from = false, protocol_contains = false, result = false;
   char *quote_closed = NULL, *and_clause = NULL;
-
+  char *protocol = mime_get_protocol (entry->mime_type);
+  
   if (!strncmp (search_criteria, SEARCH_CLASS_MATCH_KEYWORD,
                 strlen (SEARCH_CLASS_MATCH_KEYWORD)))
   {
@@ -563,12 +569,12 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
   if (derived_from
       && !strncmp (entry->mime_type->mime_class, keyword, strlen (keyword)))
     result = true;
-  else if (protocol_contains
-           && strstr (entry->mime_type->mime_protocol, keyword))
+  else if (protocol_contains && strstr (protocol, keyword))
     result = true;
   else if (!strcmp (entry->mime_type->mime_class, keyword))
     result = true;
-
+  free (protocol);
+  
   and_clause = strstr (search_criteria, SEARCH_AND);
   if (and_clause)
     return (result &&
@@ -608,11 +614,13 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
       {
         if (matches_search (search_criteria, *childs))
         {
+          char *protocol = mime_get_protocol ((*childs)->mime_type);
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
                          "true", (*childs)->mime_type->mime_class,
-                         (*childs)->title, (*childs)->mime_type->mime_protocol,
+                         (*childs)->title, protocol,
                          (*childs)->size, (*childs)->url, filter);
+          free (protocol);
           result_count++;
         }
       }
@@ -667,11 +675,13 @@ cds_search_directchildren (struct action_event_t *event,
       {
         if (matches_search (search_criteria, *childs))
         {
+          char *protocol = mime_get_protocol ((*childs)->mime_type);
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
                          "true", (*childs)->mime_type->mime_class,
-                         (*childs)->title, (*childs)->mime_type->mime_protocol,
+                         (*childs)->title, protocol,
                          (*childs)->size, (*childs)->url, filter);
+          free (protocol);
           result_count++;
         }
       }

@@ -23,8 +23,11 @@
 
 struct mime_type_t {
   char *extension;
+  char *dlna_type; /* see dlna.h */
   char *mime_class;
   char *mime_protocol;
 };
+
+char *mime_get_protocol (struct mime_type_t *mime);
 
 #endif /* _MIME_H */

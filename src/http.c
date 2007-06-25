@@ -91,7 +91,8 @@ http_get_info (const char *filename, struct File_Info *info)
   struct stat st;
   int upnp_id = 0;
   char *content_type = NULL;
-
+  char *protocol = NULL;
+  
   if (!filename || !info)
     return -1;
 
@@ -158,9 +159,11 @@ http_get_info (const char *filename, struct File_Info *info)
   info->last_modified = st.st_mtime;
   info->is_directory = S_ISDIR (st.st_mode);
 
+  protocol = mime_get_protocol (entry->mime_type);
   content_type =
-    strndup ((entry->mime_type->mime_protocol + PROTOCOL_TYPE_PRE_SZ),
-             strlen (entry->mime_type->mime_protocol) - PROTOCOL_TYPE_SUFF_SZ);
+    strndup ((protocol + PROTOCOL_TYPE_PRE_SZ),
+             strlen (protocol) - PROTOCOL_TYPE_SUFF_SZ);
+  free (protocol);
 
   if (content_type)
   {

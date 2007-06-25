@@ -100,6 +100,7 @@ struct ushare_t {
   unsigned short port;
   struct buffer_t *presentation;
   bool use_presentation;
+  bool dlna;
   bool xbox360;
   bool verbose;
   bool daemon;
