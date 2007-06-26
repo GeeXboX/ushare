@@ -2,6 +2,7 @@
  * dlna.h : GeeXboX uShare Digital Network Living Alliance (DLNA) informations
  * Originally developped for the GeeXboX project.
  * Copyright (C) 2007 Benjamin Zores <ben@geexbox.org>
+ * Thanks to Jason Woodward for DLNA specification.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
