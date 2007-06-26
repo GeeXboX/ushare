@@ -183,7 +183,16 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
-  entry->id = ut->starting_id + ut->nr_entries++;
+  if (ut->xbox360)
+  {
+    if (ut->root_entry)
+      entry->id = ut->starting_id + ut->nr_entries++;
+    else
+      entry->id = 0; /* Creating the root node so don't use the usual IDs */
+  }
+  else
+    entry->id = ut->starting_id + ut->nr_entries++;
+  
   entry->fullpath = fullpath ? strdup (fullpath) : NULL;
   entry->parent = parent;
   entry->child_count =  dir ? 0 : -1;
