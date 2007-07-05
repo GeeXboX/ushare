@@ -1,3 +1,10 @@
+ushare (1.0-0ubuntu1) gutsy; urgency=low
+
+  * new upstream release
+  * change for gutsy
+
+ -- Alexis Saettler <alexis@saettler.org>  Thu, 05 Jul 2007 20:45:40 +0200
+
 ushare (0.9.10-0ubuntu1) feisty; urgency=low
 
   * new upstream release
