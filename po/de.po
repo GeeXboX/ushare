@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: uShare 0.9.8\n"
 "Report-Msgid-Bugs-To: ushare@geexbox.org\n"
-"POT-Creation-Date: 2007-02-25 16:17+0100\n"
+"POT-Creation-Date: 2007-07-05 20:51+0200\n"
 "PO-Revision-Date: 2006-09-20 22:12+0200\n"
 "Last-Translator: German uShare Team <ushare@geexbox.org>\n"
 "Language-Team: German uShare Team <ushare@geexbox.org>\n"
@@ -16,120 +16,124 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/ushare.c:213
+#: src/ushare.c:214
 msgid "Stopping UPnP Service ...\n"
 msgstr "UPnP Service wird gestoppt ...\n"
 
-#: src/ushare.c:236
+#: src/ushare.c:237
 msgid "Initializing UPnP subsystem ...\n"
 msgstr "Initialisiere UPnP Subsystem ...\n"
 
-#: src/ushare.c:240
+#: src/ushare.c:241
 msgid "Cannot initialize UPnP subsystem\n"
 msgstr "Kann UPnP Subsystem nicht initialisieren\n"
 
-#: src/ushare.c:245
+#: src/ushare.c:246
 msgid "Could not set Max content UPnP\n"
 msgstr ""
 
-#: src/ushare.c:248
+#: src/ushare.c:249
 msgid "Starting in XboX 360 compliant profile ...\n"
 msgstr ""
 
-#: src/ushare.c:251
+#: src/ushare.c:252
+msgid "Starting in DLNA compliant profile ...\n"
+msgstr ""
+
+#: src/ushare.c:255
 #, c-format
 msgid "UPnP MediaServer listening on %s:%d\n"
 msgstr "UPnP MediaServer lauscht auf %s:%d\n"
 
-#: src/ushare.c:259
+#: src/ushare.c:263
 msgid "Cannot set virtual directory callbacks\n"
 msgstr "Kann virtuelle Verzeichnis-Callbacks nicht setzen\n"
 
-#: src/ushare.c:267
+#: src/ushare.c:271
 msgid "Cannot add virtual directory for web server\n"
 msgstr "Kann virtuelles Verzeichnis für den Webserver nicht zurücksetzen\n"
 
-#: src/ushare.c:277 src/ushare.c:295
+#: src/ushare.c:281 src/ushare.c:299
 msgid "Cannot register UPnP device\n"
 msgstr "Kann Upnp Gerät nicht registrieren\n"
 
-#: src/ushare.c:285
+#: src/ushare.c:289
 msgid "Cannot unregister UPnP device\n"
 msgstr "Kann UpnP Gerät nicht deregistrieren\n"
 
-#: src/ushare.c:300
+#: src/ushare.c:304
 msgid "Sending UPnP advertisement for device ...\n"
 msgstr "Sende UpnP Advertisement für Gerät...\n"
 
-#: src/ushare.c:303
+#: src/ushare.c:307
 msgid "Listening for control point connections ...\n"
 msgstr "Lausche auf Control Point Verbindungen...\n"
 
-#: src/ushare.c:359
+#: src/ushare.c:363
 #, c-format
 msgid "Interface %s is down.\n"
 msgstr "Interface %s ist down.\n"
 
-#: src/ushare.c:360 src/ushare.c:371
+#: src/ushare.c:364 src/ushare.c:375
 msgid "Recheck uShare's configuration and try again !\n"
 msgstr "Überprüfe uShare's Konfiguration und versuche es erneut!\n"
 
-#: src/ushare.c:370
+#: src/ushare.c:374
 #, c-format
 msgid "Can't find interface %s.\n"
 msgstr "Kann Interface %s nicht finden.\n"
 
-#: src/ushare.c:538
+#: src/ushare.c:542
 msgid "Reloading configuration...\n"
 msgstr "Lade Konfiguration erneut...\n"
 
-#: src/ushare.c:599 src/ushare.c:670
+#: src/ushare.c:603 src/ushare.c:674
 msgid "Error: no content directory to be shared.\n"
 msgstr "Fehler: Kein Content Verzeichnis zum sharen.\n"
 
-#: src/ushare.c:607
+#: src/ushare.c:611
 #, c-format
 msgid "%s (version %s), a lightweight UPnP Media Server.\n"
 msgstr "%s (Version %s), ein leichtgewichtiger UPnP Media Server.\n"
 
-#: src/ushare.c:609
+#: src/ushare.c:613
 #, c-format
 msgid "Benjamin Zores (C) 2005-2007, for GeeXboX Team.\n"
 msgstr "Benjamin Zores (C) 2005-2007, für das GeeXboX Team.\n"
 
-#: src/ushare.c:610
+#: src/ushare.c:614
 #, c-format
 msgid "See http://ushare.geexbox.org/ for updates.\n"
 msgstr "Für Updates gehe auf http://ushare.geexbox.org/.\n"
 
-#: src/ushare.c:645
+#: src/ushare.c:649
 #, c-format
 msgid "Warning: can't parse file \"%s\".\n"
 msgstr "Warnung: Kann Datei nicht parsen \"%s\".\n"
 
-#: src/ushare.c:701
+#: src/ushare.c:705
 #, c-format
 msgid "Error: failed to daemonize program : %s\n"
 msgstr "Fehler: Daemonisierung des Programms nicht möglich: %s\n"
 
-#: src/metadata.c:371
+#: src/metadata.c:380
 msgid "Failed to add the RB lookup tree\n"
 msgstr ""
 
-#: src/metadata.c:495
+#: src/metadata.c:504
 msgid "Cannot create RB tree for lookups\n"
 msgstr ""
 
-#: src/metadata.c:502
+#: src/metadata.c:511
 msgid "Building Metadata List ...\n"
 msgstr "Erzeuge Metadata List ...\n"
 
-#: src/metadata.c:515
+#: src/metadata.c:524
 #, c-format
 msgid "Looking for files in content directory : %s\n"
 msgstr "Suche nach Dateien im Content Verzeichnis : %s\n"
 
-#: src/metadata.c:539
+#: src/metadata.c:548
 #, c-format
 msgid "Found %d files and subdirectories.\n"
 msgstr "Fand %d Dateien und Unterverzeichnisse.\n"
@@ -218,16 +222,21 @@ msgstr ""
 
 #: src/cfgparser.c:284
 #, c-format
+msgid " -d, --dlna\t\tUse DLNA compliant profile (PlayStation3 needs this)\n"
+msgstr ""
+
+#: src/cfgparser.c:285
+#, c-format
 msgid " -D, --daemon\t\tRun as a daemon\n"
 msgstr " -D, --daemon\t\tAusführen des Porgramms in Daemon Mode\n"
 
-#: src/cfgparser.c:285
+#: src/cfgparser.c:286
 #, c-format
 msgid " -V, --version\t\tDisplay the version of uShare and exit\n"
 msgstr ""
 " -V, --version\t\tZeigt die uShare Version an und beendet uShare danach\n"
 
-#: src/cfgparser.c:286
+#: src/cfgparser.c:287
 #, c-format
 msgid " -h, --help\t\tDisplay this help\n"
 msgstr " -h, --help\t\tZeigt diese Hilfe an\n"
