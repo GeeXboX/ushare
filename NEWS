@@ -1,3 +1,8 @@
+2007-07-05 : GeeXboX uShare 1.0 released.
+ Fixed XboX 360 file discovery (it finally should work).
+ Support for Sony PlayStation 3.
+ DLNA compliance.
+
 2007-02-26 : GeeXboX uShare 0.9.10 released.
  Fixed http 404 error which prevented ushare 0.9.9 release to work.
 
