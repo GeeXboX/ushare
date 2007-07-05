@@ -17,14 +17,14 @@
 .\" with this program; if not, write to the Free Software Foundation,
 .\" Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 .\"
-.TH USHARE 1 "February 23, 2007"
+.TH USHARE 1 "July 05, 2007"
 .SH NAME
-uShare \(hy a lightweight UPnP Media Server
+uShare \(hy a lightweight UPnP / DLNA Media Server
 .SH SYNOPSIS
 .B ushare
 [\f-\-v\fR] [\f-\-n name\fR] [\f-\-i interface\fR] [\f-\-p port\fR] [\f-\-w\fR] [\f-\-c directory\fR] [[\f-\-c directory\fR]...]
 .SH DESCRIPTION
-\fBuShare\fP is a free UPnP multimedia files Media Server.
+\fBuShare\fP is a free UPnP / DLNA multimedia files Media Server.
 It implements the server component that provides UPnP media devices with
 information on available multimedia files. uShare uses the built-in http
 server of libupnp to stream the files to clients.
@@ -40,7 +40,7 @@ Default is 'uShare'.
 Set Network interface to listen on.
 Default is 'uShare'.
 .TP
-\fB\-\-cfg (\-p)\fR \fIFILE\fR
+\fB\-\-cfg (\-f)\fR \fIFILE\fR
 Config file to be used.
 .TP
 \fB\-\-port (\-p)\fR \fIPORT\fR
@@ -62,6 +62,9 @@ Set verbose display.
 .TP
 \fB\-\-xbox (\-x)\fR
 Use XboX 360 compliant profile.
+.TP
+\fB\-\-dlna (\-d)\fR
+Use DLNA compliant profile (required for PlayStation3).
 .TP
 \fB\-\-daemon (\-D)\fR
 Run as a daemon.
