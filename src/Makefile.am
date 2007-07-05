@@ -8,6 +8,7 @@ ushare_SOURCES= \
 	metadata.h metadata.c \
 	mime.h mime.c \
 	minmax.h \
+	dlna.h \
 	services.h services.c \
 	buffer.h buffer.c \
 	util_iconv.h util_iconv.c \
