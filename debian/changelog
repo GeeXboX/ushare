@@ -1,3 +1,10 @@
+ushare (1.0-0ubuntu2) gutsy; urgency=low
+
+  * add dependency on pkg-config
+  * change template short descriptions, according to lintian report
+
+ -- Alexis Saettler <alexis@saettler.org>  Sun, 15 Jul 2007 19:07:24 +0200
+
 ushare (1.0-0ubuntu1) gutsy; urgency=low
 
   * new upstream release

@@ -1,10 +1,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ushare 0.9.5\n"
-"Report-Msgid-Bugs-To: alexis@saettler.org\n"
-"POT-Creation-Date: 2007-02-24 00:29+0100\n"
-"PO-Revision-Date: 2006-02-28 10:30+0100\n"
+"Project-Id-Version: ushare 1.0\n"
+"Report-Msgid-Bugs-To: ubuntu-motu@lists.ubuntu.com\n"
+"POT-Creation-Date: 2007-07-15 19:35+0200\n"
+"PO-Revision-Date: 2007-07-15 19:35+0200\n"
 "Last-Translator: Alexis Saettler <alexis@saettler.org>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,8 +14,8 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../ushare.templates:1001
-msgid "uShare's name"
-msgstr "Nom de uShare"
+msgid "uShare's name:"
+msgstr "Nom de uShare :"
 
 #. Type: string
 #. Description
@@ -30,25 +30,25 @@ msgstr ""
 #. Type: select
 #. Description
 #: ../ushare.templates:2001
-msgid "Network interface to use"
-msgstr "Interface réseau à utiliser"
+msgid "Network interface:"
+msgstr "Interface réseau :"
 
 #. Type: select
 #. Description
 #: ../ushare.templates:2001
 msgid ""
-"Set network interface on which share the content. If your interface is not "
-"on the list, please edit the file \"${configfile}\" manualy."
+"Set network interface to use for sharing the content. If your interface is "
+"not on the list, please edit the file \"${configfile}\" manualy."
 msgstr ""
-"Défini l'interface réseau sur laquelle partager le contenu. Si votre "
+"Défini l'interface réseau à utiliser pour partager le contenu. Si votre "
 "interface n'apparaît pas dans la liste, merci d'éditer le fichier "
 "\"${configfile}\" manuellement."
 
 #. Type: string
 #. Description
 #: ../ushare.templates:3001
-msgid "Directories to share"
-msgstr "Répertoires à partager"
+msgid "Shared directories:"
+msgstr "Répertoires à partager :"
 
 #. Type: string
 #. Description

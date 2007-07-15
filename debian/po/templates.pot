@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: alexis@saettler.org\n"
-"POT-Creation-Date: 2007-02-24 00:29+0100\n"
+"Report-Msgid-Bugs-To: ubuntu-motu@lists.ubuntu.com\n"
+"POT-Creation-Date: 2007-07-15 19:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../ushare.templates:1001
-msgid "uShare's name"
+msgid "uShare's name:"
 msgstr ""
 
 #. Type: string
@@ -33,21 +33,21 @@ msgstr ""
 #. Type: select
 #. Description
 #: ../ushare.templates:2001
-msgid "Network interface to use"
+msgid "Network interface:"
 msgstr ""
 
 #. Type: select
 #. Description
 #: ../ushare.templates:2001
 msgid ""
-"Set network interface on which share the content. If your interface is not "
-"on the list, please edit the file \"${configfile}\" manualy."
+"Set network interface to use for sharing the content. If your interface is "
+"not on the list, please edit the file \"${configfile}\" manualy."
 msgstr ""
 
 #. Type: string
 #. Description
 #: ../ushare.templates:3001
-msgid "Directories to share"
+msgid "Shared directories:"
 msgstr ""
 
 #. Type: string
