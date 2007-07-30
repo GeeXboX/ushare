@@ -34,10 +34,14 @@
 #include <errno.h>
 #include <getopt.h>
 
-#if (defined(BSD) || defined(__FreeBSD__))
+#if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
 #include <sys/socket.h>
 #include <sys/sysctl.h>
 #include <net/if_dl.h>
+#endif
+
+#if (defined(__APPLE__))
+#include <net/route.h>
 #endif
 
 #include <net/if.h>
@@ -385,7 +389,7 @@ create_udn (char *interface)
   char *buf;
   unsigned char *ptr;
 
-#if (defined(BSD) || defined(__FreeBSD__))
+#if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
   int mib[6], len;
   struct if_msghdr *ifm;
   struct sockaddr_dl *sdl;
@@ -396,7 +400,7 @@ create_udn (char *interface)
   if (!interface)
     return NULL;
 
-#if (defined(BSD) || defined(__FreeBSD__))
+#if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
   mib[0] = CTL_NET;
   mib[1] = AF_ROUTE;
   mib[2] = 0;

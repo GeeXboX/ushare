@@ -14,5 +14,6 @@ With many contributions from :
 - Jonathan (no_dice at users.sourceforge.net) for large files support.
 - Mostafa Hosseini <mostafah@axentra.com> for XboX 360 compliance, several UPnP compliance fixes and basic 'Search' support.
 - Phil Chandler for RedBlack balanced tree sorting algorithm and some memory optimizations.
+- Navaho Gunleg <navahogunleg@gmail.com> for MacOSX build fix.
 
 Please send remarks, questions, bug reports to <ushare@geexbox.org>.

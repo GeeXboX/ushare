@@ -29,7 +29,7 @@
 
 #include "osdep.h"
 
-#if (defined(BSD) || defined(__FreeBSD__))
+#if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
 char *
 strndup (const char *s, size_t n)
 {
@@ -88,4 +88,4 @@ getline (char **lineptr, size_t *n, FILE *stream)
 
   return len;
 }
-#endif /* (defined(BSD) || defined(__FreeBSD__)) */
+#endif /* (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__)) */
