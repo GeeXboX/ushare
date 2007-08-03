@@ -15,5 +15,6 @@ With many contributions from :
 - Mostafa Hosseini <mostafah@axentra.com> for XboX 360 compliance, several UPnP compliance fixes and basic 'Search' support.
 - Phil Chandler for RedBlack balanced tree sorting algorithm and some memory optimizations.
 - Navaho Gunleg <navahogunleg@gmail.com> for MacOSX build fix.
+- Sven Almgren <sven@tras.se> for Telnet Control interface.
 
 Please send remarks, questions, bug reports to <ushare@geexbox.org>.
