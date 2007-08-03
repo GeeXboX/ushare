@@ -72,7 +72,7 @@
 #include "gettext.h"
 #include "trace.h"
 #include "buffer.h"
-#include "ctrltelnet.h"
+#include "ctrl_telnet.h"
 
 struct ushare_t *ut = NULL;
 
