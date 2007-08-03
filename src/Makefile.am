@@ -18,6 +18,7 @@ ushare_SOURCES= \
 	trace.h trace.c \
 	redblack.h redblack.c \
 	osdep.h osdep.c \
+	ctrltelnet.h ctrltelnet.c \
 	ushare.h ushare.c
 
 dist_man_MANS = ushare.1

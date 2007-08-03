@@ -72,6 +72,7 @@
 #include "gettext.h"
 #include "trace.h"
 #include "buffer.h"
+#include "ctrltelnet.h"
 
 struct ushare_t *ut = NULL;
 
@@ -636,6 +637,18 @@ setup_i18n(void)
   textdomain (PACKAGE);
 }
 
+#define SHUTDOWN_MSG _("Server is shutting down: other clients will be notified soon, Bye bye ...\n")
+
+static void
+ushare_kill (ctrl_telnet_client *client,
+             int argc __attribute__((unused)),
+             char **argv __attribute__((unused)))
+{
+  ctrl_telnet_client_send (client, SHUTDOWN_MSG);
+  client->exiting = true;
+  ushare_signal_exit ();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -726,6 +739,15 @@ main (int argc, char **argv)
   signal (SIGINT, UPnPBreak);
   signal (SIGHUP, reload_config);
 
+  if (ctrl_telnet_start () < 0)
+  {
+    ushare_free (ut);
+    return EXIT_FAILURE;
+  }
+
+  ctrl_telnet_register ("kill", ushare_kill,
+                        _("Terminates the uShare server"));
+  
   if (init_upnp (ut) < 0)
   {
     finish_upnp (ut);
@@ -740,6 +762,7 @@ main (int argc, char **argv)
   pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
   pthread_mutex_unlock (&ut->termination_mutex);
 
+  ctrl_telnet_stop ();
   finish_upnp (ut);
   free_metadata_list (ut);
   ushare_free (ut);
