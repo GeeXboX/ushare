@@ -107,6 +107,9 @@ ushare_new (void)
   ut->override_iconv_err = false;
   ut->cfg_file = NULL;
 
+  pthread_mutex_init (&ut->termination_mutex, NULL);
+  pthread_cond_init (&ut->termination_cond, NULL);
+
   return ut;
 }
 
@@ -137,7 +140,18 @@ ushare_free (struct ushare_t *ut)
   if (ut->cfg_file)
     free (ut->cfg_file);
 
+  pthread_cond_destroy (&ut->termination_cond);
+  pthread_mutex_destroy (&ut->termination_mutex);
+
   free (ut);
+}
+
+static void
+ushare_signal_exit (void)
+{
+  pthread_mutex_lock (&ut->termination_mutex);
+  pthread_cond_signal (&ut->termination_cond);
+  pthread_mutex_unlock (&ut->termination_mutex);
 }
 
 static void
@@ -523,18 +537,10 @@ restart_upnp (struct ushare_t *ut)
   return (init_upnp (ut));
 }
 
-static void UPnPBreak (int s __attribute__ ((unused)))
-    __attribute__ ((noreturn));
-
 static void
 UPnPBreak (int s __attribute__ ((unused)))
 {
-  finish_upnp (ut);
-  free_metadata_list (ut);
-  ushare_free (ut);
-  finish_iconv ();
-
-  exit (EXIT_SUCCESS);
+  ushare_signal_exit ();
 }
 
 static void
@@ -729,8 +735,15 @@ main (int argc, char **argv)
 
   build_metadata_list (ut);
 
-  while (true)
-    sleep (1000000);
+  /* Let main sleep until it's time to die... */
+  pthread_mutex_lock (&ut->termination_mutex);
+  pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
+  pthread_mutex_unlock (&ut->termination_mutex);
+
+  finish_upnp (ut);
+  free_metadata_list (ut);
+  ushare_free (ut);
+  finish_iconv ();
 
   /* it should never be executed */
   return EXIT_SUCCESS;
