@@ -1,17 +1,25 @@
 #!/bin/sh -e
+#
+# uShare init script
+#
 ### BEGIN INIT INFO
-# Required-Start: $local_fs $syslog
+# Provides:          ushare
+# Required-Start:    $local_fs $syslog $network
+# Should-Start:
 # Required-Stop:
-# Default-Start:  2 3 4 5
-# Default-Stop: 0 1 6
-# Short-Description: start and stop ushare
-# Description: 
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: uShare
+# Description:       uShare UPnP (TM) A/V & DLNA Media Server
+#                    You should edit configuration in /etc/ushare.conf file
+#                    See http://ushare.geexbox.org for details
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/ushare
 NAME=ushare
-DESC="uShare UPnP A/V Media Server"
+DESC="uShare UPnP A/V & DLNA Media Server"
 PIDFILE=/var/run/ushare.pid
 CONFIGFILE=/etc/ushare.conf
 
