@@ -112,7 +112,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
   buffer_appendf (ut->presentation, "<title>%s</title>",
                   _("uShare Information Page"));
   buffer_append (ut->presentation,
-                 "<meta http-equiv=\"pragma\" content=\"no-cache\">");
+                 "<meta http-equiv=\"pragma\" content=\"no-cache\"/>");
   buffer_append (ut->presentation,
                  "<meta http-equiv=\"expires\" content=\"1970-01-01\"/>");
   buffer_append (ut->presentation,
