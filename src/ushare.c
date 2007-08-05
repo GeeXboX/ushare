@@ -127,7 +127,7 @@ ushare_free (struct ushare_t *ut)
   if (ut->model_name)
     free (ut->model_name);
   if (ut->contentlist)
-    free_content (ut->contentlist);
+    content_free (ut->contentlist);
   if (ut->rb)
     rbdestroy (ut->rb);
   if (ut->root_entry)
@@ -599,7 +599,7 @@ reload_config (int s __attribute__ ((unused)))
   }
 
   if (ut->contentlist)
-    free_content (ut->contentlist);
+    content_free (ut->contentlist);
   ut->contentlist = ut2->contentlist;
   ut2->contentlist = NULL;
   ushare_free (ut2);

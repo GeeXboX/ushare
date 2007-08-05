@@ -118,7 +118,7 @@ ushare_add_contentdir (struct ushare_t *ut, const char *dir)
   if (!ut || !dir)
     return;
 
-  ut->contentlist = add_content (ut->contentlist, dir);
+  ut->contentlist = content_add (ut->contentlist, dir);
 }
 
 static void

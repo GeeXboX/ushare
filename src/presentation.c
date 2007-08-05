@@ -65,7 +65,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
 
     if (path && !strncmp (path, CGI_PATH"=", strlen (CGI_PATH) + 1))
     {
-      ut->contentlist = add_content (ut->contentlist,
+      ut->contentlist = content_add (ut->contentlist,
                                      path + strlen (CGI_PATH) + 1);
       refresh = 1;
     }
@@ -86,7 +86,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
       {
         if (sscanf (share, CGI_SHARE"[%d]=on", &num) < 0)
           continue;
-        ut->contentlist = del_content (ut->contentlist, num - shift++);
+        ut->contentlist = content_del (ut->contentlist, num - shift++);
       }
       free (m_buffer);
     }

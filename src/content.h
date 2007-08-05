@@ -26,11 +26,11 @@ typedef struct content_list {
   int count;
 } content_list;
 
-content_list *add_content(content_list *list, const char *item)
+content_list *content_add(content_list *list, const char *item)
     __attribute__ ((malloc));
-content_list *del_content(content_list *list, int n)
+content_list *content_del(content_list *list, int n)
     __attribute__ ((nonnull));
-void free_content(content_list *list)
+void content_free(content_list *list)
     __attribute__ ((nonnull));
 
 #endif
