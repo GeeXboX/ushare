@@ -97,6 +97,7 @@ const struct mime_type_t MIME_Type_List[] = {
   { "ra",   NULL,         UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:"},
   { "rm",   NULL,         UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:"},
   { "ram",  NULL,         UPNP_AUDIO, "http-get:*:audio/x-pn-realaudio:"},
+  { "flac", NULL,         UPNP_AUDIO, "http-get:*:audio/x-flac:"},
 
   /* Images files */
   { "bmp",  NULL,      UPNP_PHOTO, "http-get:*:image/bmp:"},
