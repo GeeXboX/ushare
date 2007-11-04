@@ -101,7 +101,9 @@ struct ushare_t {
   unsigned short port;
   struct buffer_t *presentation;
   bool use_presentation;
+#ifdef HAVE_DLNA_H
   bool dlna;
+#endif /* HAVE_DLNA_H */
   bool xbox360;
   bool verbose;
   bool daemon;
