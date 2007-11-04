@@ -116,6 +116,7 @@ Options:
  -p, --port=PORT        Forces the HTTP server to run on PORT
  -c, --content=DIR      Share the content of DIR directory.
  -w, --no-web           Disable the control web page (enabled by default)
+ -t, --no-telnet        Disable the TELNET control (enabled by default)
  -o, --override-iconv-err       If iconv fails parsing name, still add to media contents (hoping the renderer can handle it)
  -v, --verbose          Set verbose display
  -x, --xbox             Use XboX 360 compliant profile
