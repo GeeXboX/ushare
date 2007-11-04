@@ -172,7 +172,8 @@ http_get_info (const char *filename, struct File_Info *info)
 
   content_type =
     strndup ((protocol + PROTOCOL_TYPE_PRE_SZ),
-             strlen (protocol) - PROTOCOL_TYPE_SUFF_SZ);
+             strlen (protocol + PROTOCOL_TYPE_PRE_SZ)
+             - PROTOCOL_TYPE_SUFF_SZ);
   free (protocol);
 
   if (content_type)
