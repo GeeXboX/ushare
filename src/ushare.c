@@ -99,6 +99,7 @@ ushare_new (void)
   ut->udn = NULL;
   ut->ip = NULL;
   ut->port = 0; /* Randomly attributed by libupnp */
+  ut->telnet_port = CTRL_TELNET_PORT;
   ut->presentation = NULL;
   ut->use_presentation = true;
   ut->use_telnet = true;
@@ -757,7 +758,7 @@ main (int argc, char **argv)
 
   if (ut->use_telnet)
   {
-    if (ctrl_telnet_start () < 0)
+    if (ctrl_telnet_start (ut->telnet_port) < 0)
     {
       ushare_free (ut);
       return EXIT_FAILURE;

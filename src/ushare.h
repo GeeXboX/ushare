@@ -103,6 +103,7 @@ struct ushare_t {
   char *udn;
   char *ip;
   unsigned short port;
+  unsigned short telnet_port;
   struct buffer_t *presentation;
   bool use_presentation;
   bool use_telnet;

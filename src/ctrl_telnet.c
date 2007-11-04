@@ -136,7 +136,7 @@ static void ctrl_telnet_register_internals();
  * @return 0 on success, -1 on error
  */
 int
-ctrl_telnet_start (void)
+ctrl_telnet_start (int port)
 {
   /* Start by making us threadsafe... */
   pthread_mutex_lock (&startstop_lock);
@@ -157,7 +157,7 @@ ctrl_telnet_start (void)
 
   ttd.local_address.sin_family = AF_INET;
   ttd.local_address.sin_addr.s_addr = INADDR_ANY;
-  ttd.local_address.sin_port = htons (CTRL_TELNET_PORT);
+  ttd.local_address.sin_port = htons (port);
   memset (&ttd.local_address.sin_zero, '\0',
           sizeof (ttd.local_address.sin_zero));
 
@@ -176,7 +176,7 @@ ctrl_telnet_start (void)
     return -1;
   }
 
-  print_log (ULOG_NORMAL, "Listening on telnet port %u\n", CTRL_TELNET_PORT);
+  print_log (ULOG_NORMAL, "Listening on telnet port %u\n", port);
 
   /* Create killer pipes */
   if (pipe (ttd.killer))

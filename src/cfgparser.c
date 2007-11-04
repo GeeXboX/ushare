@@ -276,6 +276,7 @@ display_usage (void)
           DEFAULT_USHARE_IFACE);
   printf (_(" -f, --cfg=FILE\t\tConfig file to be used\n"));
   printf (_(" -p, --port=PORT\tForces the HTTP server to run on PORT\n"));
+  printf (_(" -q, --telnet-port=PORT\tForces the TELNET server to run on PORT\n"));
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
   printf (_(" -t, --no-telnet\tDisable the TELNET control (enabled by default)\n"));
@@ -294,7 +295,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDowtxdn:i:p:c:f:";
+  char short_options[] = "VhvDowtxdn:i:p:q:c:f:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -304,6 +305,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"name", required_argument, 0, 'n' },
     {"interface", required_argument, 0, 'i' },
     {"port", required_argument, 0, 'p' },
+    {"telnet-port", required_argument, 0, 'q' },
     {"content", required_argument, 0, 'c' },
     {"no-web", no_argument, 0, 'w' },
     {"no-telnet", no_argument, 0, 't' },
@@ -360,6 +362,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'p':
       ushare_set_port (ut, optarg);
+      break;
+
+    case 'q':
+      ut->telnet_port = atoi (optarg);
       break;
 
     case 'c':

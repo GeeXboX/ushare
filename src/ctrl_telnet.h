@@ -52,7 +52,7 @@ typedef void (* ctrl_telnet_command_ptr) (ctrl_telnet_client *, int, char **);
  *
  * @return 0 on success, -1 on error
  */
-int ctrl_telnet_start (void);
+int ctrl_telnet_start (int port);
 
 /**
  * @brief Stops all telnet bound control interfaces
