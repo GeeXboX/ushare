@@ -112,9 +112,14 @@ Usage: ushare [-n name] [-i interface] [-c directory] [[-c directory] ...]
 Options:
  -n, --name=NAME        Set UPnP Friendly Name (default is 'uShare')
  -i, --interface=IFACE  Use IFACE Network Interface (default is 'eth0')
+ -f, --cfg=FILE         Config file to be used
  -p, --port=PORT        Forces the HTTP server to run on PORT
  -c, --content=DIR      Share the content of DIR directory.
+ -w, --no-web           Disable the control web page (enabled by default)
+ -o, --override-iconv-err       If iconv fails parsing name, still add to media contents (hoping the renderer can handle it)
  -v, --verbose          Set verbose display
+ -x, --xbox             Use XboX 360 compliant profile
+ -d, --dlna             Use DLNA compliant profile (PlayStation3 needs this)
  -D, --daemon           Run as a daemon.
  -V, --version          Display the version of uShare and exit
  -h, --help             Display this help
