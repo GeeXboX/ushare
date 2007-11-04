@@ -165,7 +165,7 @@ ushare_set_port (struct ushare_t *ut, const char *port)
     return;
 
   ut->port = atoi (port);
-  if (ut->port <= 49152)
+  if (ut->port < 49152)
   {
     fprintf (stderr,
              _("Warning: port doesn't fit IANA port assignements.\n"));
