@@ -89,7 +89,24 @@ AC_SEARCH_LIBS(ixmlRelaxParser, ixml, [], [exit])
 AC_SEARCH_LIBS(ThreadPoolAdd, threadutil, [], [exit])
 AC_SEARCH_LIBS(UpnpSetMaxContentLength, upnp, [], [exit])
 
+#############################
+#     Check for libdlna     #
+#############################
 
+AC_MSG_CHECKING([for libdlna])
+AC_ARG_ENABLE([dlna],
+              AS_HELP_STRING([--enable-dlna],
+              [enable DLNA support through libdlna (recommended)]))
+
+if test x"$enable_dlna" = xyes; then
+  # Checks for dlna headers.
+  AC_CHECK_HEADERS([dlna.h], [], [
+    AC_MSG_ERROR(*** libdlna headers can't be found ! ***)
+  ])
+
+  # Checks for dlna libraries.
+  AC_SEARCH_LIBS(dlna_register_all_media_profiles, dlna, [], [exit])
+fi
 
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -W -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
