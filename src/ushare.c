@@ -419,7 +419,8 @@ create_udn (char *interface)
   unsigned char *ptr;
 
 #if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
-  int mib[6], len;
+  int mib[6];
+  size_t len;
   struct if_msghdr *ifm;
   struct sockaddr_dl *sdl;
 #else /* Linux */
