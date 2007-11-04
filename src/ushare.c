@@ -101,6 +101,7 @@ ushare_new (void)
   ut->port = 0; /* Randomly attributed by libupnp */
   ut->presentation = NULL;
   ut->use_presentation = true;
+  ut->use_telnet = true;
 #ifdef HAVE_DLNA_H
   ut->dlna = false;
   ut->dlna_flags = DLNA_ORG_FLAG_STREAMING_TRANSFER_MODE |
@@ -656,8 +657,11 @@ ushare_kill (ctrl_telnet_client *client,
              int argc __attribute__((unused)),
              char **argv __attribute__((unused)))
 {
-  ctrl_telnet_client_send (client, SHUTDOWN_MSG);
-  client->exiting = true;
+  if (ut->use_telnet)
+  {
+    ctrl_telnet_client_send (client, SHUTDOWN_MSG);
+    client->exiting = true;
+  }
   ushare_signal_exit ();
 }
 
@@ -751,14 +755,17 @@ main (int argc, char **argv)
   signal (SIGINT, UPnPBreak);
   signal (SIGHUP, reload_config);
 
-  if (ctrl_telnet_start () < 0)
+  if (ut->use_telnet)
   {
-    ushare_free (ut);
-    return EXIT_FAILURE;
+    if (ctrl_telnet_start () < 0)
+    {
+      ushare_free (ut);
+      return EXIT_FAILURE;
+    }
+    
+    ctrl_telnet_register ("kill", ushare_kill,
+                          _("Terminates the uShare server"));
   }
-
-  ctrl_telnet_register ("kill", ushare_kill,
-                        _("Terminates the uShare server"));
   
   if (init_upnp (ut) < 0)
   {
@@ -774,7 +781,8 @@ main (int argc, char **argv)
   pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
   pthread_mutex_unlock (&ut->termination_mutex);
 
-  ctrl_telnet_stop ();
+  if (ut->use_telnet)
+    ctrl_telnet_stop ();
   finish_upnp (ut);
   free_metadata_list (ut);
   ushare_free (ut);

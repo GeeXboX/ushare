@@ -278,6 +278,7 @@ display_usage (void)
   printf (_(" -p, --port=PORT\tForces the HTTP server to run on PORT\n"));
   printf (_(" -c, --content=DIR\tShare the content of DIR directory\n"));
   printf (_(" -w, --no-web\t\tDisable the control web page (enabled by default)\n"));
+  printf (_(" -t, --no-telnet\tDisable the TELNET control (enabled by default)\n"));
   printf (_(" -o, --override-iconv-err\tIf iconv fails parsing name, still add to media contents (hoping the renderer can handle it)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
   printf (_(" -x, --xbox\t\tUse XboX 360 compliant profile\n"));
@@ -293,7 +294,7 @@ int
 parse_command_line (struct ushare_t *ut, int argc, char **argv)
 {
   int c, index;
-  char short_options[] = "VhvDowxdn:i:p:c:f:";
+  char short_options[] = "VhvDowtxdn:i:p:c:f:";
   struct option long_options [] = {
     {"version", no_argument, 0, 'V' },
     {"help", no_argument, 0, 'h' },
@@ -305,6 +306,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"port", required_argument, 0, 'p' },
     {"content", required_argument, 0, 'c' },
     {"no-web", no_argument, 0, 'w' },
+    {"no-telnet", no_argument, 0, 't' },
     {"xbox", no_argument, 0, 'x' },
 #ifdef HAVE_DLNA_H
     {"dlna", no_argument, 0, 'd' },
@@ -366,6 +368,10 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
     case 'w':
       ut->use_presentation = false;
+      break;
+
+    case 't':
+      ut->use_telnet = false;
       break;
 
     case 'x':

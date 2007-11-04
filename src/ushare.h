@@ -105,6 +105,7 @@ struct ushare_t {
   unsigned short port;
   struct buffer_t *presentation;
   bool use_presentation;
+  bool use_telnet;
 #ifdef HAVE_DLNA_H
   bool dlna;
   dlna_org_flags_t dlna_flags;
