@@ -151,6 +151,5 @@ char *mime_get_protocol (struct mime_type_t *mime)
 
   sprintf (protocol, mime->mime_protocol);
   strcat (protocol, "*");
-  printf ("MIME protocol: %s\n", protocol);
   return strdup (protocol);
 }
