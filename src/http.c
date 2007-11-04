@@ -159,7 +159,17 @@ http_get_info (const char *filename, struct File_Info *info)
   info->last_modified = st.st_mtime;
   info->is_directory = S_ISDIR (st.st_mode);
 
-  protocol = mime_get_protocol (entry->mime_type);
+  protocol = 
+#ifdef HAVE_DLNA_H
+    entry->dlna_profile ?
+    dlna_write_protocol_info (DLNA_PROTOCOL_INFO_TYPE_HTTP,
+                              DLNA_ORG_PLAY_SPEED_NORMAL,
+                              DLNA_ORG_CONVERSION_NONE,
+                              DLNA_ORG_OPERATION_RANGE,
+                              ut->dlna_flags, entry->dlna_profile) :
+#endif /* HAVE_DLNA_H */
+    mime_get_protocol (entry->mime_type);
+
   content_type =
     strndup ((protocol + PROTOCOL_TYPE_PRE_SZ),
              strlen (protocol) - PROTOCOL_TYPE_SUFF_SZ);

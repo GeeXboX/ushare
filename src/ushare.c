@@ -103,6 +103,10 @@ ushare_new (void)
   ut->use_presentation = true;
 #ifdef HAVE_DLNA_H
   ut->dlna = false;
+  ut->dlna_flags = DLNA_ORG_FLAG_STREAMING_TRANSFER_MODE |
+                   DLNA_ORG_FLAG_BACKGROUND_TRANSFERT_MODE |
+                   DLNA_ORG_FLAG_CONNECTION_STALL |
+                   DLNA_ORG_FLAG_DLNA_V15;
 #endif /* HAVE_DLNA_H */
   ut->xbox360 = false;
   ut->verbose = false;
@@ -271,7 +275,11 @@ init_upnp (struct ushare_t *ut)
 
 #ifdef HAVE_DLNA_H
   if (ut->dlna)
+  {
     log_info (_("Starting in DLNA compliant profile ...\n"));
+    dlna_init ();
+    dlna_register_all_media_profiles ();
+  }
 #endif /* HAVE_DLNA_H */
   
   ut->port = UpnpGetServerPort();

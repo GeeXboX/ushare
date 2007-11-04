@@ -68,6 +68,13 @@ The following UPnP library is required to build and run uShare :
    The libupnp library is used to communicate using the UPnP protocol.
    libupnp can be downloaded from http://pupnp.sourceforge.net/.
 
+The following DLNA library is required for proper DLNA support :
+
+ * libdlna, 0.1.0 or later
+
+   The libdlna library is used to provides DLNA profiles informations.
+   libdlna can be downloaded from http://libdlna.geexbox.org/.
+
 Building and Installation
 =========================
 
@@ -82,6 +89,9 @@ Example :
 
 CFLAGS="-Os" ./configure --prefix=/usr
 make
+
+You can enable DLNA support by doing a:
+./configure --enable-dlna
 
 If you want to install uShare on your system, run :
 

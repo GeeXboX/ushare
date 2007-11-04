@@ -27,6 +27,10 @@
 #include <stdbool.h>
 #include <pthread.h>
 
+#ifdef HAVE_DLNA_H
+#include <dlna.h>
+#endif /* HAVE_DLNA_H */
+
 #include "content.h"
 #include "buffer.h"
 #include "redblack.h"
@@ -103,6 +107,7 @@ struct ushare_t {
   bool use_presentation;
 #ifdef HAVE_DLNA_H
   bool dlna;
+  dlna_org_flags_t dlna_flags;
 #endif /* HAVE_DLNA_H */
   bool xbox360;
   bool verbose;

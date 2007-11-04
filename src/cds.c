@@ -341,7 +341,20 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
 
   if (entry->child_count == -1) /* item : file */
   {
-    char *protocol = mime_get_protocol (entry->mime_type);
+#ifdef HAVE_DLNA_H
+    extern struct ushare_t *ut;
+#endif /* HAVE_DLNA_H */
+    
+    char *protocol =
+#ifdef HAVE_DLNA_H
+      entry->dlna_profile ?
+      dlna_write_protocol_info (DLNA_PROTOCOL_INFO_TYPE_HTTP,
+                                DLNA_ORG_PLAY_SPEED_NORMAL,
+                                DLNA_ORG_CONVERSION_NONE,
+                                DLNA_ORG_OPERATION_RANGE,
+                                ut->dlna_flags, entry->dlna_profile) :
+#endif /* HAVE_DLNA_H */
+      mime_get_protocol (entry->mime_type);
     
     didl_add_header (out);
     didl_add_item (out, entry->id, entry->parent
@@ -412,7 +425,21 @@ cds_browse_directchildren (struct action_event_t *event,
                             (*childs)->mime_type->mime_class);
       else /* item */
       {
-        char *protocol = mime_get_protocol ((*childs)->mime_type);
+#ifdef HAVE_DLNA_H
+        extern struct ushare_t *ut;
+#endif /* HAVE_DLNA_H */
+
+        char *protocol =
+#ifdef HAVE_DLNA_H
+          (*childs)->dlna_profile ?
+          dlna_write_protocol_info (DLNA_PROTOCOL_INFO_TYPE_HTTP,
+                                    DLNA_ORG_PLAY_SPEED_NORMAL,
+                                    DLNA_ORG_CONVERSION_NONE,
+                                    DLNA_ORG_OPERATION_RANGE,
+                                    ut->dlna_flags, (*childs)->dlna_profile) :
+#endif /* HAVE_DLNA_H */
+          mime_get_protocol ((*childs)->mime_type);
+        
         didl_add_item (out, (*childs)->id,
                        (*childs)->parent ? (*childs)->parent->id : -1,
                        "true", (*childs)->mime_type->mime_class,
@@ -531,7 +558,19 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
   char keyword[256] = SEARCH_OBJECT_KEYWORD;
   bool derived_from = false, protocol_contains = false, result = false;
   char *quote_closed = NULL, *and_clause = NULL;
-  char *protocol = mime_get_protocol (entry->mime_type);
+#ifdef HAVE_DLNA_H
+  extern struct ushare_t *ut;
+#endif /* HAVE_DLNA_H */
+  char *protocol =
+#ifdef HAVE_DLNA_H
+    entry->dlna_profile ?
+    dlna_write_protocol_info (DLNA_PROTOCOL_INFO_TYPE_HTTP,
+                              DLNA_ORG_PLAY_SPEED_NORMAL,
+                              DLNA_ORG_CONVERSION_NONE,
+                              DLNA_ORG_OPERATION_RANGE,
+                              ut->dlna_flags, entry->dlna_profile) :
+#endif /* HAVE_DLNA_H */
+    mime_get_protocol (entry->mime_type);
   
   if (!strncmp (search_criteria, SEARCH_CLASS_MATCH_KEYWORD,
                 strlen (SEARCH_CLASS_MATCH_KEYWORD)))
@@ -614,7 +653,20 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
       {
         if (matches_search (search_criteria, *childs))
         {
-          char *protocol = mime_get_protocol ((*childs)->mime_type);
+#ifdef HAVE_DLNA_H
+          extern struct ushare_t *ut;
+#endif /* HAVE_DLNA_H */
+          char *protocol =
+#ifdef HAVE_DLNA_H
+            (*childs)->dlna_profile ?
+            dlna_write_protocol_info(DLNA_PROTOCOL_INFO_TYPE_HTTP,
+                                     DLNA_ORG_PLAY_SPEED_NORMAL,
+                                     DLNA_ORG_CONVERSION_NONE,
+                                     DLNA_ORG_OPERATION_RANGE,
+                                     ut->dlna_flags, (*childs)->dlna_profile):
+#endif /* HAVE_DLNA_H */
+            mime_get_protocol ((*childs)->mime_type);
+
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
                          "true", (*childs)->mime_type->mime_class,
@@ -675,7 +727,20 @@ cds_search_directchildren (struct action_event_t *event,
       {
         if (matches_search (search_criteria, *childs))
         {
-          char *protocol = mime_get_protocol ((*childs)->mime_type);
+#ifdef HAVE_DLNA_H
+          extern struct ushare_t *ut;
+#endif /* HAVE_DLNA_H */
+          char *protocol =
+#ifdef HAVE_DLNA_H
+            (*childs)->dlna_profile ?
+            dlna_write_protocol_info(DLNA_PROTOCOL_INFO_TYPE_HTTP,
+                                     DLNA_ORG_PLAY_SPEED_NORMAL,
+                                     DLNA_ORG_CONVERSION_NONE,
+                                     DLNA_ORG_OPERATION_RANGE,
+                                     ut->dlna_flags, (*childs)->dlna_profile):
+#endif /* HAVE_DLNA_H */
+            mime_get_protocol ((*childs)->mime_type);
+
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
                          "true", (*childs)->mime_type->mime_class,

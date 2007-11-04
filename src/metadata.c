@@ -183,6 +183,21 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
+#ifdef HAVE_DLNA_H
+  entry->dlna_profile = NULL;
+  entry->url = NULL;
+  if (ut->dlna && fullpath && !dir)
+  {
+    dlna_profile_t *p = dlna_guess_media_profile (fullpath);
+    if (!p)
+    {
+      free (entry);
+      return NULL;
+    }
+    entry->dlna_profile = p;
+  }
+#endif /* HAVE_DLNA_H */
+ 
   if (ut->xbox360)
   {
     if (ut->root_entry)
@@ -412,7 +427,11 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
   if (!entry || !file || !name)
     return;
 
+#ifdef HAVE_DLNA_H
+  if (ut->dlna || is_valid_extension (getExtension (file)))
+#else
   if (is_valid_extension (getExtension (file)))
+#endif
   {
     struct upnp_entry_t *child = NULL;
 
