@@ -1,3 +1,9 @@
+2007-11-XX: GeeXboX uShare 1.1 released.
+ Much more complete DLNA support through external libdlna.
+ Telnet Control interface.
+ Support for FLAC and HDMOV files.
+ FreeBSD 64bit and MacOSX build fix.
+
 2007-07-05 : GeeXboX uShare 1.0 released.
  Fixed XboX 360 file discovery (it finally should work).
  Support for Sony PlayStation 3.
