@@ -319,7 +319,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
       {
         ctrl_telnet_client_add (client);
         ctrl_telnet_client_execute_line_safe (client, "banner");
-        ctrl_telnet_client_sendf (client, "For a list of registed commands type \"help\"\n");
+        ctrl_telnet_client_sendf (client, "For a list of registered commands type \"help\"\n");
         ctrl_telnet_client_send (client, "\n> ");
       }
     }
