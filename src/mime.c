@@ -65,6 +65,7 @@ const struct mime_type_t MIME_Type_List[] = {
   { "mkv",   UPNP_VIDEO, "http-get:*:video/mpeg:"},
   { "rmvb",  UPNP_VIDEO, "http-get:*:video/mpeg:"},
   { "mov",   UPNP_VIDEO, "http-get:*:video/quicktime:"},
+  { "hdmov",   UPNP_VIDEO, "http-get:*:video/quicktime:"},
   { "qt",    UPNP_VIDEO, "http-get:*:video/quicktime:"},
   { "bin",   UPNP_VIDEO, "http-get:*:video/mpeg2:"},
   { "iso",   UPNP_VIDEO, "http-get:*:video/mpeg2:"},
