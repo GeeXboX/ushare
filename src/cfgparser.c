@@ -386,7 +386,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
 
 #ifdef HAVE_DLNA_H
     case 'd':
-      ut->dlna = true;
+      ut->dlna_enabled = true;
       break;
 #endif /* HAVE_DLNA_H */
       

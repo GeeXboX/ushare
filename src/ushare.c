@@ -104,7 +104,8 @@ ushare_new (void)
   ut->use_presentation = true;
   ut->use_telnet = true;
 #ifdef HAVE_DLNA_H
-  ut->dlna = false;
+  ut->dlna_enabled = false;
+  ut->dlna = NULL;
   ut->dlna_flags = DLNA_ORG_FLAG_STREAMING_TRANSFER_MODE |
                    DLNA_ORG_FLAG_BACKGROUND_TRANSFERT_MODE |
                    DLNA_ORG_FLAG_CONNECTION_STALL |
@@ -146,6 +147,12 @@ ushare_free (struct ushare_t *ut)
     free (ut->ip);
   if (ut->presentation)
     buffer_free (ut->presentation);
+  if (ut->dlna_enabled)
+  {
+    if (ut->dlna)
+      dlna_uninit (ut->dlna);
+    ut->dlna = NULL;
+  }
   if (ut->cfg_file)
     free (ut->cfg_file);
 
@@ -276,11 +283,13 @@ init_upnp (struct ushare_t *ut)
     log_info (_("Starting in XboX 360 compliant profile ...\n"));
 
 #ifdef HAVE_DLNA_H
-  if (ut->dlna)
+  if (ut->dlna_enabled)
   {
     log_info (_("Starting in DLNA compliant profile ...\n"));
-    dlna_init ();
-    dlna_register_all_media_profiles ();
+    ut->dlna = dlna_init ();
+    dlna_set_verbosity (ut->dlna, 0);
+    dlna_set_extension_check (ut->dlna, 1);
+    dlna_register_all_media_profiles (ut->dlna);
   }
 #endif /* HAVE_DLNA_H */
   

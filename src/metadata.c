@@ -186,9 +186,9 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 #ifdef HAVE_DLNA_H
   entry->dlna_profile = NULL;
   entry->url = NULL;
-  if (ut->dlna && fullpath && !dir)
+  if (ut->dlna_enabled && fullpath && !dir)
   {
-    dlna_profile_t *p = dlna_guess_media_profile (fullpath);
+    dlna_profile_t *p = dlna_guess_media_profile (ut->dlna, fullpath);
     if (!p)
     {
       free (entry);
@@ -309,6 +309,8 @@ _upnp_entry_free (struct upnp_entry_t *entry)
     free (entry->title);
   if (entry->url)
     free (entry->url);
+  if (entry->dlna_profile)
+    entry->dlna_profile = NULL;
 
   for (childs = entry->childs; *childs; childs++)
     _upnp_entry_free (*childs);
@@ -428,7 +430,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
     return;
 
 #ifdef HAVE_DLNA_H
-  if (ut->dlna || is_valid_extension (getExtension (file)))
+  if (ut->dlna_enabled || is_valid_extension (getExtension (file)))
 #else
   if (is_valid_extension (getExtension (file)))
 #endif

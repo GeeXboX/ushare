@@ -108,7 +108,8 @@ struct ushare_t {
   bool use_presentation;
   bool use_telnet;
 #ifdef HAVE_DLNA_H
-  bool dlna;
+  bool dlna_enabled;
+  dlna_t *dlna;
   dlna_org_flags_t dlna_flags;
 #endif /* HAVE_DLNA_H */
   bool xbox360;
