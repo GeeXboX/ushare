@@ -287,7 +287,7 @@ init_upnp (struct ushare_t *ut)
   {
     log_info (_("Starting in DLNA compliant profile ...\n"));
     ut->dlna = dlna_init ();
-    dlna_set_verbosity (ut->dlna, 0);
+    dlna_set_verbosity (ut->dlna, ut->verbose ? 1 : 0);
     dlna_set_extension_check (ut->dlna, 1);
     dlna_register_all_media_profiles (ut->dlna);
   }
