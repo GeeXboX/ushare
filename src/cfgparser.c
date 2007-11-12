@@ -238,17 +238,17 @@ ushare_set_override_iconv_err (struct ushare_t *ut, const char *arg)
 }
 
 static u_configline_t configline[] = {
-  {USHARE_NAME, ushare_set_name},
-  {USHARE_IFACE, ushare_set_interface},
-  {USHARE_PORT, ushare_set_port},
-  {USHARE_TELNET_PORT, ushare_set_telnet_port},
-  {USHARE_DIR, ushare_set_dir},
-  {USHARE_OVERRIDE_ICONV_ERR, ushare_set_override_iconv_err},
-  {USHARE_ENABLE_WEB, ushare_use_web},
-  {USHARE_ENABLE_TELNET, ushare_use_telnet},
-  {USHARE_ENABLE_XBOX, ushare_use_xbox},
-  {USHARE_ENABLE_DLNA, ushare_use_dlna},
-  {NULL, NULL},
+  { USHARE_NAME,                 ushare_set_name                },
+  { USHARE_IFACE,                ushare_set_interface           },
+  { USHARE_PORT,                 ushare_set_port                },
+  { USHARE_TELNET_PORT,          ushare_set_telnet_port         },
+  { USHARE_DIR,                  ushare_set_dir                 },
+  { USHARE_OVERRIDE_ICONV_ERR,   ushare_set_override_iconv_err  },
+  { USHARE_ENABLE_WEB,           ushare_use_web                 },
+  { USHARE_ENABLE_TELNET,        ushare_use_telnet              },
+  { USHARE_ENABLE_XBOX,          ushare_use_xbox                },
+  { USHARE_ENABLE_DLNA,          ushare_use_dlna                },
+  { NULL,                        NULL                           },
 };
 
 static void

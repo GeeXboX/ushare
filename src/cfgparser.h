@@ -23,24 +23,24 @@
 
 #include "ushare.h"
 
-#define USHARE_NAME "USHARE_NAME"
-#define USHARE_IFACE "USHARE_IFACE"
-#define USHARE_PORT "USHARE_PORT"
-#define USHARE_TELNET_PORT "USHARE_TELNET_PORT"
-#define USHARE_DIR "USHARE_DIR"
+#define USHARE_NAME               "USHARE_NAME"
+#define USHARE_IFACE              "USHARE_IFACE"
+#define USHARE_PORT               "USHARE_PORT"
+#define USHARE_TELNET_PORT        "USHARE_TELNET_PORT"
+#define USHARE_DIR                "USHARE_DIR"
 #define USHARE_OVERRIDE_ICONV_ERR "USHARE_OVERRIDE_ICONV_ERR"
-#define USHARE_ENABLE_WEB "USHARE_ENABLE_WEB"
-#define USHARE_ENABLE_TELNET "USHARE_ENABLE_TELNET"
-#define USHARE_ENABLE_XBOX "USHARE_ENABLE_XBOX"
-#define USHARE_ENABLE_DLNA "USHARE_ENABLE_DLNA"
+#define USHARE_ENABLE_WEB         "USHARE_ENABLE_WEB"
+#define USHARE_ENABLE_TELNET      "USHARE_ENABLE_TELNET"
+#define USHARE_ENABLE_XBOX        "USHARE_ENABLE_XBOX"
+#define USHARE_ENABLE_DLNA        "USHARE_ENABLE_DLNA"
 
-#define USHARE_CONFIG_FILE "ushare.conf"
-#define DEFAULT_USHARE_NAME "uShare"
+#define USHARE_CONFIG_FILE        "ushare.conf"
+#define DEFAULT_USHARE_NAME       "uShare"
 
 #if (defined(BSD) || defined(__FreeBSD__))
-#define DEFAULT_USHARE_IFACE "lnc0"
+#define DEFAULT_USHARE_IFACE      "lnc0"
 #else /* Linux */
-#define DEFAULT_USHARE_IFACE "eth0"
+#define DEFAULT_USHARE_IFACE      "eth0"
 #endif
 
 int parse_config_file (struct ushare_t *ut)
