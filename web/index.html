@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <!--
       This web site is (c) 2005-2007 Zores Benjamin
       HomePage for the uShare UPnP /DLNA Media Server Project (http://ushare.geexbox.org/)
@@ -28,15 +28,42 @@
       dt { font-weight: bold; }
       dd { margin-bottom: 1ex; }
       li { list-style-type: square; }
+      h2 .top { font-size : 0.5em; float: right; }
+      h2 .top a { text-decoration: none; }
+      fieldset#contents { border: 1px solid #ccc; margin-bottom: 20px; width: 300px; }
+      fieldset#contents a { text-decoration: none; }
+      fieldset#contents legend { font-size: 1.2em; font-weight: bold; padding: 0 5px 0 5px; margin-left: 20px; }
     </style>
   </head>
   <body>
+    <a name="top"></a>
     <h1>
       <tt>GeeXboX uShare</tt><br/>
       A free UPnP A/V &amp; DLNA Media Server for Linux
     </h1>
+    
+    <fieldset id="contents">
+      <legend>Contents</legend>
+      <ul>
+        <li><a href="#Introduction">Introduction</a></li>
+        <li><a href="#Latest_News">Latest News</a></li>
+        <li><a href="#Copyright_and_License">Copyright and License</a></li>
+        <li><a href="#Requirements">Requirements</a></li>
+        <li><a href="#Building_and_Installation">Building and Installation</a></li>
+        <li><a href="#Usage">Usage</a></li>
+        <li><a href="#Supported_File_Formats_List">Supported File Formats List</a></li>
+        <li><a href="#Download">Download</a></li>
+        <li><a href="#Feedback">Feedback</a></li>
+        <li><a href="#Known_bugs_and_limitations">Known bugs and limitations</a></li>
+        <li><a href="#Press">Press</a></li>
+        <li><a href="#Links">Links</a></li>
+      </ul>
+    </fieldset>
 
-    <h2>Introduction</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Introduction"></a>Introduction
+    </h2>
     <p>
       uShare is a UPnP (TM) A/V &amp; DLNA Media Server. It implements the server component that provides UPnP media devices with information on available multimedia files. uShare uses the built-in http server of libupnp to stream the files to clients.<br/>
       <br/>
@@ -47,7 +74,10 @@
       uShare is free software - it is licensed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (GPL).
     </p>
 
-    <h2>Latest News</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Latest_News"></a>Latest News
+    </h2>
     <div>
       Latest release of uShare is 1.1.<br />
       <br />
@@ -60,7 +90,10 @@
       </ul>
     </div>
 
-    <h2>Copyright and License</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Copyright_and_License"></a>Copyright and License
+    </h2>
     <div>
       uShare is copyright (C) 2005-2007 Benjamin Zores.<br/>
       <br/>
@@ -71,7 +104,10 @@
       You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. Note that uShare links with libupnp, which is licensed under the terms of a modified BSD license (i.e. the original BSD license without the advertising clause). This license is compatible with the GNU GPL.
     </div>
 
-    <h2>Requirements</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Requirements"></a>Requirements
+    </h2>
     <div>
       <h4>The following programs are required to build uShare:</h4>
       <dl class="list">
@@ -99,7 +135,10 @@
 
     </div>
 
-    <h2>Building and Installation</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Building_and_Installation"></a>Building and Installation
+    </h2>
     <div>
       Compile uShare by running configure and then make. This should produce an executable ushare in the src subdirectory, which can be used right away. No extra files need to be installed.
 
@@ -117,7 +156,10 @@ make</pre>
       For more information regarding configure and make, see the INSTALL document. 
     </div>
 
-    <h2>Usage</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Usage"></a>Usage
+    </h2>
     <div>
       At first you need to be sure that you have setup a multicast route for UPnP messages. If you don't but have a default route attributed, then this later will be used. Otherwise, simply declare a new route for UPnP multicasts (for example using <i>eth0</i> interface) :
       <pre class="code">route add -net 239.0.0.0 netmask 255.0.0.0 eth0</pre>
@@ -151,7 +193,10 @@ ushare -c /shares1 --content=/shares2</pre>
       <pre class="code">man ushare</pre>
     </div>
 
-    <h2>Supported File Formats List</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Supported_File_Formats_List"></a>Supported File Formats List
+    </h2>
     <div>
       <ul>
         <li><b>Video files</b>: <i>asf, avi, dv, divx, wmv, mjpg, mjpeg, mpeg, mpg, mpe, mp2p, vob, mp2t, m1v, m2v, m4v, m4p, mp4ps, ts, ogm, mkv, rmvb, mov, qt, hdmov</i></li>
@@ -164,7 +209,10 @@ ushare -c /shares1 --content=/shares2</pre>
       If you want uShare to support more file formats, simply add its properties in the <i>src/mime.c</i> table. Do not forget to send a patch to update uShare.
     </div>
 
-    <h2>Download</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Download"></a>Download
+    </h2>
     <p>
       The currently available uShare release is 1.1.<br/>
       Sources can be downloaded <a href="http://ushare.geexbox.org/releases/ushare-1.0.tar.bz2">here</a>.
@@ -213,7 +261,10 @@ ushare -c /shares1 --content=/shares2</pre>
       </dd>
     </dl>
 
-    <h2>Feedback</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Feedback"></a>Feedback
+    </h2>
     <p>
       The author of uShare and this document, <i>Benjamin Zores</i>, can be contacted by <a href="mailto:ushare@geexbox.org">e-mail</a>.
     </p>
@@ -221,7 +272,10 @@ ushare -c /shares1 --content=/shares2</pre>
       Please send bug reports, suggestions, ideas, comments or patches to : <a href="mailto:ushare@geexbox.org">ushare@geexbox.org</a>.
     </p>
 
-    <h2>Known bugs and limitations</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Known_bugs_and_limitations"></a>Known bugs and limitations
+    </h2>
     <p>
       If you need to listen on more than one interface, you will have to start multiple instances of the media server.<br/>
       <br/>
@@ -230,7 +284,10 @@ ushare -c /shares1 --content=/shares2</pre>
       DLNA implementation is not yet complete or perfect. Some files may not be streamed or recognized. The specifications themselves are pretty weak in terms of files support and thus, it's possible you won't ever be able to stream your files, even with a perfect implementation.
     </p>
 
-    <h2>Press</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Press"></a>Press
+    </h2>
     <p>
       Below are a few press articles were uShare has been mentionned:<br/>
       <ul>
@@ -239,7 +296,10 @@ ushare -c /shares1 --content=/shares2</pre>
     </p>
 
 
-    <h2>Links</h2>
+    <h2>
+      <span class="top"><a href="#top">top</a></span>
+      <a name="Links"></a>Links
+    </h2>
     <div>
       Below is a short list of UPnP related software :
       <ul>
