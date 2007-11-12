@@ -177,6 +177,53 @@ ushare_set_port (struct ushare_t *ut, const char *port)
 }
 
 static void
+ushare_set_telnet_port (struct ushare_t *ut, const char *port)
+{
+  if (!ut || !port)
+    return;
+
+  ut->telnet_port = atoi (port);
+}
+
+static void
+ushare_use_web (struct ushare_t *ut, const char *val)
+{
+  if (!ut || !val)
+    return;
+
+  ut->use_presentation = (!strcmp (val, "yes")) ? true : false;
+}
+
+static void
+ushare_use_telnet (struct ushare_t *ut, const char *val)
+{
+  if (!ut || !val)
+    return;
+
+  ut->use_telnet = (!strcmp (val, "yes")) ? true : false;
+}
+
+static void
+ushare_use_xbox (struct ushare_t *ut, const char *val)
+{
+  if (!ut || !val)
+    return;
+
+  ut->xbox360 = (!strcmp (val, "yes")) ? true : false;
+}
+
+static void
+ushare_use_dlna (struct ushare_t *ut, const char *val)
+{
+  if (!ut || !val)
+    return;
+
+#ifdef HAVE_DLNA_H
+  ut->dlna_enabled = (!strcmp (val, "yes")) ? true : false;
+#endif /* HAVE_DLNA_H */
+}
+
+static void
 ushare_set_override_iconv_err (struct ushare_t *ut, const char *arg)
 {
   if (!ut)
@@ -194,8 +241,13 @@ static u_configline_t configline[] = {
   {USHARE_NAME, ushare_set_name},
   {USHARE_IFACE, ushare_set_interface},
   {USHARE_PORT, ushare_set_port},
+  {USHARE_TELNET_PORT, ushare_set_telnet_port},
   {USHARE_DIR, ushare_set_dir},
   {USHARE_OVERRIDE_ICONV_ERR, ushare_set_override_iconv_err},
+  {USHARE_ENABLE_WEB, ushare_use_web},
+  {USHARE_ENABLE_TELNET, ushare_use_telnet},
+  {USHARE_ENABLE_XBOX, ushare_use_xbox},
+  {USHARE_ENABLE_DLNA, ushare_use_dlna},
   {NULL, NULL},
 };
 
@@ -365,7 +417,7 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
       break;
 
     case 'q':
-      ut->telnet_port = atoi (optarg);
+      ushare_set_telnet_port (ut, optarg);
       break;
 
     case 'c':
