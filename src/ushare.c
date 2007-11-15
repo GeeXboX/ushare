@@ -280,11 +280,41 @@ init_upnp (struct ushare_t *ut)
   if (!ut || !ut->name || !ut->udn || !ut->ip)
     return -1;
 
+#ifdef HAVE_DLNA_H
+  if (ut->dlna_enabled)
+  {
+    len = 0;
+    description =
+      dlna_dms_description_get (ut->name,
+                                "GeeXboX Team",
+                                "http://ushare.geexbox.org/",
+                                "uShare : DLNA Media Server",
+                                ut->model_name,
+                                "001",
+                                "http://ushare.geexbox.org/",
+                                "USHARE-01",
+                                ut->udn,
+                                "/web/ushare.html",
+                                "/web/cms.xml",
+                                "/web/cms_control",
+                                "/web/cms_event",
+                                "/web/cds.xml",
+                                "/web/cds_control",
+                                "/web/cds_event");
+    if (!description)
+      return -1;
+  }
+  else
+  {
+#endif /* HAVE_DLNA_H */ 
   len = strlen (UPNP_DESCRIPTION) + strlen (ut->name)
     + strlen (ut->model_name) + strlen (ut->udn) + 1;
   description = (char *) malloc (len * sizeof (char));
   memset (description, 0, len);
   sprintf (description, UPNP_DESCRIPTION, ut->name, ut->model_name, ut->udn);
+#ifdef HAVE_DLNA_H
+  }
+#endif /* HAVE_DLNA_H */
 
   log_info (_("Initializing UPnP subsystem ...\n"));
   res = UpnpInit (ut->ip, ut->port);
