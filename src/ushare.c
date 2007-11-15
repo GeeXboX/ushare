@@ -192,10 +192,19 @@ handle_action_request (struct Upnp_Action_Request *request)
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
-  log_verbose ("ServiceID: %s\n", request->ServiceID);
-  log_verbose ("actionName: %s\n", request->ActionName);
-  log_verbose ("CtrlPtIP: %s\n", val);
-
+  if (ut->verbose)
+  {
+    DOMString str = ixmlPrintDocument (request->ActionRequest);
+    log_verbose ("***************************************************\n");
+    log_verbose ("**             New Action Request                **\n");
+    log_verbose ("***************************************************\n");
+    log_verbose ("ServiceID: %s\n", request->ServiceID);
+    log_verbose ("ActionName: %s\n", request->ActionName);
+    log_verbose ("CtrlPtIP: %s\n", val);
+    log_verbose ("Action Request:\n%s\n", str);
+    ixmlFreeDOMString (str);
+  }
+  
   if (find_service_action (request, &service, &action))
     {
       struct action_event_t event;
@@ -207,6 +216,15 @@ handle_action_request (struct Upnp_Action_Request *request)
       if (action->function (&event) && event.status)
         request->ErrCode = UPNP_E_SUCCESS;
 
+      if (ut->verbose)
+      {
+        DOMString str = ixmlPrintDocument (request->ActionResult);
+        log_verbose ("Action Result:\n%s", str);
+        log_verbose ("***************************************************\n");
+        log_verbose ("\n");
+        ixmlFreeDOMString (str);
+      }
+      
       return;
     }
 
