@@ -219,6 +219,12 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   if (!dir) /* item */
     {
+#ifdef HAVE_DLNA_H
+      if (ut->dlna_enabled)
+        entry->mime_type = NULL;
+      else
+      {
+#endif /* HAVE_DLNA_H */
       struct mime_type_t *mime = getMimeType (getExtension (name));
       if (!mime)
       {
@@ -228,7 +234,10 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
         return NULL;
       }
       entry->mime_type = mime;
-
+#ifdef HAVE_DLNA_H
+      }
+#endif /* HAVE_DLNA_H */
+      
       if (snprintf (url_tmp, MAX_URL_SIZE, "%d.%s",
                     entry->id, getExtension (name)) >= MAX_URL_SIZE)
         log_error ("URL string too long for id %d, truncated!!", entry->id);

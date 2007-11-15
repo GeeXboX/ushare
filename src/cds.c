@@ -357,11 +357,20 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
       mime_get_protocol (entry->mime_type);
     
     didl_add_header (out);
-    didl_add_item (out, entry->id, entry->parent
-                   ? entry->parent->id : -1, "false",
-                   entry->mime_type->mime_class, entry->title,
-                   protocol, entry->size,
-                   entry->url, filter);
+#ifdef HAVE_DLNA_H
+    entry->dlna_profile ?
+      didl_add_item (out, entry->id, entry->parent
+                     ? entry->parent->id : -1, "false",
+                     entry->dlna_profile->object_item, entry->title,
+                     protocol, entry->size,
+                     entry->url, filter) :
+#endif /* HAVE_DLNA_H */
+      didl_add_item (out, entry->id, entry->parent
+                     ? entry->parent->id : -1, "false",
+                     entry->mime_type->mime_class, entry->title,
+                     protocol, entry->size,
+                     entry->url, filter);
+    
     didl_add_footer (out);
     free (protocol);
     
@@ -439,12 +448,21 @@ cds_browse_directchildren (struct action_event_t *event,
                                     ut->dlna_flags, (*childs)->dlna_profile) :
 #endif /* HAVE_DLNA_H */
           mime_get_protocol ((*childs)->mime_type);
-        
-        didl_add_item (out, (*childs)->id,
-                       (*childs)->parent ? (*childs)->parent->id : -1,
-                       "true", (*childs)->mime_type->mime_class,
-                       (*childs)->title, protocol,
-                       (*childs)->size, (*childs)->url, filter);
+
+#ifdef HAVE_DLNA_H
+        (*childs)->dlna_profile ?
+          didl_add_item (out, (*childs)->id,
+                         (*childs)->parent ? (*childs)->parent->id : -1,
+                         "true", (*childs)->dlna_profile->object_item,
+                         (*childs)->title, protocol,
+                         (*childs)->size, (*childs)->url, filter) :
+#endif /* HAVE_DLNA_H */
+          didl_add_item (out, (*childs)->id,
+                         (*childs)->parent ? (*childs)->parent->id : -1,
+                         "true", (*childs)->mime_type->mime_class,
+                         (*childs)->title, protocol,
+                         (*childs)->size, (*childs)->url, filter);
+
         free (protocol);
       }
       result_count++;
@@ -605,12 +623,13 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
       *quote_closed = '\0';
   }
 
-  if (derived_from
+  if (derived_from && entry->mime_type
       && !strncmp (entry->mime_type->mime_class, keyword, strlen (keyword)))
     result = true;
   else if (protocol_contains && strstr (protocol, keyword))
     result = true;
-  else if (!strcmp (entry->mime_type->mime_class, keyword))
+  else if (entry->mime_type &&
+           !strcmp (entry->mime_type->mime_class, keyword))
     result = true;
   free (protocol);
   
@@ -667,11 +686,19 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
 #endif /* HAVE_DLNA_H */
             mime_get_protocol ((*childs)->mime_type);
 
-          didl_add_item (out, (*childs)->id,
-                         (*childs)->parent ? (*childs)->parent->id : -1,
-                         "true", (*childs)->mime_type->mime_class,
-                         (*childs)->title, protocol,
-                         (*childs)->size, (*childs)->url, filter);
+#ifdef HAVE_DLNA_H
+          (*childs)->dlna_profile ?
+            didl_add_item (out, (*childs)->id,
+                           (*childs)->parent ? (*childs)->parent->id : -1,
+                           "true", (*childs)->dlna_profile->object_item,
+                           (*childs)->title, protocol,
+                           (*childs)->size, (*childs)->url, filter) :
+#endif /* HAVE_DLNA_H */
+            didl_add_item (out, (*childs)->id,
+                           (*childs)->parent ? (*childs)->parent->id : -1,
+                           "true", (*childs)->mime_type->mime_class,
+                           (*childs)->title, protocol,
+                           (*childs)->size, (*childs)->url, filter);
           free (protocol);
           result_count++;
         }
@@ -741,11 +768,19 @@ cds_search_directchildren (struct action_event_t *event,
 #endif /* HAVE_DLNA_H */
             mime_get_protocol ((*childs)->mime_type);
 
-          didl_add_item (out, (*childs)->id,
-                         (*childs)->parent ? (*childs)->parent->id : -1,
-                         "true", (*childs)->mime_type->mime_class,
-                         (*childs)->title, protocol,
-                         (*childs)->size, (*childs)->url, filter);
+#ifdef HAVE_DLNA_H
+          (*childs)->dlna_profile ?
+            didl_add_item (out, (*childs)->id,
+                           (*childs)->parent ? (*childs)->parent->id : -1,
+                           "true", (*childs)->dlna_profile->object_item,
+                           (*childs)->title, protocol,
+                           (*childs)->size, (*childs)->url, filter) :
+#endif /* HAVE_DLNA_H */
+            didl_add_item (out, (*childs)->id,
+                           (*childs)->parent ? (*childs)->parent->id : -1,
+                           "true", (*childs)->mime_type->mime_class,
+                           (*childs)->title, protocol,
+                           (*childs)->size, (*childs)->url, filter);
           free (protocol);
           result_count++;
         }
