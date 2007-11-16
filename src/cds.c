@@ -361,7 +361,8 @@ cds_browse_metadata (struct action_event_t *event, struct buffer_t *out,
     entry->dlna_profile ?
       didl_add_item (out, entry->id, entry->parent
                      ? entry->parent->id : -1, "false",
-                     entry->dlna_profile->object_item, entry->title,
+                     dlna_profile_upnp_object_item (entry->dlna_profile),
+                     entry->title,
                      protocol, entry->size,
                      entry->url, filter) :
 #endif /* HAVE_DLNA_H */
@@ -453,7 +454,7 @@ cds_browse_directchildren (struct action_event_t *event,
         (*childs)->dlna_profile ?
           didl_add_item (out, (*childs)->id,
                          (*childs)->parent ? (*childs)->parent->id : -1,
-                         "true", (*childs)->dlna_profile->object_item,
+                         "true", dlna_profile_upnp_object_item ((*childs)->dlna_profile),
                          (*childs)->title, protocol,
                          (*childs)->size, (*childs)->url, filter) :
 #endif /* HAVE_DLNA_H */
@@ -690,7 +691,7 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
           (*childs)->dlna_profile ?
             didl_add_item (out, (*childs)->id,
                            (*childs)->parent ? (*childs)->parent->id : -1,
-                           "true", (*childs)->dlna_profile->object_item,
+                           "true", dlna_profile_upnp_object_item ((*childs)->dlna_profile),
                            (*childs)->title, protocol,
                            (*childs)->size, (*childs)->url, filter) :
 #endif /* HAVE_DLNA_H */
@@ -772,7 +773,7 @@ cds_search_directchildren (struct action_event_t *event,
           (*childs)->dlna_profile ?
             didl_add_item (out, (*childs)->id,
                            (*childs)->parent ? (*childs)->parent->id : -1,
-                           "true", (*childs)->dlna_profile->object_item,
+                           "true", dlna_profile_upnp_object_item ((*childs)->dlna_profile),
                            (*childs)->title, protocol,
                            (*childs)->size, (*childs)->url, filter) :
 #endif /* HAVE_DLNA_H */
