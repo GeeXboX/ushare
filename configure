@@ -247,28 +247,6 @@ check_lib(){
     return $err
 }
 
-check_libconfig(){
-    local config func ccflags clibs err
-    log check_libconfig "$@"
-    config="$1"
-    func="$2"
-    ccflags="${3:---cflags}"
-    clibs="${4:---libs}"
-    err=1
-    if `which "$config" 1>/dev/null 2>&1`; then
-      cflags=`$config $ccflags`
-      [ -n "$cflags" ] && check_cflags "$cflags"
-      libs=`$config $clibs`
-      if [ -n "$libs" ]; then
-        temp_extralibs "$libs"
-        check_func $func && add_extralibs "$libs"
-        err=$?
-        restore_flags
-      fi
-    fi
-    return $err
-}
-
 check_lib_version() {
     check_cmd pkg-config "$1" --atleast-version="$2"
     err=$?
