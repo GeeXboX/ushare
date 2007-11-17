@@ -269,6 +269,12 @@ check_libconfig(){
     return $err
 }
 
+check_lib_version() {
+    check_cmd pkg-config "$1" --atleast-version="$2"
+    err=$?
+    return $err
+}
+
 append_config(){
     echo "$@" >> $CONFIGFILE
 }
@@ -642,19 +648,23 @@ echolog "Checking for libthreadutil ..."
 check_lib upnp/ThreadPool.h ThreadPoolAdd -lthreadutil || die "Error, can't find libthreadutil !"
 add_extralibs -lpthread
 
-echolog "Checking for libupnp ..."
+libupnp_min_version="1.4.2"
+echolog "Checking for libupnp >= $libupnp_min_version ..."
 check_lib upnp/upnp.h UpnpSetMaxContentLength -lupnp || die "Error, can't find libupnp !"
+check_lib_version libupnp $libupnp_min_version || die "Error, libupnp < $libupnp_min_version !"
 
 #################################################
 #   check for libdlna
 #################################################
 if test "$dlna" = "yes"; then
-  echolog "Checking for libdlna ..."
+  libdlna_min_version="0.2.0"
+  echolog "Checking for libdlna >= $libdlna_min_version ..."
   if [ -n "$libdlnadir" ]; then
     check_cflags -I$libdlnadir
     check_ldflags -L$libdlnadir
   fi
   check_lib dlna.h dlna_register_all_media_profiles -ldlna || die "Error, can't find libdlna !"
+  check_lib_version libdlna $libdlna_min_version || die "Error, libdlna < $libdlna_min_version !"
   add_cflags -DHAVE_DLNA_H
 fi
 
@@ -664,6 +674,9 @@ fi
 echolog ""
 echolog "uShare: configure is OK"
 echolog "  version            $VERSION"
+echolog "  using libupnp      `pkg-config libupnp --modversion`"
+test dlna = yes && \ 
+echolog "  using libdlna      `pkg-config libdlna --modversion`"
 echolog "configuration:"
 echolog "  install prefix     $PREFIX"
 echolog "  configuration dir  $sysconfdir"
