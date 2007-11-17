@@ -23,6 +23,7 @@
 #include <syslog.h>
 #include <stdbool.h>
 
+#include "config.h"
 #include "trace.h"
 #include "ushare.h"
 

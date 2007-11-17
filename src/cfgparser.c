@@ -25,6 +25,7 @@
 #include <stdbool.h>
 #include <limits.h>
 
+#include "config.h"
 #include "gettext.h"
 #include "cfgparser.h"
 #include "ushare.h"

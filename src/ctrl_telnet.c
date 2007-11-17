@@ -21,6 +21,7 @@
 #define _STR(x) __STR(x)
 #define __STR(x) #x
 
+#include "config.h"
 #include "ctrl_telnet.h"
 #include "minmax.h"
 #include "trace.h"

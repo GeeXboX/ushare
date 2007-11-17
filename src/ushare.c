@@ -56,6 +56,7 @@
 # include <locale.h>
 #endif
 
+#include "config.h"
 #include "ushare.h"
 #include "services.h"
 #include "http.h"

@@ -24,6 +24,7 @@
 # include <langinfo.h>
 #endif
 
+#include "config.h"
 #include "metadata.h"
 #include "content.h"
 #include "buffer.h"
