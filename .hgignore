@@ -3,6 +3,10 @@ syntax :regexp
 # general
 \.o
 \.deps
+\.depend
+config.h
+config.log
+config.mak
 
 # po files
 POTFILES
