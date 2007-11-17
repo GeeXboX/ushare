@@ -147,12 +147,14 @@ ushare_free (struct ushare_t *ut)
     free (ut->ip);
   if (ut->presentation)
     buffer_free (ut->presentation);
+#ifdef HAVE_DLNA_H
   if (ut->dlna_enabled)
   {
     if (ut->dlna)
       dlna_uninit (ut->dlna);
     ut->dlna = NULL;
   }
+#endif /* HAVE_DLNA_H */
   if (ut->cfg_file)
     free (ut->cfg_file);
 

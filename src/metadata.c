@@ -318,8 +318,10 @@ _upnp_entry_free (struct upnp_entry_t *entry)
     free (entry->title);
   if (entry->url)
     free (entry->url);
+#ifdef HAVE_DLNA_H
   if (entry->dlna_profile)
     entry->dlna_profile = NULL;
+#endif /* HAVE_DLNA_H */
 
   for (childs = entry->childs; *childs; childs++)
     _upnp_entry_free (*childs);
