@@ -17,12 +17,6 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#else
-#error "Missing config.h file : run configure again"
-#endif
-
 #define STR(x) _STR(x)
 #define _STR(x) __STR(x)
 #define __STR(x) #x
