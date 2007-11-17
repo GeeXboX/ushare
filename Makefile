@@ -27,6 +27,7 @@ clean:
 distclean: clean
 	-$(RM) -f config.log
 	-$(RM) -f config.mak
+	-$(RM) -f config.h
 
 install:
 	$(MAKE) -C scripts install
