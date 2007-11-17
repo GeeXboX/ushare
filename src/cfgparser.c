@@ -213,9 +213,9 @@ ushare_use_dlna (struct ushare_t *ut, const char *val)
   if (!ut || !val)
     return;
 
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
   ut->dlna_enabled = (!strcmp (val, "yes")) ? true : false;
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
 }
 
 static void
@@ -330,9 +330,9 @@ display_usage (void)
   printf (_(" -o, --override-iconv-err\tIf iconv fails parsing name, still add to media contents (hoping the renderer can handle it)\n"));
   printf (_(" -v, --verbose\t\tSet verbose display\n"));
   printf (_(" -x, --xbox\t\tUse XboX 360 compliant profile\n"));
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
   printf (_(" -d, --dlna\t\tUse DLNA compliant profile (PlayStation3 needs this)\n"));
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
   printf (_(" -D, --daemon\t\tRun as a daemon\n"));
   printf (_(" -V, --version\t\tDisplay the version of uShare and exit\n"));
   printf (_(" -h, --help\t\tDisplay this help\n"));
@@ -357,9 +357,9 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
     {"no-web", no_argument, 0, 'w' },
     {"no-telnet", no_argument, 0, 't' },
     {"xbox", no_argument, 0, 'x' },
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
     {"dlna", no_argument, 0, 'd' },
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
     {"cfg", required_argument, 0, 'f' },
     {0, 0, 0, 0 }
   };
@@ -431,11 +431,11 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
       ut->xbox360 = true;
       break;
 
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
     case 'd':
       ut->dlna_enabled = true;
       break;
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
       
     case 'f':
       ushare_set_cfg_file (ut, optarg);

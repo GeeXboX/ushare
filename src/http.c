@@ -154,14 +154,14 @@ http_get_info (const char *filename, struct File_Info *info)
   info->is_directory = S_ISDIR (st.st_mode);
 
   protocol = 
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
     entry->dlna_profile ?
     dlna_write_protocol_info (DLNA_PROTOCOL_INFO_TYPE_HTTP,
                               DLNA_ORG_PLAY_SPEED_NORMAL,
                               DLNA_ORG_CONVERSION_NONE,
                               DLNA_ORG_OPERATION_RANGE,
                               ut->dlna_flags, entry->dlna_profile) :
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
     mime_get_protocol (entry->mime_type);
 
   content_type =

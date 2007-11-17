@@ -177,7 +177,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
   entry->dlna_profile = NULL;
   entry->url = NULL;
   if (ut->dlna_enabled && fullpath && !dir)
@@ -190,7 +190,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
     }
     entry->dlna_profile = p;
   }
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
  
   if (ut->xbox360)
   {
@@ -213,12 +213,12 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
 
   if (!dir) /* item */
     {
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
       if (ut->dlna_enabled)
         entry->mime_type = NULL;
       else
       {
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
       struct mime_type_t *mime = getMimeType (getExtension (name));
       if (!mime)
       {
@@ -228,9 +228,9 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
         return NULL;
       }
       entry->mime_type = mime;
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
       }
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
       
       if (snprintf (url_tmp, MAX_URL_SIZE, "%d.%s",
                     entry->id, getExtension (name)) >= MAX_URL_SIZE)
@@ -312,10 +312,10 @@ _upnp_entry_free (struct upnp_entry_t *entry)
     free (entry->title);
   if (entry->url)
     free (entry->url);
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
   if (entry->dlna_profile)
     entry->dlna_profile = NULL;
-#endif /* HAVE_DLNA_H */
+#endif /* HAVE_DLNA */
 
   for (childs = entry->childs; *childs; childs++)
     _upnp_entry_free (*childs);
@@ -434,7 +434,7 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
   if (!entry || !file || !name)
     return;
 
-#ifdef HAVE_DLNA_H
+#ifdef HAVE_DLNA
   if (ut->dlna_enabled || is_valid_extension (getExtension (file)))
 #else
   if (is_valid_extension (getExtension (file)))

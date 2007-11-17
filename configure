@@ -643,7 +643,7 @@ if test "$dlna" = "yes"; then
   fi
   check_lib dlna.h dlna_register_all_media_profiles -ldlna || die "Error, can't find libdlna !"
   check_lib_version libdlna $libdlna_min_version || die "Error, libdlna < $libdlna_min_version !"
-  add_cflags -DHAVE_DLNA_H
+  add_cflags -DHAVE_DLNA
 fi
 
 #################################################
