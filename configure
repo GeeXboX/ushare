@@ -592,27 +592,27 @@ if enabled optimize; then
 fi
 
 #################################################
-#   check for locales
+#   check for locales (optional)
 #################################################
 echolog "Checking for locales ..."
 check_header locale.h && add_cflags -DHAVE_LOCALE_H
 check_lib locale.h setlocale "" && add_cflags -DHAVE_SETLOCALE
 
 #################################################
-#   check for langinfo
+#   check for langinfo (optional)
 #################################################
 echolog "Checking for langinfo ..."
 check_header langinfo.h && add_cflags -DHAVE_LANGINFO_H
 check_lib langinfo.h nl_langinfo "" && add_cflags -DHAVE_LANGINFO_CODESET
 
 #################################################
-#   check for iconv
+#   check for iconv (optional)
 #################################################
 echolog "Checking for iconv ..."
 check_lib iconv.h iconv "" && add_cflags -DHAVE_ICONV
 
 #################################################
-#   check for libupnp and friends
+#   check for libupnp and friends (mandatory)
 #################################################
 if [ -n "$libupnpdir" ]; then
   check_cflags -I$libupnpdir
@@ -632,7 +632,7 @@ check_lib upnp/upnp.h UpnpSetMaxContentLength -lupnp || die "Error, can't find l
 check_lib_version libupnp $libupnp_min_version || die "Error, libupnp < $libupnp_min_version !"
 
 #################################################
-#   check for libdlna
+#   check for libdlna (mandatory if enabled)
 #################################################
 if test "$dlna" = "yes"; then
   libdlna_min_version="0.2.0"
