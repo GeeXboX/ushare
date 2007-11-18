@@ -641,7 +641,7 @@ if test "$dlna" = "yes"; then
     check_cflags -I$libdlnadir
     check_ldflags -L$libdlnadir
   fi
-  check_lib dlna.h dlna_register_all_media_profiles -ldlna || die "Error, can't find libdlna !"
+  check_lib dlna.h dlna_register_all_media_profiles -ldlna || die "Error, can't find libdlna (install it or use --disable-dlna) !"
   check_lib_version libdlna $libdlna_min_version || die "Error, libdlna < $libdlna_min_version !"
   add_cflags -DHAVE_DLNA
 fi
