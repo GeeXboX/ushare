@@ -630,6 +630,8 @@ libupnp_min_version="1.4.2"
 echolog "Checking for libupnp >= $libupnp_min_version ..."
 check_lib upnp/upnp.h UpnpSetMaxContentLength -lupnp || die "Error, can't find libupnp !"
 check_lib_version libupnp $libupnp_min_version || die "Error, libupnp < $libupnp_min_version !"
+add_cflags `pkg-config libupnp --cflags`
+add_extralibs `pkg-config libupnp --libs`
 
 #################################################
 #   check for libdlna (mandatory if enabled)
@@ -644,6 +646,8 @@ if test "$dlna" = "yes"; then
   check_lib dlna.h dlna_register_all_media_profiles -ldlna || die "Error, can't find libdlna (install it or use --disable-dlna) !"
   check_lib_version libdlna $libdlna_min_version || die "Error, libdlna < $libdlna_min_version !"
   add_cflags -DHAVE_DLNA
+  add_cflags `pkg-config libdlna --cflags`
+  add_extralibs `pkg-config libdlna --libs`
 fi
 
 #################################################
