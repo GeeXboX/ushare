@@ -6,10 +6,15 @@ include ../config.mak
 CONF_FILE  = "ushare.conf"
 INITD_FILE = "ushare"
 
+EXTRADIST = $(CONF_FILE) $(INITD_FILE)
+
 install:
 	$(INSTALL) -d $(sysconfdir)
 	$(INSTALL) $(CONF_FILE) $(sysconfdir)
 	$(INSTALL) -d $(sysconfdir)/init.d
 	$(INSTALL) $(INITD_FILE) $(sysconfdir)/init.d
 
-.PHONY: install
+dist-all:
+	cp $(EXTRADIST) $(SRCS) Makefile $(DIST)
+
+.PHONY: install dist-all
