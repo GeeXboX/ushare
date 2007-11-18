@@ -10,9 +10,9 @@ EXTRADIST = $(CONF_FILE) $(INITD_FILE)
 
 install:
 	$(INSTALL) -d $(sysconfdir)
-	$(INSTALL) $(CONF_FILE) $(sysconfdir)
+	$(INSTALL) -m 644 $(CONF_FILE) $(sysconfdir)
 	$(INSTALL) -d $(sysconfdir)/init.d
-	$(INSTALL) $(INITD_FILE) $(sysconfdir)/init.d
+	$(INSTALL) -m 755 $(INITD_FILE) $(sysconfdir)/init.d
 
 dist-all:
 	cp $(EXTRADIST) $(SRCS) Makefile $(DIST)
