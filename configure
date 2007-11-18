@@ -279,7 +279,7 @@ CONFIG_H="config.h"
 #################################################
 logging="yes"
 logfile="config.log"
-PREFIX="/usr"
+PREFIX="/usr/local"
 bindir="$PREFIX/bin"
 sysconfdir="/etc"
 localedir="$PREFIX/share/locale"
