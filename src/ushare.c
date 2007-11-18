@@ -700,10 +700,12 @@ setup_i18n(void)
 #if HAVE_SETLOCALE && ENABLE_NLS
   setlocale (LC_ALL, "");
 #endif
-#if (!defined(BSD) && !defined(__FreeBSD__))
+#if (!defined(BSD) && !defined(__FreeBSD__) && defined(ENABLE_NLS))
   bindtextdomain (PACKAGE, LOCALEDIR);
 #endif
+#if ENABLE_NLS
   textdomain (PACKAGE);
+#endif
 }
 
 #define SHUTDOWN_MSG _("Server is shutting down: other clients will be notified soon, Bye bye ...\n")
