@@ -5,7 +5,27 @@ include ../config.mak
 
 PROG = ushare
 
-EXTRADIST = ushare.1
+EXTRADIST = ushare.1 \
+	cds.h \
+	cms.h \
+	msr.h \
+	http.h \
+	presentation.h \
+	metadata.h \
+	mime.h \
+	services.h \
+	buffer.h \
+	util_iconv.h \
+	content.h \
+	cfgparser.h \
+	trace.h \
+	redblack.h \
+	osdep.h \
+	ctrl_telnet.h \
+	ushare.h \
+	gettext.h \
+	minmax.h \
+
 
 SRCS = \
         cds.c \
