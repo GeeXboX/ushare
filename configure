@@ -637,7 +637,7 @@ add_extralibs `pkg-config libupnp --libs`
 #   check for libdlna (mandatory if enabled)
 #################################################
 if test "$dlna" = "yes"; then
-  libdlna_min_version="0.2.0"
+  libdlna_min_version="0.2.1"
   echolog "Checking for libdlna >= $libdlna_min_version ..."
   if [ -n "$libdlnadir" ]; then
     check_cflags -I$libdlnadir
