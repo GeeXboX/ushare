@@ -19,19 +19,28 @@ SUBDIRS = po \
 	  src \
 
 all:
-	$(MAKE) -C src
+	for subdir in $(SUBDIRS); do \
+	  $(MAKE) -C $$subdir $@; \
+	done
 
 clean:
-	$(MAKE) -C src clean
+	for subdir in $(SUBDIRS); do \
+	  $(MAKE) -C $$subdir $@; \
+	done
 
 distclean: clean
+	for subdir in $(SUBDIRS); do \
+	  $(MAKE) -C $$subdir $@; \
+	done
 	-$(RM) -f config.log
 	-$(RM) -f config.mak
 	-$(RM) -f config.h
 
+
 install:
-	$(MAKE) -C scripts install
-	$(MAKE) -C src install
+	for subdir in $(SUBDIRS); do \
+	  $(MAKE) -C $$subdir $@; \
+	done
 
 .PHONY: clean distclean install
 
