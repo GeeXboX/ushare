@@ -62,6 +62,8 @@ clean:
 	-$(RM) -f *.o $(PROG)
 	-$(RM) -f .depend
 
+distclean:
+
 install: $(PROG)
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) $(PROG) $(bindir)
@@ -69,7 +71,7 @@ install: $(PROG)
 depend:
 	$(CC) -I.. -MM $(CFLAGS) $(SRCS) 1>.depend
 
-.PHONY: clean depend
+.PHONY: clean distclean install depend
 
 dist-all:
 	cp $(EXTRADIST) $(SRCS) Makefile $(DIST)

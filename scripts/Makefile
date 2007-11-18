@@ -8,6 +8,10 @@ INITD_FILE = "ushare"
 
 EXTRADIST = $(CONF_FILE) $(INITD_FILE)
 
+clean:
+
+distclean:
+
 install:
 	$(INSTALL) -d $(sysconfdir)
 	$(INSTALL) -m 644 $(CONF_FILE) $(sysconfdir)
@@ -17,4 +21,4 @@ install:
 dist-all:
 	cp $(EXTRADIST) $(SRCS) Makefile $(DIST)
 
-.PHONY: install dist-all
+.PHONY: clean disctlean install dist-all
