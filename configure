@@ -29,7 +29,7 @@ show_help(){
   echo "  --log[=FILE|yes|no]         log tests and output to FILE [config.log]"
   echo "  --prefix=PREFIX             install in PREFIX [$PREFIX]"
   echo "  --bindir=DIR                install binaries in DIR [PREFIX/bin]"
-  echo "  --sysconfdir=DIR            configuration files DIR [/etc]"
+  echo "  --sysconfdir=DIR            configuration files DIR [PREFIX/etc]"
   echo "  --localedir=DIR             use locales from DIR [PREFIX/share/locale]"
   echo ""
   echo "Extended options:"
@@ -291,7 +291,7 @@ logging="yes"
 logfile="config.log"
 PREFIX="/usr/local"
 bindir='${PREFIX}/bin'
-sysconfdir="/etc"
+sysconfdir='${PREFIX}/etc'
 localedir='${PREFIX}/share/locale'
 dlna="yes"
 nls="yes"
