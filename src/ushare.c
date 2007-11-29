@@ -697,13 +697,13 @@ display_headers (void)
 inline static void
 setup_i18n(void)
 {
-#if (defined(HAVE_SETLOCALE) && defined(CONFIG_NLS))
+#ifdef CONFIG_NLS
+#ifdef HAVE_SETLOCALE
   setlocale (LC_ALL, "");
 #endif
-#if (!defined(BSD) && !defined(__FreeBSD__) && defined(CONFIG_NLS))
+#if (!defined(BSD) && !defined(__FreeBSD__))
   bindtextdomain (PACKAGE, LOCALEDIR);
 #endif
-#ifdef CONFIG_NLS
   textdomain (PACKAGE);
 #endif
 }
