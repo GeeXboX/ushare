@@ -52,7 +52,7 @@
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 
-#if HAVE_SETLOCALE && ENABLE_NLS
+#if (defined(HAVE_SETLOCALE) && defined(CONFIG_NLS))
 # include <locale.h>
 #endif
 
@@ -697,13 +697,13 @@ display_headers (void)
 inline static void
 setup_i18n(void)
 {
-#if HAVE_SETLOCALE && ENABLE_NLS
+#if (defined(HAVE_SETLOCALE) && defined(CONFIG_NLS))
   setlocale (LC_ALL, "");
 #endif
-#if (!defined(BSD) && !defined(__FreeBSD__) && defined(ENABLE_NLS))
+#if (!defined(BSD) && !defined(__FreeBSD__) && defined(CONFIG_NLS))
   bindtextdomain (PACKAGE, LOCALEDIR);
 #endif
-#if ENABLE_NLS
+#ifdef CONFIG_NLS
   textdomain (PACKAGE);
 #endif
 }

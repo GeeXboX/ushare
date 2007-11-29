@@ -729,7 +729,7 @@ add_clog_str PACKAGE "ushare"
 add_clog_str PACKAGE_NAME "uShare"
 add_clog_str SYSCONFDIR `expand_var "${sysconfdir}"`
 add_clog_str LOCALEDIR `expand_var "${localedir}"`
-test $nls = yes && add_clog ENABLE_NLS 1
+test $nls = yes && add_clog CONFIG_NLS 1
 
 clean
 exit 0
