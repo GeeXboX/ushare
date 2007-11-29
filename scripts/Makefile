@@ -8,6 +8,8 @@ INITD_FILE = "ushare"
 
 EXTRADIST = $(CONF_FILE) $(INITD_FILE)
 
+all:
+
 clean:
 
 distclean:
