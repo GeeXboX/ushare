@@ -70,7 +70,7 @@ The following UPnP library is required to build and run uShare :
 
 The following DLNA library is required for proper DLNA support :
 
- * libdlna, 0.1.0 or later
+ * libdlna, 0.2.1 or later
 
    The libdlna library is used to provides DLNA profiles informations.
    libdlna can be downloaded from http://libdlna.geexbox.org/.
