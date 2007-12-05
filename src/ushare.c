@@ -688,7 +688,7 @@ reload_config (int s __attribute__ ((unused)))
 inline void
 display_headers (void)
 {
-  printf (_("%s (version %s), a lightweight UPnP Media Server.\n"),
+  printf (_("%s (version %s), a lightweight UPnP A/V and DLNA Media Server.\n"),
           PACKAGE_NAME, VERSION);
   printf (_("Benjamin Zores (C) 2005-2007, for GeeXboX Team.\n"));
   printf (_("See http://ushare.geexbox.org/ for updates.\n"));
