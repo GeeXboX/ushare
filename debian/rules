@@ -2,12 +2,23 @@
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/langpack.mk
-include /usr/share/cdbs/1/class/autotools.mk
 
-DEB_BUILDDIR:=debbuild
 DEB_INSTALL_DIRS_ushare:=/usr/share/ushare
+DEB_CONFIGURE_NORMAL_ARGS += --enable-debug
+DEB_CONFIGURE_NORMAL_ARGS += --enable-dlna
+DEB_CONFIGURE_PREFIXS += --prefix=/usr
+DEB_CONFIGURE_PREFIXS += --sysconfdir=/etc
 
 USHARE_INIT:=$(CURDIR)/debian/ushare.init
+
+configure/ushare::
+	./configure $(DEB_CONFIGURE_NORMAL_ARGS) $(DEB_CONFIGURE_PREFIXS)
+
+build/ushare::
+	$(MAKE)
+
+install/ushare::
+	$(MAKE) install DESTDIR=$(DEB_DESTDIR)
 
 # copy init script, to use with dh_installinit
 install/ushare::
@@ -16,15 +27,17 @@ install/ushare::
 	sed -i -e "s%\(/etc/ushare.conf\)%\1\n# Edit this file with 'dpkg-reconfigure $(cdbs_curpkg)'%" \
 		$(CURDIR)/debian/$(cdbs_curpkg)/usr/share/ushare/ushare.conf
 
-cleanbuilddir::
-	-$(RM) $(USHARE_INIT)
 
 clean::
+	[ ! -f config.mak ] || $(MAKE) distclean
 	debconf-updatepo
+
+cleanbuilddir::
+	-$(RM) $(USHARE_INIT)
 
 # used to build a debian package
 #  run 'debian/rules dpkg-buildpackage'
 dpkg-buildpackage:
-	dpkg-buildpackage -rfakeroot -i"(?:^|/)(?:debug|.hg*)$$"
+	dpkg-buildpackage -rfakeroot -i"\.hg|.*\.kdevelop.*"
 
 .PHONY: dpkg-buildpackage

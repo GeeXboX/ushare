@@ -1,3 +1,9 @@
+ushare (1.1-0ubuntu1) gutsy; urgency=low
+
+  * new upstream release
+
+ -- Alexis Saettler <alexis@saettler.org>  Tue, 04 Dec 2007 23:19:55 +0100
+
 ushare (1.0-0ubuntu2) gutsy; urgency=low
 
   * add dependency on pkg-config

@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
 Uploaders: Alexis Saettler <alexis@saettler.org>
 XSBC-Original-Maintainer: Alexis Saettler <alexis@saettler.org>
-Build-Depends: debhelper (>= 5.0.0), cdbs (>= 0.4.23-1.1), libupnp-dev (>= 1.4.2), pkg-config
+Build-Depends: debhelper (>= 5.0.0), cdbs (>= 0.4.23-1.1), libupnp-dev (>= 1.4.2), libdlna-dev (>= 0.2.1), pkg-config
 Standards-Version: 3.7.2
 
 Package: ushare
