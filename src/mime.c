@@ -34,10 +34,10 @@
 const struct mime_type_t MIME_Type_List[] = {
   /* Video files */
   { "asf",   UPNP_VIDEO, "http-get:*:video/x-ms-asf:"},
-  { "avc",   UPNP_VIDEO, "http-get:*:video/x-msvideo:"},
-  { "avi",   UPNP_VIDEO, "http-get:*:video/x-msvideo:"},
+  { "avc",   UPNP_VIDEO, "http-get:*:video/avi:"},
+  { "avi",   UPNP_VIDEO, "http-get:*:video/avi:"},
   { "dv",    UPNP_VIDEO, "http-get:*:video/x-dv:"},
-  { "divx",  UPNP_VIDEO, "http-get:*:video/x-msvideo:"},
+  { "divx",  UPNP_VIDEO, "http-get:*:video/avi:"},
   { "wmv",   UPNP_VIDEO, "http-get:*:video/x-ms-wmv:"},
   { "mjpg",  UPNP_VIDEO, "http-get:*:video/x-motion-jpeg:"},
   { "mjpeg", UPNP_VIDEO, "http-get:*:video/x-motion-jpeg:"},
