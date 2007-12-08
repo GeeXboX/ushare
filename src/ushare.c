@@ -432,12 +432,8 @@ has_iface (char *interface)
     itf = itf->ifa_next;
   }
 
-  log_error (_("Can't find interface %s.\n"), interface);
-  log_error (_("Recheck uShare's configuration and try again !\n"));
   freeifaddrs (itf);
-  
-  return false;
-#else
+#else  
   int sock, i, n;
   struct ifconf ifc;
   struct ifreq ifr;
@@ -493,13 +489,13 @@ has_iface (char *interface)
     close (sock);
     return true;
   }
-
+  close (sock);
+#endif
+  
   log_error (_("Can't find interface %s.\n"),interface);
   log_error (_("Recheck uShare's configuration and try again !\n"));
 
-  close (sock);
   return false;
-#endif
 }
 
 static char *
