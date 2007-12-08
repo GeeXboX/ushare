@@ -45,6 +45,10 @@
 #include <stdbool.h>
 #include <fcntl.h>
 
+#ifdef HAVE_IFADDRS_H
+#include <ifaddrs.h>
+#endif
+
 #if (defined(__unix__) || defined(unix)) && !defined(USG)
 #include <sys/param.h>
 #endif
@@ -402,6 +406,38 @@ init_upnp (struct ushare_t *ut)
 static bool
 has_iface (char *interface)
 {
+#ifdef HAVE_IFADDRS_H
+  struct ifaddrs *itflist, *itf;
+
+  if (!interface)
+    return false;
+
+  if (getifaddrs (&itflist) < 0)
+  {
+    perror ("getifaddrs");
+    return false;
+  }
+
+  itf = itflist;
+  while (itf)
+  {
+    if ((itf->ifa_flags & IFF_UP)
+        && !strncmp (itf->ifa_name, interface, IFNAMSIZ))
+    {
+      log_error (_("Interface %s is down.\n"), interface);
+      log_error (_("Recheck uShare's configuration and try again !\n"));
+      freeifaddrs (itflist);
+      return true;
+    }
+    itf = itf->ifa_next;
+  }
+
+  log_error (_("Can't find interface %s.\n"), interface);
+  log_error (_("Recheck uShare's configuration and try again !\n"));
+  freeifaddrs (itf);
+  
+  return false;
+#else
   int sock, i, n;
   struct ifconf ifc;
   struct ifreq ifr;
@@ -463,6 +499,7 @@ has_iface (char *interface)
 
   close (sock);
   return false;
+#endif
 }
 
 static char *

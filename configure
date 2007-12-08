@@ -609,6 +609,12 @@ check_header locale.h && add_cflags -DHAVE_LOCALE_H
 check_lib locale.h setlocale "" && add_cflags -DHAVE_SETLOCALE
 
 #################################################
+#   check for ifaddr (optional)
+#################################################
+echolog "Checking for ifaddrs ..."
+check_lib ifaddrs.h getifaddrs "" && add_cflags -DHAVE_IFADDRS_H
+
+#################################################
 #   check for langinfo (optional)
 #################################################
 echolog "Checking for langinfo ..."
