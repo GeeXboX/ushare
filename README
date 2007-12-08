@@ -61,6 +61,12 @@ The following programs are required to build uShare:
    The GNU C Compiler is part of the GNU Compiler Collection which can be
    downloaded from http://gcc.gnu.org/.
 
+ * pkg-config.
+
+   pkg-config is a helper tool used when compiling applications and libraries.
+   It helps you insert the correct compiler options on the command line.
+   (see http://pkg-config.freedesktop.org/wiki/ ).
+
 The following UPnP library is required to build and run uShare :
 
  * Linux SDK for UPnP Devices (libupnp), 1.4.2 or later
