@@ -639,7 +639,7 @@ echolog "Checking for libixml ..."
 check_lib upnp/ixml.h ixmlRelaxParser -lixml || die "Error, can't find libixml !"
 
 echolog "Checking for libthreadutil ..."
-check_lib upnp/ThreadPool.h ThreadPoolAdd -lthreadutil || die "Error, can't find libthreadutil !"
+check_lib upnp/ThreadPool.h ThreadPoolAdd "-lthreadutil -lpthread" || die "Error, can't find libthreadutil !"
 add_extralibs -lpthread
 
 libupnp_min_version="1.4.2"
