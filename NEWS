@@ -1,3 +1,9 @@
+2007-12-09: GeeXboX uShare 1.1a released.
+ Support for XboX 360 dashboard Fall Update (.avi and .divx now are supported)
+ DLNA support is not enabled by default, as not mandatory.
+ Some configure script fixes and better support for cross-compilation.
+ Fixed network interface discovery on MacOSX.
+
 2007-12-04: GeeXboX uShare 1.1 released.
  Much more complete DLNA support through external libdlna.
  Telnet Control interface.
