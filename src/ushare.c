@@ -430,7 +430,7 @@ has_iface (char *interface)
     itf = itf->ifa_next;
   }
 
-  freeifaddrs (itf);
+  freeifaddrs (itflist);
 #else  
   int sock, i, n;
   struct ifconf ifc;
