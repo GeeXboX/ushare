@@ -424,8 +424,6 @@ has_iface (char *interface)
     if ((itf->ifa_flags & IFF_UP)
         && !strncmp (itf->ifa_name, interface, IFNAMSIZ))
     {
-      log_error (_("Interface %s is down.\n"), interface);
-      log_error (_("Recheck uShare's configuration and try again !\n"));
       freeifaddrs (itflist);
       return true;
     }
