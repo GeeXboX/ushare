@@ -30,7 +30,8 @@ show_help(){
   echo "  --prefix=PREFIX             install in PREFIX [$PREFIX]"
   echo "  --bindir=DIR                install binaries in DIR [PREFIX/bin]"
   echo "  --sysconfdir=DIR            configuration files DIR [PREFIX/etc]"
-  echo "  --localedir=DIR             use locales from DIR [PREFIX/share/locale]"
+  echo "  --datadir=DIR               arch-independent data DIR [PREFIX/share]"
+  echo "  --localedir=DIR             use locales from DIR [DATADIR/locale]"
   echo ""
   echo "Extended options:"
   echo "  --enable-dlna               enable DLNA support through libldna"
@@ -292,7 +293,8 @@ logfile="config.log"
 PREFIX="/usr/local"
 bindir='${PREFIX}/bin'
 sysconfdir='${PREFIX}/etc'
-localedir='${PREFIX}/share/locale'
+datadir='${PREFIX}/share'
+localedir='${datadir}/locale'
 dlna="no"
 nls="yes"
 cc="gcc"
@@ -407,6 +409,8 @@ for opt do
   --bindir=*) bindir="$optval";
   ;;
   --sysconfdir=*) sysconfdir="$optval";
+  ;;
+  --datadir=*) datadir="$optval";
   ;;
   --localedir=*) localedir="$optval";
   ;;
@@ -677,6 +681,7 @@ test $dlna = yes && echolog "  using libdlna      `pkg-config libdlna --modversi
 echolog "configuration:"
 echolog "  install prefix     $PREFIX"
 echolog "  configuration dir  $sysconfdir"
+echolog "  data dir           $datadir"
 echolog "  locales dir        $localedir"
 echolog "  NLS support        $nls"
 echolog "  DLNA support       $dlna"
@@ -706,6 +711,7 @@ append_config "PREFIX=$PREFIX"
 append_config "prefix=\$(DESTDIR)\$(PREFIX)"
 append_config "bindir=\$(DESTDIR)$bindir"
 append_config "sysconfdir=\$(DESTDIR)$sysconfdir"
+append_config "datadir=\$(DESTDIR)$datadir"
 append_config "localedir=\$(DESTDIR)$localedir"
 
 append_config "MAKE=$make"
