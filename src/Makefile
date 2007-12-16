@@ -28,23 +28,23 @@ EXTRADIST = ushare.1 \
 
 
 SRCS = \
-        cds.c \
-        cms.c \
-        msr.c \
-        http.c \
-        presentation.c \
-        metadata.c \
-        mime.c \
-        services.c \
-        buffer.c \
-        util_iconv.c \
-        content.c \
-        cfgparser.c \
-        trace.c \
-        redblack.c \
-        osdep.c \
-        ctrl_telnet.c \
-        ushare.c
+	cds.c \
+	cms.c \
+	msr.c \
+	http.c \
+	presentation.c \
+	metadata.c \
+	mime.c \
+	services.c \
+	buffer.c \
+	util_iconv.c \
+	content.c \
+	cfgparser.c \
+	trace.c \
+	redblack.c \
+	osdep.c \
+	ctrl_telnet.c \
+	ushare.c
 
 OBJS = $(SRCS:.c=.o)
 
