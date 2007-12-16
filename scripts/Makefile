@@ -15,10 +15,10 @@ clean:
 distclean:
 
 install:
-	$(INSTALL) -d $(sysconfdir)
-	$(INSTALL) -m 644 $(CONF_FILE) $(sysconfdir)
-	$(INSTALL) -d $(sysconfdir)/init.d
-	$(INSTALL) -m 755 $(INITD_FILE) $(sysconfdir)/init.d
+	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -m 644 $(CONF_FILE) $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -d $(DESTDIR)$(sysconfdir)/init.d
+	$(INSTALL) -m 755 $(INITD_FILE) $(DESTDIR)$(sysconfdir)/init.d
 
 dist-all:
 	cp $(EXTRADIST) $(SRCS) Makefile $(DIST)

@@ -65,9 +65,9 @@ clean:
 distclean:
 
 install: $(PROG)
-	$(INSTALL) -d $(bindir)
-	$(INSTALL) $(PROG) $(bindir)
-	$(STRIP) $(INSTALLSTRIP) $(bindir)/$(PROG)
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) $(PROG) $(DESTDIR)$(bindir)
+	$(STRIP) $(INSTALLSTRIP) $(DESTDIR)$(bindir)/$(PROG)
 
 depend:
 	$(CC) -I.. -MM $(CFLAGS) $(SRCS) 1>.depend

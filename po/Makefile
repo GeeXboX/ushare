@@ -78,8 +78,8 @@ distclean: clean
 install: $(GMOFILES)
 	for gmo in $(GMOFILES); do \
 	  lang=`echo $$gmo | sed -e 's/\.gmo$$//'`; \
-	  $(INSTALL) -d $(localedir)/$$lang/LC_MESSAGES; \
-	  $(INSTALL) -m 644 $$lang.gmo $(localedir)/$$lang/LC_MESSAGES/$(DOMAIN).mo; \
+	  $(INSTALL) -d $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
+	  $(INSTALL) -m 644 $$lang.gmo $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES/$(DOMAIN).mo; \
 	done
 
 
