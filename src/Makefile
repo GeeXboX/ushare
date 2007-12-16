@@ -25,6 +25,7 @@ EXTRADIST = ushare.1 \
 	ushare.h \
 	gettext.h \
 	minmax.h \
+	ufam.h \
 
 
 SRCS = \
@@ -44,6 +45,7 @@ SRCS = \
 	redblack.c \
 	osdep.c \
 	ctrl_telnet.c \
+	ufam.c \
 	ushare.c
 
 OBJS = $(SRCS:.c=.o)

@@ -72,6 +72,9 @@
 #include "trace.h"
 #include "buffer.h"
 #include "ctrl_telnet.h"
+#ifdef HAVE_FAM
+#include "ufam.h"
+#endif /* HAVE_FAM */
 
 struct ushare_t *ut = NULL;
 
@@ -115,6 +118,9 @@ ushare_new (void)
   ut->daemon = false;
   ut->override_iconv_err = false;
   ut->cfg_file = NULL;
+#ifdef HAVE_FAM
+  ut->ufam = ufam_init ();
+#endif /* HAVE_FAM */
 
   pthread_mutex_init (&ut->termination_mutex, NULL);
   pthread_cond_init (&ut->termination_cond, NULL);
@@ -156,6 +162,11 @@ ushare_free (struct ushare_t *ut)
 #endif /* HAVE_DLNA */
   if (ut->cfg_file)
     free (ut->cfg_file);
+
+#ifdef HAVE_FAM
+  if (ut->ufam)
+    ufam_free (ut->ufam);
+#endif /* HAVE_FAM */
 
   pthread_cond_destroy (&ut->termination_cond);
   pthread_mutex_destroy (&ut->termination_mutex);
@@ -265,6 +276,9 @@ finish_upnp (struct ushare_t *ut)
     return -1;
 
   log_info (_("Stopping UPnP Service ...\n"));
+#ifdef HAVE_FAM
+  ufam_stop (ut->ufam);
+#endif /* HAVE_FAM */
   UpnpUnRegisterRootDevice (ut->dev);
   UpnpFinish ();
 
@@ -396,6 +410,10 @@ init_upnp (struct ushare_t *ut)
   UpnpSendAdvertisement (ut->dev, 1800);
 
   log_info (_("Listening for control point connections ...\n"));
+
+#ifdef HAVE_FAM
+  ufam_start (ut);
+#endif /* HAVE_FAM */
 
   if (description)
     free (description);

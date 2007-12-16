@@ -44,6 +44,9 @@ struct upnp_entry_t {
   char *url;
   off_t size;
   int fd;
+#ifdef HAVE_FAM
+  struct ufam_entry_t *ufam_entry;
+#endif /* HAVE_FAM */
 };
 
 typedef struct xml_convert_s {

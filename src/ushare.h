@@ -119,6 +119,9 @@ struct ushare_t {
   char *cfg_file;
   pthread_mutex_t termination_mutex;
   pthread_cond_t termination_cond;
+#ifdef HAVE_FAM
+  struct ufam_t *ufam;
+#endif /* HAVE_FAM */
 };
 
 struct action_event_t {

@@ -1,3 +1,10 @@
+2007-12-16  Alexis Saettler <asbin@asbin.org>
+
+	* added support for File Alteration Monitor,
+	  to monitor files changes automaticaly and rebuild
+	  metadata file list. Works with gamin too.
+
+
 2007-12-09  Benjamin Zores <ben@geexbox.org>
 
 	* new public release (Version 1.1a).

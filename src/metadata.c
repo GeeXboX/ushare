@@ -37,6 +37,10 @@
 #include "gettext.h"
 #include "trace.h"
 
+#ifdef HAVE_FAM
+#include "ufam.h"
+#endif /* HAVE_FAM */
+
 #define TITLE_UNKNOWN "unknown"
 
 #define MAX_URL_SIZE 32
@@ -206,6 +210,9 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   entry->parent = parent;
   entry->child_count =  dir ? 0 : -1;
   entry->title = NULL;
+#ifdef HAVE_FAM
+  entry->ufam_entry = NULL;
+#endif /* HAVE_FAM */
 
   entry->childs = (struct upnp_entry_t **)
     malloc (sizeof (struct upnp_entry_t *));
@@ -243,6 +250,9 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
     {
       entry->mime_type = &Container_MIME_Type;
       entry->url = NULL;
+#ifdef HAVE_FAM
+      entry->ufam_entry = ufam_add_monitor (ut->ufam, entry);
+#endif /* HAVE_FAM */
     }
 
   /* Try Iconv'ing the name but if it fails the end device
@@ -316,6 +326,10 @@ _upnp_entry_free (struct upnp_entry_t *entry)
   if (entry->dlna_profile)
     entry->dlna_profile = NULL;
 #endif /* HAVE_DLNA */
+#ifdef HAVE_FAM
+  if (entry->ufam_entry)
+    ufam_remove_monitor (entry->ufam_entry);
+#endif /* HAVE_FAM */
 
   for (childs = entry->childs; *childs; childs++)
     _upnp_entry_free (*childs);
@@ -350,6 +364,10 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
  	  free (entry_found->title);
  	if (entry_found->url)
  	  free (entry_found->url);
+#ifdef HAVE_FAM
+        if (entry_found->ufam_entry)
+          ufam_remove_monitor (entry_found->ufam_entry);
+#endif /* HAVE_FAM */
 
 	free (entry_found);
  	i++;

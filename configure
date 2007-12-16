@@ -37,6 +37,8 @@ show_help(){
   echo "  --enable-dlna               enable DLNA support through libldna"
   echo "  --disable-dlna              disable DLNA support"
   echo "  --disable-nls               do not use Native Language Support"
+  echo "  --enable-fam                enable File Alteration Monitor support"
+  echo "  --disable-fam               disable File Alteration Monitor support"
   echo ""
   echo "Search paths:"
   echo "  --with-libupnp-dir=DIR      check for libupnp installed in DIR"
@@ -296,6 +298,7 @@ sysconfdir='${PREFIX}/etc'
 datadir='${PREFIX}/share'
 localedir='${datadir}/locale'
 dlna="no"
+fam="no"
 nls="yes"
 cc="gcc"
 make="make"
@@ -423,6 +426,10 @@ for opt do
   --enable-dlna) dlna="yes"
   ;;
   --disable-dlna) dlna="no"
+  ;;
+  --enable-fam) fam="yes"
+  ;;
+  --disable-fam) fam="no"
   ;;
   --enable-debug) debug="yes"
   ;;
@@ -668,6 +675,16 @@ if test "$dlna" = "yes"; then
   add_cflags -DHAVE_DLNA
   add_cflags `pkg-config libdlna --cflags`
   add_extralibs `pkg-config libdlna --libs`
+fi
+
+#################################################
+#   check for libfam
+#################################################
+if test "$fam" = "yes"; then
+  echolog "Checking for libfam ..."
+  check_lib fam.h FAMOpen -lfam || die "Error, can't find libfam (install it or use --disable-fam) !"
+  add_cflags -DHAVE_FAM -pthread
+  add_extralibs -lpthread
 fi
 
 #################################################
