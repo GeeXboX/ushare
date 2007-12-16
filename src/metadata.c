@@ -304,15 +304,13 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   return entry;
 }
 
-/* Seperate recursive free() function in order to avoid freeing off
- * the parents child list within the freeing of the first child, as
- * the only entry which is not part of a childs list is the root entry
+/**
+ * Free all variables of entry, but childs*
+ * This function is not recursive.
  */
 static void
 _upnp_entry_free (struct upnp_entry_t *entry)
 {
-  struct upnp_entry_t **childs;
-
   if (!entry)
     return;
 
@@ -328,12 +326,34 @@ _upnp_entry_free (struct upnp_entry_t *entry)
 #endif /* HAVE_DLNA */
 #ifdef HAVE_FAM
   if (entry->ufam_entry)
+  {
     ufam_remove_monitor (entry->ufam_entry);
+    entry->ufam_entry = NULL;
+  }
 #endif /* HAVE_FAM */
+  if (entry->childs)
+    free (entry->childs);
 
-  for (childs = entry->childs; *childs; childs++)
-    _upnp_entry_free (*childs);
-  free (entry->childs);
+  free (entry);
+}
+
+/* Seperate recursive free() function in order to avoid freeing off
+ * the parents child list within the freeing of the first child, as
+ * the only entry which is not part of a childs list is the root entry
+ */
+static void
+_upnp_entry_recursive_free (struct upnp_entry_t *entry)
+{
+  struct upnp_entry_t **childs;
+
+  if (!entry)
+    return;
+
+  if (entry->childs)
+    for (childs = entry->childs; *childs; childs++)
+      _upnp_entry_recursive_free (*childs);
+
+  _upnp_entry_free (entry);
 }
 
 void
@@ -358,18 +378,7 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
       entry_found = lk->entry_ptr;
       if (entry_found)
       {
- 	if (entry_found->fullpath)
- 	  free (entry_found->fullpath);
- 	if (entry_found->title)
- 	  free (entry_found->title);
- 	if (entry_found->url)
- 	  free (entry_found->url);
-#ifdef HAVE_FAM
-        if (entry_found->ufam_entry)
-          ufam_remove_monitor (entry_found->ufam_entry);
-#endif /* HAVE_FAM */
-
-	free (entry_found);
+        _upnp_entry_free (entry_found);
  	i++;
       }
 
@@ -381,12 +390,13 @@ upnp_entry_free (struct ushare_t *ut, struct upnp_entry_t *entry)
     rbdestroy (ut->rb);
     ut->rb = NULL;
 
+    /* Free the root_entry : */
+    _upnp_entry_free (entry);
+
     log_verbose ("Freed [%d] entries\n", i);
   }
   else
-    _upnp_entry_free (entry);
-
-  free (entry);
+    _upnp_entry_recursive_free (entry);
 }
 
 static void
