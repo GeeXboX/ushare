@@ -223,6 +223,11 @@ cds_get_search_capabilities (struct action_event_t *event)
 static bool
 cds_get_sort_capabilities (struct action_event_t *event)
 {
+/* TODO: add the correct sort capabilities we made
+ *   example from § 2.8.3.1. "Retrieving sort capabilities" of
+ *   UpnP ContentDirectory 1.0 specifications
+ *      "dc:title,dc:creator,dc:date,res@size"
+ */
   upnp_add_response (event, SERVICE_CDS_ARG_SORT_CAPS, "");
 
   return event->status;
@@ -639,7 +644,7 @@ matches_search (char *search_criteria, struct upnp_entry_t *entry)
 static int
 cds_search_directchildren_recursive (struct buffer_t *out, int count,
                                      struct upnp_entry_t *entry, char *filter,
-                                     char *search_criteria)
+                                     char *search_criteria, char *sort_criteria)
 {
   struct upnp_entry_t **childs;
   int result_count = 0;
@@ -649,6 +654,14 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
 
   /* go to the first child */
   childs = entry->childs;
+
+  /* TODO: add the sort function, to sort the list with
+   *  the sort_criteria parameter
+   *
+   * - make a new temporary list, duplicating current
+   * - sort this list
+   * - do the loop on the new list
+   */
 
   for (; *childs; childs++)
   {
@@ -660,7 +673,7 @@ cds_search_directchildren_recursive (struct buffer_t *out, int count,
         int new_count;
         new_count = cds_search_directchildren_recursive
           (out, (count == 0) ? 0 : (count - result_count),
-           (*childs), filter, search_criteria);
+           (*childs), filter, search_criteria, sort_criteria);
         result_count += new_count;
       }
       else /* item */
@@ -708,7 +721,8 @@ static int
 cds_search_directchildren (struct action_event_t *event,
                            struct buffer_t *out, int index,
                            int count, struct upnp_entry_t *entry,
-                           char *filter, char *search_criteria)
+                           char *filter, char *search_criteria,
+                           char *sort_criteria)
 {
   struct upnp_entry_t **childs;
   int s, result_count = 0;
@@ -742,7 +756,7 @@ cds_search_directchildren (struct action_event_t *event,
         int new_count;
         new_count = cds_search_directchildren_recursive
           (out, (count == 0) ? 0 : (count - result_count),
-           (*childs), filter, search_criteria);
+           (*childs), filter, search_criteria, sort_criteria);
         result_count += new_count;
       }
       else /* item */
@@ -800,8 +814,9 @@ cds_search (struct action_event_t *event)
 {
   extern struct ushare_t *ut;
   struct upnp_entry_t *entry = NULL;
-  int result_count = 0, index, count, id, sort_criteria;
+  int result_count = 0, index, count, id;
   char *search_criteria = NULL;
+  char *sort_criteria = NULL;
   char *filter = NULL;
   struct buffer_t *out = NULL;
 
@@ -824,9 +839,9 @@ cds_search (struct action_event_t *event)
   search_criteria = upnp_get_string (event->request,
                                      SERVICE_CDS_ARG_SEARCH_CRIT);
   filter = upnp_get_string (event->request, SERVICE_CDS_ARG_FILTER);
-  sort_criteria = upnp_get_ui4 (event->request, SERVICE_CDS_ARG_SORT_CRIT);
+  sort_criteria = upnp_get_string (event->request, SERVICE_CDS_ARG_SORT_CRIT);
 
-  if (!search_criteria || !filter)
+  if (!search_criteria || !filter || !sort_criteria)
     return false;
 
   entry = upnp_get_entry (ut, id);
@@ -843,7 +858,7 @@ cds_search (struct action_event_t *event)
 
   result_count =
     cds_search_directchildren (event, out, index, count, entry,
-                               filter, search_criteria);
+                               filter, search_criteria, sort_criteria);
 
   if (result_count < 0)
   {
@@ -855,6 +870,7 @@ cds_search (struct action_event_t *event)
   upnp_add_response (event, SERVICE_CDS_DIDL_UPDATE_ID,
                      SERVICE_CDS_ROOT_OBJECT_ID);
 
+  free (sort_criteria);
   free (search_criteria);
   free (filter);
 
