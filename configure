@@ -32,6 +32,7 @@ show_help(){
   echo "  --sysconfdir=DIR            configuration files DIR [PREFIX/etc]"
   echo "  --datadir=DIR               arch-independent data DIR [PREFIX/share]"
   echo "  --localedir=DIR             use locales from DIR [DATADIR/locale]"
+  echo "  --mandir=DIR                man documentation DIR [DATADIR/man]"
   echo ""
   echo "Extended options:"
   echo "  --enable-dlna               enable DLNA support through libldna"
@@ -297,6 +298,7 @@ bindir='${PREFIX}/bin'
 sysconfdir='${PREFIX}/etc'
 datadir='${PREFIX}/share'
 localedir='${datadir}/locale'
+mandir='${datadir}/man'
 dlna="no"
 fam="no"
 nls="yes"
@@ -416,6 +418,8 @@ for opt do
   --datadir=*) datadir="$optval";
   ;;
   --localedir=*) localedir="$optval";
+  ;;
+  --mandir=*) mandir="$optval";
   ;;
   --with-libupnp-dir=*) libupnpdir="$optval";
   ;;
@@ -700,6 +704,7 @@ echolog "  install prefix     $PREFIX"
 echolog "  configuration dir  $sysconfdir"
 echolog "  data dir           $datadir"
 echolog "  locales dir        $localedir"
+echolog "  mans dir           $mandir"
 echolog "  NLS support        $nls"
 echolog "  DLNA support       $dlna"
 echolog "  C compiler         $cc"
@@ -730,6 +735,7 @@ append_config "bindir=$bindir"
 append_config "sysconfdir=$sysconfdir"
 append_config "datadir=$datadir"
 append_config "localedir=$localedir"
+append_config "mandir=$mandir"
 
 append_config "MAKE=$make"
 append_config "CC=$cc"
