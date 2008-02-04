@@ -4,8 +4,9 @@ Priority: optional
 Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
 Uploaders: Alexis Saettler <alexis@saettler.org>
 XSBC-Original-Maintainer: Alexis Saettler <alexis@saettler.org>
-Build-Depends: debhelper (>= 5.0.0), cdbs (>= 0.4.23-1.1), libupnp-dev (>= 1.4.2), libdlna-dev (>= 0.2.1), pkg-config
-Standards-Version: 3.7.2
+Homepage: http://ushare.geexbox.org
+Build-Depends: debhelper (>= 5), cdbs (>= 0.4.23-1.1), libupnp-dev (>= 1.4.2), libdlna-dev (>= 0.2.1), pkg-config, po-debconf
+Standards-Version: 3.7.3
 
 Package: ushare
 Architecture: any
@@ -19,5 +20,3 @@ Description: lightweight UPnP A/V Media Server
  uShare is written in C for the GeeXboX project. It is designed to provide
  access to multimedia contents to GeeXboX but can of course be used by any
  other UPnP client device.
- .
- More informations on http://ushare.geexbox.org

@@ -1,7 +1,7 @@
 This package was debianized by Alexis Saettler <alexis@saettler.org> on
 Sat, 29 Oct 2005 17:56:07 +0200.
 
-It was downloaded from http://ushare.geexbox.org/releases/geexbox-ushare-0.9.0.tar.bz2
+It was downloaded from http://ushare.geexbox.org/
 
 Upstream Author:
    Benjamin Zores <ben@geexbox.org>
@@ -10,7 +10,9 @@ Upstream Author:
 Includes code from ‘src/gettext.h’:
    Copyright © 1995-1998, 2000-2002, 2004 Free Software Foundation, Inc.
 
-Copyright © 2005-2006 Benjamin Zores
+Copyright © 2005-2008 Benjamin Zores
+
+License: GPL
 
    This package is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,4 +29,7 @@ Copyright © 2005-2006 Benjamin Zores
    MA 02110-1301, USA.
 
 On Debian systems, the complete text of the GNU General
-Public License can be found in `/usr/share/common-licenses/GPL'.
+Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
+The Debian packaging is (C) 2007-2008, Alexis Saettler <alexis@saettler.org> and
+is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
