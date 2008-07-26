@@ -6,14 +6,9 @@ include ../config.mak
 PROG = ushare
 
 EXTRADIST = ushare.1 \
-	cds.h \
-	cms.h \
-	msr.h \
-	http.h \
 	presentation.h \
 	metadata.h \
 	mime.h \
-	services.h \
 	buffer.h \
 	util_iconv.h \
 	content.h \
@@ -29,14 +24,10 @@ EXTRADIST = ushare.1 \
 
 
 SRCS = \
-	cds.c \
-	cms.c \
-	msr.c \
 	http.c \
 	presentation.c \
 	metadata.c \
 	mime.c \
-	services.c \
 	buffer.c \
 	util_iconv.c \
 	content.c \

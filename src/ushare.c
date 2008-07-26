@@ -53,17 +53,12 @@
 #include <sys/param.h>
 #endif
 
-#include <upnp/upnp.h>
-#include <upnp/upnptools.h>
-
 #if (defined(HAVE_SETLOCALE) && defined(CONFIG_NLS))
 # include <locale.h>
 #endif
 
 #include "config.h"
 #include "ushare.h"
-#include "services.h"
-#include "http.h"
 #include "metadata.h"
 #include "util_iconv.h"
 #include "content.h"
@@ -97,22 +92,18 @@ ushare_new (void)
   ut->nr_entries = 0;
   ut->starting_id = STARTING_ENTRY_ID_DEFAULT;
   ut->init = 0;
-  ut->dev = 0;
   ut->udn = NULL;
-  ut->ip = NULL;
   ut->port = 0; /* Randomly attributed by libupnp */
   ut->telnet_port = CTRL_TELNET_PORT;
   ut->presentation = NULL;
   ut->use_presentation = true;
   ut->use_telnet = true;
-#ifdef HAVE_DLNA
   ut->dlna_enabled = false;
   ut->dlna = NULL;
   ut->dlna_flags = DLNA_ORG_FLAG_STREAMING_TRANSFER_MODE |
                    DLNA_ORG_FLAG_BACKGROUND_TRANSFERT_MODE |
                    DLNA_ORG_FLAG_CONNECTION_STALL |
                    DLNA_ORG_FLAG_DLNA_V15;
-#endif /* HAVE_DLNA */
   ut->xbox360 = false;
   ut->verbose = false;
   ut->daemon = false;
@@ -148,18 +139,14 @@ ushare_free (struct ushare_t *ut)
     upnp_entry_free (ut, ut->root_entry);
   if (ut->udn)
     free (ut->udn);
-  if (ut->ip)
-    free (ut->ip);
   if (ut->presentation)
     buffer_free (ut->presentation);
-#ifdef HAVE_DLNA
   if (ut->dlna_enabled)
   {
     if (ut->dlna)
       dlna_uninit (ut->dlna);
     ut->dlna = NULL;
   }
-#endif /* HAVE_DLNA */
   if (ut->cfg_file)
     free (ut->cfg_file);
 
@@ -182,93 +169,6 @@ ushare_signal_exit (void)
   pthread_mutex_unlock (&ut->termination_mutex);
 }
 
-static void
-handle_action_request (struct Upnp_Action_Request *request)
-{
-  struct service_t *service;
-  struct service_action_t *action;
-  char val[256];
-  uint32_t ip;
-
-  if (!request || !ut)
-    return;
-
-  if (request->ErrCode != UPNP_E_SUCCESS)
-    return;
-
-  if (strcmp (request->DevUDN + 5, ut->udn))
-    return;
-
-  ip = request->CtrlPtIPAddr.s_addr;
-  ip = ntohl (ip);
-  sprintf (val, "%d.%d.%d.%d",
-           (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
-
-  if (ut->verbose)
-  {
-    DOMString str = ixmlPrintDocument (request->ActionRequest);
-    log_verbose ("***************************************************\n");
-    log_verbose ("**             New Action Request                **\n");
-    log_verbose ("***************************************************\n");
-    log_verbose ("ServiceID: %s\n", request->ServiceID);
-    log_verbose ("ActionName: %s\n", request->ActionName);
-    log_verbose ("CtrlPtIP: %s\n", val);
-    log_verbose ("Action Request:\n%s\n", str);
-    ixmlFreeDOMString (str);
-  }
-  
-  if (find_service_action (request, &service, &action))
-    {
-      struct action_event_t event;
-
-      event.request = request;
-      event.status = true;
-      event.service = service;
-
-      if (action->function (&event) && event.status)
-        request->ErrCode = UPNP_E_SUCCESS;
-
-      if (ut->verbose)
-      {
-        DOMString str = ixmlPrintDocument (request->ActionResult);
-        log_verbose ("Action Result:\n%s", str);
-        log_verbose ("***************************************************\n");
-        log_verbose ("\n");
-        ixmlFreeDOMString (str);
-      }
-      
-      return;
-    }
-
-  if (service) /* Invalid Action name */
-    strcpy (request->ErrStr, "Unknown Service Action");
-  else /* Invalid Service name */
-    strcpy (request->ErrStr, "Unknown Service ID");
-
-  request->ActionResult = NULL;
-  request->ErrCode = UPNP_SOAP_E_INVALID_ACTION;
-}
-
-static int
-device_callback_event_handler (Upnp_EventType type, void *event,
-                               void *cookie __attribute__((unused)))
-{
-  switch (type)
-    {
-    case UPNP_CONTROL_ACTION_REQUEST:
-      handle_action_request ((struct Upnp_Action_Request *) event);
-      break;
-    case UPNP_CONTROL_ACTION_COMPLETE:
-    case UPNP_EVENT_SUBSCRIPTION_REQUEST:
-    case UPNP_CONTROL_GET_VAR_REQUEST:
-      break;
-    default:
-      break;
-    }
-
-  return 0;
-}
-
 static int
 finish_upnp (struct ushare_t *ut)
 {
@@ -279,144 +179,66 @@ finish_upnp (struct ushare_t *ut)
 #ifdef HAVE_FAM
   ufam_stop (ut->ufam);
 #endif /* HAVE_FAM */
-  UpnpUnRegisterRootDevice (ut->dev);
-  UpnpFinish ();
+  dlna_dms_uninit (ut->dlna);
 
-  return UPNP_E_SUCCESS;
+  return 0;
 }
 
 static int
 init_upnp (struct ushare_t *ut)
 {
-  char *description = NULL;
   int res;
-  size_t len;
-
-  if (!ut || !ut->name || !ut->udn || !ut->ip)
+  extern dlna_http_callback_t ushare_http_callbacks;
+  
+  if (!ut || !ut->name || !ut->udn)
     return -1;
 
-#ifdef HAVE_DLNA
+  ut->dlna = dlna_init ();
+  dlna_set_verbosity (ut->dlna, ut->verbose ? 1 : 0);
+  dlna_set_extension_check (ut->dlna, 0);
+  dlna_register_all_media_profiles (ut->dlna);
+  
+  dlna_set_device_friendly_name (ut->dlna, ut->name);
+  dlna_set_device_manufacturer (ut->dlna, "GeeXboX Team");
+  dlna_set_device_manufacturer_url (ut->dlna, "http://ushare.geexbox.org/");
+  dlna_set_device_model_description (ut->dlna, "uShare : DLNA Media Server");
+  dlna_set_device_model_name (ut->dlna, ut->model_name);
+  dlna_set_device_model_number (ut->dlna, "001");
+  dlna_set_device_model_url (ut->dlna, "http://ushare.geexbox.org/");
+  dlna_set_device_serial_number (ut->dlna, "USHARE-01");
+  dlna_set_device_uuid (ut->dlna, ut->udn);
+  dlna_set_device_presentation_url (ut->dlna, "ushare.html");
+
+  dlna_set_capability_mode (ut->dlna, DLNA_CAPABILITY_UPNP_AV);
   if (ut->dlna_enabled)
   {
-    len = 0;
-    description =
-      dlna_dms_description_get (ut->name,
-                                "GeeXboX Team",
-                                "http://ushare.geexbox.org/",
-                                "uShare : DLNA Media Server",
-                                ut->model_name,
-                                "001",
-                                "http://ushare.geexbox.org/",
-                                "USHARE-01",
-                                ut->udn,
-                                "/web/ushare.html",
-                                "/web/cms.xml",
-                                "/web/cms_control",
-                                "/web/cms_event",
-                                "/web/cds.xml",
-                                "/web/cds_control",
-                                "/web/cds_event");
-    if (!description)
-      return -1;
+    log_info (_("Starting in DLNA compliant profile ...\n"));
+    dlna_set_capability_mode (ut->dlna, DLNA_CAPABILITY_DLNA);
   }
-  else
+  else if (ut->xbox360)
   {
-#endif /* HAVE_DLNA */ 
-  len = strlen (UPNP_DESCRIPTION) + strlen (ut->name)
-    + strlen (ut->model_name) + strlen (ut->udn) + 1;
-  description = (char *) malloc (len * sizeof (char));
-  memset (description, 0, len);
-  sprintf (description, UPNP_DESCRIPTION, ut->name, ut->model_name, ut->udn);
-#ifdef HAVE_DLNA
+    log_info (_("Starting in XboX 360 compliant profile ...\n"));
+    dlna_set_capability_mode (ut->dlna, DLNA_CAPABILITY_UPNP_AV_XBOX);
   }
-#endif /* HAVE_DLNA */
 
+  dlna_set_interface (ut->dlna, ut->interface);
+  dlna_set_port (ut->dlna, ut->port);
+  
   log_info (_("Initializing UPnP subsystem ...\n"));
-  res = UpnpInit (ut->ip, ut->port);
-  if (res != UPNP_E_SUCCESS)
+  res = dlna_dms_init (ut->dlna);
+  if (res != DLNA_ST_OK)
   {
     log_error (_("Cannot initialize UPnP subsystem\n"));
     return -1;
   }
 
-  if (UpnpSetMaxContentLength (UPNP_MAX_CONTENT_LENGTH) != UPNP_E_SUCCESS)
-    log_info (_("Could not set Max content UPnP\n"));
-
-  if (ut->xbox360)
-    log_info (_("Starting in XboX 360 compliant profile ...\n"));
-
-#ifdef HAVE_DLNA
-  if (ut->dlna_enabled)
-  {
-    log_info (_("Starting in DLNA compliant profile ...\n"));
-    ut->dlna = dlna_init ();
-    dlna_set_verbosity (ut->dlna, ut->verbose ? 1 : 0);
-    dlna_set_extension_check (ut->dlna, 1);
-    dlna_register_all_media_profiles (ut->dlna);
-  }
-#endif /* HAVE_DLNA */
-  
-  ut->port = UpnpGetServerPort();
-  log_info (_("UPnP MediaServer listening on %s:%d\n"),
-            UpnpGetServerIpAddress (), ut->port);
-
-  UpnpEnableWebserver (TRUE);
-
-  res = UpnpSetVirtualDirCallbacks (&virtual_dir_callbacks);
-  if (res != UPNP_E_SUCCESS)
-  {
-    log_error (_("Cannot set virtual directory callbacks\n"));
-    free (description);
-    return -1;
-  }
-
-  res = UpnpAddVirtualDir (VIRTUAL_DIR);
-  if (res != UPNP_E_SUCCESS)
-  {
-    log_error (_("Cannot add virtual directory for web server\n"));
-    free (description);
-    return -1;
-  }
-
-  res = UpnpRegisterRootDevice2 (UPNPREG_BUF_DESC, description, 0, 1,
-                                 device_callback_event_handler,
-                                 NULL, &(ut->dev));
-  if (res != UPNP_E_SUCCESS)
-  {
-    log_error (_("Cannot register UPnP device\n"));
-    free (description);
-    return -1;
-  }
-
-  res = UpnpUnRegisterRootDevice (ut->dev);
-  if (res != UPNP_E_SUCCESS)
-  {
-    log_error (_("Cannot unregister UPnP device\n"));
-    free (description);
-    return -1;
-  }
-
-  res = UpnpRegisterRootDevice2 (UPNPREG_BUF_DESC, description, 0, 1,
-                                 device_callback_event_handler,
-                                 NULL, &(ut->dev));
-  if (res != UPNP_E_SUCCESS)
-  {
-    log_error (_("Cannot register UPnP device\n"));
-    free (description);
-    return -1;
-  }
-
-  log_info (_("Sending UPnP advertisement for device ...\n"));
-  UpnpSendAdvertisement (ut->dev, 1800);
+  dlna_set_http_callback (ut->dlna, &ushare_http_callbacks);
 
   log_info (_("Listening for control point connections ...\n"));
 
 #ifdef HAVE_FAM
   ufam_start (ut);
 #endif /* HAVE_FAM */
-
-  if (description)
-    free (description);
 
   return 0;
 }
@@ -596,46 +418,6 @@ create_udn (char *interface)
   return buf;
 }
 
-static char *
-get_iface_address (char *interface)
-{
-  int sock;
-  uint32_t ip;
-  struct ifreq ifr;
-  char *val;
-
-  if (!interface)
-    return NULL;
-
-  /* determine UDN according to MAC address */
-  sock = socket (AF_INET, SOCK_STREAM, 0);
-  if (sock < 0)
-  {
-    perror ("socket");
-    return NULL;
-  }
-
-  strcpy (ifr.ifr_name, interface);
-  ifr.ifr_addr.sa_family = AF_INET;
-
-  if (ioctl (sock, SIOCGIFADDR, &ifr) < 0)
-  {
-    perror ("ioctl");
-    close (sock);
-    return NULL;
-  }
-
-  val = (char *) malloc (16 * sizeof (char));
-  ip = ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr;
-  ip = ntohl (ip);
-  sprintf (val, "%d.%d.%d.%d",
-           (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
-
-  close (sock);
-
-  return val;
-}
-
 static int
 restart_upnp (struct ushare_t *ut)
 {
@@ -645,12 +427,6 @@ restart_upnp (struct ushare_t *ut)
     free (ut->udn);
   ut->udn = create_udn (ut->interface);
   if (!ut->udn)
-    return -1;
-
-  if (ut->ip)
-    free (ut->ip);
-  ut->ip = get_iface_address (ut->interface);
-  if (!ut->ip)
     return -1;
 
   return (init_upnp (ut));
@@ -830,13 +606,6 @@ main (int argc, char **argv)
 
   ut->udn = create_udn (ut->interface);
   if (!ut->udn)
-  {
-    ushare_free (ut);
-    return EXIT_FAILURE;
-  }
-
-  ut->ip = get_iface_address (ut->interface);
-  if (!ut->ip)
   {
     ushare_free (ut);
     return EXIT_FAILURE;

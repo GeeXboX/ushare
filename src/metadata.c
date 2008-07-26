@@ -27,9 +27,6 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-#include <upnp/upnp.h>
-#include <upnp/upnptools.h>
-
 #include "mime.h"
 #include "metadata.h"
 #include "util_iconv.h"

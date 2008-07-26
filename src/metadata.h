@@ -21,13 +21,10 @@
 #ifndef _METADATA_H_
 #define _METADATA_H_
 
-#include <upnp/upnp.h>
-#include <upnp/upnptools.h>
 #include <stdbool.h>
 #include <sys/types.h>
 
 #include "ushare.h"
-#include "http.h"
 #include "content.h"
 
 struct upnp_entry_t {
