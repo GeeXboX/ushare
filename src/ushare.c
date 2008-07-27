@@ -184,11 +184,18 @@ init_upnp (struct ushare_t *ut)
 {
   int res;
   extern dlna_http_callback_t ushare_http_callbacks;
+  dlna_org_flags_t flags;
   
   if (!ut || !ut->name || !ut->udn)
     return -1;
 
+  flags = DLNA_ORG_FLAG_STREAMING_TRANSFER_MODE |
+          DLNA_ORG_FLAG_BACKGROUND_TRANSFERT_MODE |
+          DLNA_ORG_FLAG_CONNECTION_STALL |
+          DLNA_ORG_FLAG_DLNA_V15;
+  
   ut->dlna = dlna_init ();
+  dlna_set_org_flags (ut->dlna, flags);
   dlna_set_verbosity (ut->dlna, ut->verbose ? 1 : 0);
   dlna_set_extension_check (ut->dlna, 0);
   dlna_register_all_media_profiles (ut->dlna);
