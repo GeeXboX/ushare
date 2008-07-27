@@ -87,9 +87,6 @@ ushare_new (void)
   ut->interface = strdup (DEFAULT_USHARE_IFACE);
   ut->model_name = strdup (DEFAULT_USHARE_NAME);
   ut->contentlist = NULL;
-  ut->rb = rbinit (rb_compare, NULL);
-  ut->root_entry = NULL;
-  ut->nr_entries = 0;
   ut->init = 0;
   ut->udn = NULL;
   ut->port = 0; /* Randomly attributed by libupnp */
@@ -131,10 +128,6 @@ ushare_free (struct ushare_t *ut)
     free (ut->model_name);
   if (ut->contentlist)
     content_free (ut->contentlist);
-  if (ut->rb)
-    rbdestroy (ut->rb);
-  if (ut->root_entry)
-    upnp_entry_free (ut, ut->root_entry);
   if (ut->udn)
     free (ut->udn);
   if (ut->presentation)
@@ -636,14 +629,13 @@ main (int argc, char **argv)
   build_metadata_list (ut);
 
   /* Let main sleep until it's time to die... */
-  pthread_mutex_lock (&ut->termination_mutex);
-  pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
-  pthread_mutex_unlock (&ut->termination_mutex);
+  //pthread_mutex_lock (&ut->termination_mutex);
+  //pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
+  //pthread_mutex_unlock (&ut->termination_mutex);
 
   if (ut->use_telnet)
     ctrl_telnet_stop ();
   finish_upnp (ut);
-  free_metadata_list (ut);
   ushare_free (ut);
   finish_iconv ();
 
