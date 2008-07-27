@@ -194,12 +194,12 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   if (ut->caps == DLNA_CAPABILITY_UPNP_AV_XBOX)
   {
     if (ut->root_entry)
-      entry->id = ut->starting_id + ut->nr_entries++;
+      entry->id = ut->nr_entries++;
     else
       entry->id = 0; /* Creating the root node so don't use the usual IDs */
   }
   else
-    entry->id = ut->starting_id + ut->nr_entries++;
+    entry->id = ut->nr_entries++;
   
   entry->fullpath = fullpath ? strdup (fullpath) : NULL;
   entry->parent = parent;

@@ -37,9 +37,6 @@
 
 #define UPNP_MAX_CONTENT_LENGTH 4096
 
-#define STARTING_ENTRY_ID_DEFAULT 0
-#define STARTING_ENTRY_ID_XBOX360 100000
-
 struct ushare_t {
   char *name;
   char *interface;
@@ -48,7 +45,6 @@ struct ushare_t {
   struct rbtree *rb;
   struct upnp_entry_t *root_entry;
   int nr_entries;
-  int starting_id;
   int init;
   char *udn;
   unsigned short port;

@@ -90,7 +90,6 @@ ushare_new (void)
   ut->rb = rbinit (rb_compare, NULL);
   ut->root_entry = NULL;
   ut->nr_entries = 0;
-  ut->starting_id = STARTING_ENTRY_ID_DEFAULT;
   ut->init = 0;
   ut->udn = NULL;
   ut->port = 0; /* Randomly attributed by libupnp */
@@ -571,8 +570,6 @@ main (int argc, char **argv)
     free (ut->model_name);
     ut->model_name = strdup (name);
     free (name);
-
-    ut->starting_id = STARTING_ENTRY_ID_XBOX360;
   }
 
   if (ut->daemon)
