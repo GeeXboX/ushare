@@ -533,6 +533,56 @@ free_metadata_list (struct ushare_t *ut)
     log_error (_("Cannot create RB tree for lookups\n"));
 }
 
+static void
+add_container (dlna_t *dlna, char *dir, uint32_t id)
+{
+  struct dirent **namelist;
+  int n, i;
+
+  n = scandir (dir, &namelist, 0, alphasort);
+  if (n < 0)
+  {
+    perror ("scandir");
+    return;
+  }
+
+  for (i = 0; i < n; i++)
+  {
+    struct stat st;
+    char *fullpath = NULL;
+
+    if (namelist[i]->d_name[0] == '.')
+    {
+      free (namelist[i]);
+      continue;
+    }
+
+    fullpath = malloc (strlen (dir) + strlen (namelist[i]->d_name) + 2);
+    sprintf (fullpath, "%s/%s", dir, namelist[i]->d_name);
+
+    if (stat (fullpath, &st) < 0)
+    {
+      free (namelist[i]);
+      free (fullpath);
+      continue;
+    }
+
+    if (S_ISDIR (st.st_mode))
+    {
+      uint32_t cid;
+      cid = dlna_vfs_add_container (dlna, basename (fullpath), 0, id);
+      add_container (dlna, fullpath, cid);
+    }
+    else
+      dlna_vfs_add_resource (dlna, basename (fullpath),
+                             fullpath, st.st_size, id);
+    
+    free (namelist[i]);
+    free (fullpath);
+  }
+  free (namelist);
+}
+
 void
 build_metadata_list (struct ushare_t *ut)
 {
@@ -553,6 +603,10 @@ build_metadata_list (struct ushare_t *ut)
     log_info (_("Looking for files in content directory : %s\n"),
               ut->contentlist->content[i]);
 
+    printf ("**** Sharing new directory : %s *****\n",
+            ut->contentlist->content[i]);
+    add_container (ut->dlna, ut->contentlist->content[i], 0);
+    
     size = strlen (ut->contentlist->content[i]);
     if (ut->contentlist->content[i][size - 1] == '/')
       ut->contentlist->content[i][size - 1] = '\0';
