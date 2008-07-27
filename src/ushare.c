@@ -98,13 +98,12 @@ ushare_new (void)
   ut->presentation = NULL;
   ut->use_presentation = true;
   ut->use_telnet = true;
-  ut->dlna_enabled = false;
   ut->dlna = NULL;
   ut->dlna_flags = DLNA_ORG_FLAG_STREAMING_TRANSFER_MODE |
                    DLNA_ORG_FLAG_BACKGROUND_TRANSFERT_MODE |
                    DLNA_ORG_FLAG_CONNECTION_STALL |
                    DLNA_ORG_FLAG_DLNA_V15;
-  ut->xbox360 = false;
+  ut->caps = DLNA_CAPABILITY_UPNP_AV;
   ut->verbose = false;
   ut->daemon = false;
   ut->override_iconv_err = false;
@@ -141,12 +140,9 @@ ushare_free (struct ushare_t *ut)
     free (ut->udn);
   if (ut->presentation)
     buffer_free (ut->presentation);
-  if (ut->dlna_enabled)
-  {
-    if (ut->dlna)
-      dlna_uninit (ut->dlna);
-    ut->dlna = NULL;
-  }
+  if (ut->dlna)
+    dlna_uninit (ut->dlna);
+  ut->dlna = NULL;
   if (ut->cfg_file)
     free (ut->cfg_file);
 
@@ -209,17 +205,11 @@ init_upnp (struct ushare_t *ut)
   dlna_set_device_uuid (ut->dlna, ut->udn);
   dlna_set_device_presentation_url (ut->dlna, "ushare.html");
 
-  dlna_set_capability_mode (ut->dlna, DLNA_CAPABILITY_UPNP_AV);
-  if (ut->dlna_enabled)
-  {
+  dlna_set_capability_mode (ut->dlna, ut->caps);
+  if (ut->caps == DLNA_CAPABILITY_DLNA)
     log_info (_("Starting in DLNA compliant profile ...\n"));
-    dlna_set_capability_mode (ut->dlna, DLNA_CAPABILITY_DLNA);
-  }
-  else if (ut->xbox360)
-  {
+  if (ut->caps == DLNA_CAPABILITY_UPNP_AV_XBOX)
     log_info (_("Starting in XboX 360 compliant profile ...\n"));
-    dlna_set_capability_mode (ut->dlna, DLNA_CAPABILITY_UPNP_AV_XBOX);
-  }
 
   dlna_set_interface (ut->dlna, ut->interface);
   dlna_set_port (ut->dlna, ut->port);
@@ -572,7 +562,7 @@ main (int argc, char **argv)
              ut->cfg_file ? ut->cfg_file : SYSCONFDIR "/" USHARE_CONFIG_FILE);
   }
 
-  if (ut->xbox360)
+  if (ut->caps == DLNA_CAPABILITY_UPNP_AV_XBOX)
   {
     char *name;
 

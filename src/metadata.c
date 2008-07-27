@@ -193,7 +193,7 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   }
 #endif /* HAVE_DLNA */
  
-  if (ut->xbox360)
+  if (ut->caps == DLNA_CAPABILITY_UPNP_AV_XBOX)
   {
     if (ut->root_entry)
       entry->id = ut->starting_id + ut->nr_entries++;

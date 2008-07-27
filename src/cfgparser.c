@@ -204,7 +204,8 @@ ushare_use_xbox (struct ushare_t *ut, const char *val)
   if (!ut || !val)
     return;
 
-  ut->xbox360 = (!strcmp (val, "yes")) ? true : false;
+  ut->caps = (!strcmp (val, "yes")) ?
+    DLNA_CAPABILITY_UPNP_AV_XBOX : DLNA_CAPABILITY_UPNP_AV;
 }
 
 static void
@@ -213,9 +214,8 @@ ushare_use_dlna (struct ushare_t *ut, const char *val)
   if (!ut || !val)
     return;
 
-#ifdef HAVE_DLNA
-  ut->dlna_enabled = (!strcmp (val, "yes")) ? true : false;
-#endif /* HAVE_DLNA */
+  ut->caps = (!strcmp (val, "yes")) ?
+    DLNA_CAPABILITY_DLNA : DLNA_CAPABILITY_UPNP_AV;
 }
 
 static void
@@ -428,14 +428,12 @@ parse_command_line (struct ushare_t *ut, int argc, char **argv)
       break;
 
     case 'x':
-      ut->xbox360 = true;
+      ut->caps = DLNA_CAPABILITY_UPNP_AV_XBOX;
       break;
 
-#ifdef HAVE_DLNA
     case 'd':
-      ut->dlna_enabled = true;
+      ut->caps = DLNA_CAPABILITY_DLNA;
       break;
-#endif /* HAVE_DLNA */
       
     case 'f':
       ushare_set_cfg_file (ut, optarg);

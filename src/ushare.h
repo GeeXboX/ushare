@@ -56,10 +56,9 @@ struct ushare_t {
   struct buffer_t *presentation;
   bool use_presentation;
   bool use_telnet;
-  bool dlna_enabled;
   dlna_t *dlna;
   dlna_org_flags_t dlna_flags;
-  bool xbox360;
+  dlna_capability_mode_t caps;
   bool verbose;
   bool daemon;
   bool override_iconv_err;
