@@ -30,7 +30,7 @@
 #include "ushare.h"
 #include "metadata.h"
 
-struct ufam_t {
+typedef struct ufam_s {
   FAMConnection fc;
 
   pthread_t thread;
@@ -38,22 +38,22 @@ struct ufam_t {
   pthread_cond_t stop_cond;
   pthread_mutex_t add_monitor_lock;
   bool stop;
-};
+} ufam_t;
 
-struct ufam_entry_t {
-  struct ufam_t *ufam;
+typdef struct ufam_entry_s {
+  ufam_t *ufam;
   struct upnp_entry_t *entry;
   FAMRequest fr;
-};
+} ufam_entry_t;
 
-struct ufam_t *ufam_init (void);
-void ufam_free (struct ufam_t *ufam);
+ufam_t *ufam_init (void);
+void ufam_free (ufam_t *ufam);
 
-void ufam_start (struct ushare_t *ut);
-void ufam_stop (struct ufam_t *ufam);
+void ufam_start (ushare_t *ut);
+void ufam_stop (ufam_t *ufam);
 
-struct ufam_entry_t *ufam_add_monitor (struct ufam_t *ufam, struct upnp_entry_t *entry);
-void ufam_remove_monitor (struct ufam_entry_t *ufam_entry);
+ufam_entry_t *ufam_add_monitor (ufam_t *ufam, struct upnp_entry_t *entry);
+void ufam_remove_monitor (ufam_entry_t *ufam_entry);
 
 #endif /* HAVE_FAM */
 

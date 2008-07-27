@@ -39,12 +39,12 @@
 /*
  * ufam_entry_new : return a malloc'd ufam_entry_t struct
  */
-struct ufam_entry_t *
-ufam_entry_new (struct ufam_t *ufam, struct upnp_entry_t *entry)
+ufam_entry_t *
+ufam_entry_new (ufam_t *ufam, struct upnp_entry_t *entry)
 {
-  struct ufam_entry_t *ufam_entry = NULL;
+  ufam_entry_t *ufam_entry = NULL;
 
-  ufam_entry = (struct ufam_entry_t *) malloc (sizeof (struct ufam_entry_t));
+  ufam_entry = malloc (sizeof (ufam_entry_t));
   if (!ufam_entry)
     return NULL;
 
@@ -58,7 +58,7 @@ ufam_entry_new (struct ufam_t *ufam, struct upnp_entry_t *entry)
  * ufam_entry_free: destroy ufam_entry
  */
 void
-ufam_entry_free (struct ufam_entry_t *ufam_entry)
+ufam_entry_free (ufam_entry_t *ufam_entry)
 {
   if (!ufam_entry)
     return;
@@ -77,7 +77,7 @@ ufam_thread (void *arg)
   int rc;
   FAMEvent fe;
   struct upnp_entry_t *entry;
-  struct ushare_t *ut = (struct ushare_t*) arg;
+  ushare_t *ut = (ushare_t *) arg;
 
   while (true)
   {
@@ -126,12 +126,12 @@ ufam_thread (void *arg)
 /*
  * ufam_init: initialize a new FAM instance
  */
-struct ufam_t *
+ufam_t *
 ufam_init (void)
 {
-  struct ufam_t *ufam = NULL;
+  ufam_t *ufam = NULL;
 
-  ufam = (struct ufam_t *) malloc (sizeof (struct ufam_t));
+  ufam = malloc (sizeof (ufam_t));
   if (!ufam)
     return NULL;
 
@@ -158,7 +158,7 @@ ufam_init (void)
  * ufam_start: start the FAM instance - launch the new thread
  */
 void
-ufam_start (struct ushare_t *ut)
+ufam_start (ushare_t *ut)
 {
 
   pthread_mutex_lock (&ut->ufam->startstop_lock);
@@ -177,7 +177,7 @@ ufam_start (struct ushare_t *ut)
  * ufam_stop: stop the FAM instance and wait thread to finish
  */
 void
-ufam_stop (struct ufam_t *ufam)
+ufam_stop (ufam_t *ufam)
 {
   if (!ufam)
     return;
@@ -195,7 +195,7 @@ ufam_stop (struct ufam_t *ufam)
  * ufam_free: free and close the FAM instance
  */
 void
-ufam_free (struct ufam_t *ufam)
+ufam_free (ufam_t *ufam)
 {
   if (!ufam)
     return;
@@ -216,10 +216,10 @@ ufam_free (struct ufam_t *ufam)
  *  note: should only be a Directory to monitor
  * TODO: check that entry is a directory
  */
-struct ufam_entry_t *
-ufam_add_monitor(struct ufam_t *ufam, struct upnp_entry_t *entry)
+ufam_entry_t *
+ufam_add_monitor (ufam_t *ufam, struct upnp_entry_t *entry)
 {
-  struct ufam_entry_t *ufam_entry = NULL;
+  ufam_entry_t *ufam_entry = NULL;
 
   if (!entry->fullpath)
     return NULL;
@@ -244,7 +244,7 @@ ufam_add_monitor(struct ufam_t *ufam, struct upnp_entry_t *entry)
  * ufam_remove_monitor: remove this entry from the FAM instance
  */
 void
-ufam_remove_monitor (struct ufam_entry_t *ufam_entry)
+ufam_remove_monitor (ufam_entry_t *ufam_entry)
 {
   if (!ufam_entry)
     return;

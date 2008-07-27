@@ -39,12 +39,12 @@
 #define PROTOCOL_TYPE_PRE_SZ  11   /* for the str length of "http-get:*:" */
 #define PROTOCOL_TYPE_SUFF_SZ 2    /* for the str length of ":*" */
 
-struct web_file_t {
+typedef struct web_file_s {
   char *fullpath;
   off_t pos;
   char *contents;
   off_t len;
-};
+} web_file_t;
 
 static inline void
 set_info_file (dlna_http_file_info_t *info,
@@ -57,7 +57,7 @@ set_info_file (dlna_http_file_info_t *info,
 static int
 http_get_info (const char *filename, dlna_http_file_info_t *info)
 {
-  extern struct ushare_t *ut;
+  extern ushare_t *ut;
   
   if (!filename || !info)
     return 1;
@@ -89,9 +89,9 @@ static dlna_http_file_handler_t
 get_file_memory (const char *fullpath, const char *description,
                  const size_t length)
 {
-  struct web_file_t *file;
+  web_file_t *file;
 
-  file = malloc (sizeof (struct web_file_t));
+  file = malloc (sizeof (web_file_t));
   file->fullpath = strdup (fullpath);
   file->pos = 0;
   file->contents = strdup (description);
@@ -103,7 +103,7 @@ get_file_memory (const char *fullpath, const char *description,
 static dlna_http_file_handler_t
 http_open (const char *filename)
 {
-  extern struct ushare_t *ut;
+  extern ushare_t *ut;
 
   if (!filename)
     return NULL;
@@ -121,7 +121,7 @@ http_open (const char *filename)
 static int
 http_read (dlna_http_file_handler_t hdl, char *buf, size_t buflen)
 {
-  struct web_file_t *file = (struct web_file_t *) hdl;
+  web_file_t *file = (web_file_t *) hdl;
   ssize_t len = -1;
 
   log_verbose ("http_read\n");
@@ -143,7 +143,7 @@ http_read (dlna_http_file_handler_t hdl, char *buf, size_t buflen)
 static int
 http_seek (dlna_http_file_handler_t hdl, off_t offset, int origin)
 {
-  struct web_file_t *file = (struct web_file_t *) hdl;
+  web_file_t *file = (web_file_t *) hdl;
   off_t newpos = -1;
 
   log_verbose ("http_seek\n");
@@ -185,7 +185,7 @@ http_seek (dlna_http_file_handler_t hdl, off_t offset, int origin)
 static int
 http_close (dlna_http_file_handler_t hdl)
 {
-  struct web_file_t *file = (struct web_file_t *) hdl;
+  web_file_t *file = (web_file_t *) hdl;
 
   log_verbose ("http_close\n");
 

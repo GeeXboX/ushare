@@ -78,7 +78,7 @@ strdup_trim (const char *s)
 }
 
 static void
-ushare_set_name (struct ushare_t *ut, const char *name)
+ushare_set_name (ushare_t *ut, const char *name)
 {
   if (!ut || !name)
     return;
@@ -93,7 +93,7 @@ ushare_set_name (struct ushare_t *ut, const char *name)
 }
 
 static void
-ushare_set_interface (struct ushare_t *ut, const char *iface)
+ushare_set_interface (ushare_t *ut, const char *iface)
 {
   if (!ut || !iface)
     return;
@@ -108,7 +108,7 @@ ushare_set_interface (struct ushare_t *ut, const char *iface)
 }
 
 static void
-ushare_add_contentdir (struct ushare_t *ut, const char *dir)
+ushare_add_contentdir (ushare_t *ut, const char *dir)
 {
   if (!ut || !dir)
     return;
@@ -117,7 +117,7 @@ ushare_add_contentdir (struct ushare_t *ut, const char *dir)
 }
 
 static void
-ushare_set_cfg_file (struct ushare_t *ut, const char *file)
+ushare_set_cfg_file (ushare_t *ut, const char *file)
 {
   if (!ut || !file)
     return;
@@ -126,7 +126,7 @@ ushare_set_cfg_file (struct ushare_t *ut, const char *file)
 }
 
 static void
-ushare_set_dir (struct ushare_t *ut, const char *dirlist)
+ushare_set_dir (ushare_t *ut, const char *dirlist)
 {
   char *x = NULL, *token = NULL;
   char *m_buffer = NULL, *buffer;
@@ -154,7 +154,7 @@ ushare_set_dir (struct ushare_t *ut, const char *dirlist)
 }
 
 static void
-ushare_set_port (struct ushare_t *ut, const char *port)
+ushare_set_port (ushare_t *ut, const char *port)
 {
   if (!ut || !port)
     return;
@@ -172,7 +172,7 @@ ushare_set_port (struct ushare_t *ut, const char *port)
 }
 
 static void
-ushare_set_telnet_port (struct ushare_t *ut, const char *port)
+ushare_set_telnet_port (ushare_t *ut, const char *port)
 {
   if (!ut || !port)
     return;
@@ -181,7 +181,7 @@ ushare_set_telnet_port (struct ushare_t *ut, const char *port)
 }
 
 static void
-ushare_use_web (struct ushare_t *ut, const char *val)
+ushare_use_web (ushare_t *ut, const char *val)
 {
   if (!ut || !val)
     return;
@@ -190,7 +190,7 @@ ushare_use_web (struct ushare_t *ut, const char *val)
 }
 
 static void
-ushare_use_telnet (struct ushare_t *ut, const char *val)
+ushare_use_telnet (ushare_t *ut, const char *val)
 {
   if (!ut || !val)
     return;
@@ -199,7 +199,7 @@ ushare_use_telnet (struct ushare_t *ut, const char *val)
 }
 
 static void
-ushare_use_xbox (struct ushare_t *ut, const char *val)
+ushare_use_xbox (ushare_t *ut, const char *val)
 {
   if (!ut || !val)
     return;
@@ -209,7 +209,7 @@ ushare_use_xbox (struct ushare_t *ut, const char *val)
 }
 
 static void
-ushare_use_dlna (struct ushare_t *ut, const char *val)
+ushare_use_dlna (ushare_t *ut, const char *val)
 {
   if (!ut || !val)
     return;
@@ -219,7 +219,7 @@ ushare_use_dlna (struct ushare_t *ut, const char *val)
 }
 
 static void
-ushare_set_override_iconv_err (struct ushare_t *ut, const char *arg)
+ushare_set_override_iconv_err (ushare_t *ut, const char *arg)
 {
   if (!ut)
     return;
@@ -247,7 +247,7 @@ static u_configline_t configline[] = {
 };
 
 static void
-parse_config_line (struct ushare_t *ut, const char *line,
+parse_config_line (ushare_t *ut, const char *line,
                    u_configline_t *configline)
 {
   char *s = NULL;
@@ -268,7 +268,7 @@ parse_config_line (struct ushare_t *ut, const char *line,
 }
 
 int
-parse_config_file (struct ushare_t *ut)
+parse_config_file (ushare_t *ut)
 {
   char filename[PATH_MAX];
   FILE *conffile;
@@ -337,7 +337,7 @@ display_usage (void)
 }
 
 int
-parse_command_line (struct ushare_t *ut, int argc, char **argv)
+parse_command_line (ushare_t *ut, int argc, char **argv)
 {
   int c, index;
   char short_options[] = "VhvDowtxdn:i:p:q:c:f:";

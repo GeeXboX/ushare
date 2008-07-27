@@ -35,16 +35,16 @@
 
 #define UPNP_MAX_CONTENT_LENGTH 4096
 
-struct ushare_t {
+typedef struct ushare_s {
   char *name;
   char *interface;
   char *model_name;
-  content_list *contentlist;
+  content_list_t *contentlist;
   int init;
   char *udn;
   unsigned short port;
   unsigned short telnet_port;
-  struct buffer_t *presentation;
+  buffer_t *presentation;
   bool use_presentation;
   bool use_telnet;
   dlna_t *dlna;
@@ -57,15 +57,9 @@ struct ushare_t {
   pthread_mutex_t termination_mutex;
   pthread_cond_t termination_cond;
 #ifdef HAVE_FAM
-  struct ufam_t *ufam;
+  ufam_t *ufam;
 #endif /* HAVE_FAM */
-};
-
-struct action_event_t {
-  struct Upnp_Action_Request *request;
-  bool status;
-  struct service_t *service;
-};
+} ushare_t;
 
 inline void display_headers (void);
 

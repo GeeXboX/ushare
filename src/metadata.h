@@ -24,7 +24,7 @@
 #include "ushare.h"
 #include "content.h"
 
-void free_metadata_list (struct ushare_t *ut);
-void build_metadata_list (struct ushare_t *ut);
+void free_metadata_list (ushare_t *ut);
+void build_metadata_list (ushare_t *ut);
 
 #endif /* _METADATA_H_ */

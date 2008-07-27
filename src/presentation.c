@@ -42,7 +42,7 @@
 #define CGI_SHARE "share"
 
 int
-process_cgi (struct ushare_t *ut, char *cgiargs)
+process_cgi (ushare_t *ut, char *cgiargs)
 {
   char *action = NULL;
   int refresh = 0;
@@ -121,7 +121,7 @@ process_cgi (struct ushare_t *ut, char *cgiargs)
 }
 
 int
-build_presentation_page (struct ushare_t *ut)
+build_presentation_page (ushare_t *ut)
 {
   int i;
   char *mycodeset = NULL;

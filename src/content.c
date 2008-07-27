@@ -24,19 +24,19 @@
 
 #include "content.h"
 
-content_list *
-content_add(content_list *list, const char *item)
+content_list_t *
+content_add (content_list_t *list, const char *item)
 {
   if (!list)
   {
-    list = (content_list*) malloc (sizeof(content_list));
+    list = malloc (sizeof (content_list_t));
     list->content = NULL;
     list->count = 0;
   }
   if (item)
   {
     list->count++;
-    list->content = (char**) realloc (list->content, list->count * sizeof(char*));
+    list->content = realloc (list->content, list->count * sizeof (char *));
     if (!list->content)
     {
       perror ("error realloc");
@@ -50,8 +50,8 @@ content_add(content_list *list, const char *item)
 /*
  * Remove the n'th content (start from 0)
  */
-content_list *
-content_del(content_list *list, int n)
+content_list_t *
+content_del (content_list_t *list, int n)
 {
   int i;
 
@@ -74,7 +74,7 @@ content_del(content_list *list, int n)
 }
 
 void
-content_free(content_list *list)
+content_free (content_list_t *list)
 {
   int i;
   if (!list)

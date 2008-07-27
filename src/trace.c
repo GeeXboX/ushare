@@ -27,7 +27,7 @@
 #include "trace.h"
 #include "ushare.h"
 
-extern struct ushare_t *ut;
+extern ushare_t *ut;
 
 void
 print_log (log_level level, const char *format, ...)

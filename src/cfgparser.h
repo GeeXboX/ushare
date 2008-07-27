@@ -43,14 +43,14 @@
 #define DEFAULT_USHARE_IFACE      "eth0"
 #endif
 
-int parse_config_file (struct ushare_t *ut)
+int parse_config_file (ushare_t *ut)
     __attribute__ ((nonnull));
-int parse_command_line (struct ushare_t *ut, int argc, char **argv)
+int parse_command_line (ushare_t *ut, int argc, char **argv)
     __attribute__ ((nonnull (1)));
 
 typedef struct {
   char *name;
-  void (*set_var) (struct ushare_t*, const char*);
+  void (*set_var) (ushare_t*, const char*);
 } u_configline_t;
 
 #endif /* _CONFIG_PARSER_H_ */

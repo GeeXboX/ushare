@@ -31,7 +31,7 @@
  * @brief Structure doubling as both a connected client data holder
  *        and as a linked list
  */
-typedef struct ctrl_telnet_client_t
+typedef struct ctrl_telnet_client_s
 {
   /* Recv buffer used to read single lines from more then one packet ...
      Not garanteed to be NULL terminated */
@@ -42,10 +42,10 @@ typedef struct ctrl_telnet_client_t
   int ready; /* True if this client has a complete line, ready to be parsed */
   int exiting;
   struct sockaddr_in remote_address;
-  struct ctrl_telnet_client_t* next;
-} ctrl_telnet_client;
+  struct ctrl_telnet_client_s* next;
+} ctrl_telnet_client_t;
 
-typedef void (* ctrl_telnet_command_ptr) (ctrl_telnet_client *, int, char **);
+typedef void (* ctrl_telnet_command_ptr) (ctrl_telnet_client_t *, int, char **);
 
 /**
  * @brief Starts a Telnet bound control interface
@@ -65,10 +65,10 @@ void ctrl_telnet_register (const char *funcname,
                            ctrl_telnet_command_ptr funcptr,
                            const char* description);
 
-int ctrl_telnet_client_send (const ctrl_telnet_client *, const char* string);
-int ctrl_telnet_client_sendf (const ctrl_telnet_client *client,
+int ctrl_telnet_client_send (const ctrl_telnet_client_t *, const char* string);
+int ctrl_telnet_client_sendf (const ctrl_telnet_client_t *client,
                               const char* format, ...);
-int ctrl_telnet_client_sendsf (const ctrl_telnet_client *client,
+int ctrl_telnet_client_sendsf (const ctrl_telnet_client_t *client,
                                char* buffer, int buffersize,
                                const char* format, ...);
 

@@ -89,7 +89,7 @@ add_container (dlna_t *dlna, char *dir, uint32_t id)
 }
 
 void
-build_metadata_list (struct ushare_t *ut)
+build_metadata_list (ushare_t *ut)
 {
   int i;
   
@@ -106,7 +106,7 @@ build_metadata_list (struct ushare_t *ut)
 }
 
 void
-free_metadata_list (struct ushare_t *ut)
+free_metadata_list (ushare_t *ut)
 {
   dlna_vfs_remove_item_by_id (ut->dlna, 0);
 }

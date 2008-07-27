@@ -46,8 +46,7 @@
 /**
  * @brief Structure holding data between the staring rutine and the thread
  */
-typedef struct telnet_thread_data_t
-{
+typedef struct telnet_thread_data_s {
   pthread_t thread;
 
   /* Litening socket */
@@ -63,26 +62,25 @@ typedef struct telnet_thread_data_t
   /* Shared data buffer that can be used by others... */
   char shared_buffer[CTRL_TELNET_SHARED_BUFFER_SIZE];
 
-  ctrl_telnet_client *clients;
-} telnet_thread_data;
+  ctrl_telnet_client_t *clients;
+} telnet_thread_data_t;
 
 /**
  * @brief Struct for registerd commands
  */
-typedef struct telnet_function_list_t
-{
+typedef struct telnet_function_list_s {
   /* Function name, or keyword, if you like */
   char *name;
   char *description;
   ctrl_telnet_command_ptr function;
 
-  struct telnet_function_list_t *next;
-} telnet_function_list;
+  struct telnet_function_list_s *next;
+} telnet_function_list_t;
 
 /* Static yes used to set socketoptions */
 static int yes = 1;
-static telnet_thread_data ttd;
-static telnet_function_list* functions = NULL;
+static telnet_thread_data_t ttd;
+static telnet_function_list_t* functions = NULL;
 static pthread_mutex_t functions_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t startstop_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t shared_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -101,12 +99,12 @@ static void *ctrl_telnet_thread (void *data);
  *
  * @param client to add
  */
-static void ctrl_telnet_client_add (ctrl_telnet_client *client);
+static void ctrl_telnet_client_add (ctrl_telnet_client_t *client);
 
 /**
  * @brief Removes "client" from our list of clients
  */
-static void ctrl_telnet_client_remove (ctrl_telnet_client *client);
+static void ctrl_telnet_client_remove (ctrl_telnet_client_t *client);
 
 /**
  * @brief Updates an fd_set to contain the current set of clients
@@ -117,11 +115,11 @@ static int ctrl_telnet_fix_fdset (fd_set* readable);
 
 static void ctrl_telnet_tokenize (char *raw, int *argc, char ***argv);
 
-static int ctrl_telnet_client_recv (ctrl_telnet_client *client);
-static int ctrl_telnet_client_execute (ctrl_telnet_client *client);
-static int ctrl_telnet_client_execute_line (ctrl_telnet_client *client,
+static int ctrl_telnet_client_recv (ctrl_telnet_client_t *client);
+static int ctrl_telnet_client_execute (ctrl_telnet_client_t *client);
+static int ctrl_telnet_client_execute_line (ctrl_telnet_client_t *client,
                                             char *line);
-static int ctrl_telnet_client_execute_line_safe (ctrl_telnet_client *client,
+static int ctrl_telnet_client_execute_line_safe (ctrl_telnet_client_t *client,
                                                  char *line);
 static void ctrl_telnet_register_internals();
 
@@ -227,7 +225,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
   fd_set fd_readable;
 
   /* Pointer to a client object */
-  ctrl_telnet_client *client;
+  ctrl_telnet_client_t *client;
 
   int fd_max;
 
@@ -259,7 +257,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
       /* Say goodby to clients */
       while (client)
       {
-        ctrl_telnet_client *current = client;
+        ctrl_telnet_client_t *current = client;
         ctrl_telnet_client_send (current,
                                  "\nServer is going down, Bye bye\n");
         client = client->next;
@@ -270,7 +268,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
 
       while (functions)
       {
-        telnet_function_list *head = functions;
+        telnet_function_list_t *head = functions;
         functions = functions->next;
 
         free (head->name);
@@ -291,7 +289,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
       socklen_t sl_addr;
 
       /* Create client object */
-      client = malloc (sizeof (ctrl_telnet_client));
+      client = malloc (sizeof (ctrl_telnet_client_t));
 
       if (!client)
       {
@@ -299,7 +297,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
         return NULL;
       }
 
-      memset (client, '\0', sizeof (ctrl_telnet_client));
+      memset (client, '\0', sizeof (ctrl_telnet_client_t));
       sl_addr = sizeof (client->remote_address);
 
       client->socket = accept (ttd.listener,
@@ -326,7 +324,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
        with FD_ISSET(current->socket) */
     while (client)
     {
-      ctrl_telnet_client *current = client;
+      ctrl_telnet_client_t *current = client;
       client = client->next;
 
       if (FD_ISSET (current->socket, &fd_readable))
@@ -359,7 +357,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
  * @param client to add
  */
 static void
-ctrl_telnet_client_add (ctrl_telnet_client *client)
+ctrl_telnet_client_add (ctrl_telnet_client_t *client)
 {
   client->next = ttd.clients;
   ttd.clients = client;
@@ -373,9 +371,9 @@ ctrl_telnet_client_add (ctrl_telnet_client *client)
  * @param client to remove
  */
 static void
-ctrl_telnet_client_remove (ctrl_telnet_client *client)
+ctrl_telnet_client_remove (ctrl_telnet_client_t *client)
 {
-  ctrl_telnet_client *tmp;
+  ctrl_telnet_client_t *tmp;
 
   /* Start by dealing with our head */
   if (client == ttd.clients)
@@ -408,7 +406,7 @@ static int
 ctrl_telnet_fix_fdset (fd_set *readable)
 {
   int maxfd;
-  ctrl_telnet_client *client;
+  ctrl_telnet_client_t *client;
 
   maxfd = MAX (ttd.killer[0], ttd.listener);
 
@@ -432,7 +430,7 @@ ctrl_telnet_fix_fdset (fd_set *readable)
 }
 
 static int
-ctrl_telnet_client_recv (ctrl_telnet_client *client)
+ctrl_telnet_client_recv (ctrl_telnet_client_t *client)
 {
   int i;
   int nbytes;
@@ -458,7 +456,7 @@ ctrl_telnet_client_recv (ctrl_telnet_client *client)
 }
 
 int
-ctrl_telnet_client_send (const ctrl_telnet_client *client, const char *string)
+ctrl_telnet_client_send (const ctrl_telnet_client_t *client, const char *string)
 {
   const char* cc = string;
   int len = strlen (cc);
@@ -484,7 +482,7 @@ ctrl_telnet_client_send (const ctrl_telnet_client *client, const char *string)
 }
 
 int
-ctrl_telnet_client_sendf (const ctrl_telnet_client *client,
+ctrl_telnet_client_sendf (const ctrl_telnet_client_t *client,
                           const char *format, ...)
 {
   int retval;
@@ -517,7 +515,7 @@ ctrl_telnet_client_sendf (const ctrl_telnet_client *client,
 }
 
 int
-ctrl_telnet_client_sendsf (const ctrl_telnet_client *client,
+ctrl_telnet_client_sendsf (const ctrl_telnet_client_t *client,
                            char *buffer, int buffersize,
                            const char *format, ...)
 {
@@ -540,7 +538,7 @@ ctrl_telnet_client_sendsf (const ctrl_telnet_client *client,
 
 /* FIXME: Ulgy non optimised version */
 static int
-ctrl_telnet_client_execute (ctrl_telnet_client *client)
+ctrl_telnet_client_execute (ctrl_telnet_client_t *client)
 {
   int i = 0;
 
@@ -572,7 +570,7 @@ ctrl_telnet_client_execute (ctrl_telnet_client *client)
 }
 
 static int
-ctrl_telnet_client_execute_line_safe (ctrl_telnet_client *client, char *line)
+ctrl_telnet_client_execute_line_safe (ctrl_telnet_client_t *client, char *line)
 {
   int retval;
 
@@ -584,11 +582,11 @@ ctrl_telnet_client_execute_line_safe (ctrl_telnet_client *client, char *line)
 }
 
 static int
-ctrl_telnet_client_execute_line (ctrl_telnet_client *client, char *line)
+ctrl_telnet_client_execute_line (ctrl_telnet_client_t *client, char *line)
 {
   int argc = 0;
   char **argv = NULL;
-  telnet_function_list *node;
+  telnet_function_list_t *node;
   char *line2 = strdup (line); /* To make it safer */
   ctrl_telnet_tokenize (line2, &argc, &argv);
 
@@ -626,9 +624,9 @@ ctrl_telnet_register (const char *funcname,
                       ctrl_telnet_command_ptr funcptr,
                       const char *description)
 {
-  telnet_function_list *function;
+  telnet_function_list_t *function;
 
-  function = malloc (sizeof (telnet_function_list));
+  function = malloc (sizeof (telnet_function_list_t));
   function->name = strdup (funcname); /* Mayby use strndup...? */
   function->description = description ? strdup (description) : NULL;
   function->function = funcptr;
@@ -783,7 +781,7 @@ ctrl_telnet_tokenize (char *raw, int *argc, char ***argv)
 }
 
 static void
-help (ctrl_telnet_client *client, int argc, char **argv)
+help (ctrl_telnet_client_t *client, int argc, char **argv)
 {
   int hidden = 0;
   ctrl_telnet_client_execute_line (client, "banner");
@@ -803,7 +801,7 @@ help (ctrl_telnet_client *client, int argc, char **argv)
   {
     if (!strcmp ("commands", argv[1]))
     {
-      telnet_function_list *node;
+      telnet_function_list_t *node;
 
       node = functions;
       ctrl_telnet_client_send
@@ -846,7 +844,7 @@ help (ctrl_telnet_client *client, int argc, char **argv)
 }
 
 static void
-banner (ctrl_telnet_client *client,
+banner (ctrl_telnet_client_t *client,
         int argc __attribute__ ((unused)),
         char **argv __attribute__ ((unused)))
 {
@@ -855,7 +853,7 @@ banner (ctrl_telnet_client *client,
 }
 
 static void
-echo (ctrl_telnet_client *client, int argc, char **argv)
+echo (ctrl_telnet_client_t *client, int argc, char **argv)
 {
   int i;
   
@@ -865,7 +863,7 @@ echo (ctrl_telnet_client *client, int argc, char **argv)
 }
 
 static void
-echod (ctrl_telnet_client *client, int argc, char **argv)
+echod (ctrl_telnet_client_t *client, int argc, char **argv)
 {
   int i;
 
@@ -876,7 +874,7 @@ echod (ctrl_telnet_client *client, int argc, char **argv)
 }
 
 static void
-ctrl_telnet_exit (ctrl_telnet_client *client,
+ctrl_telnet_exit (ctrl_telnet_client_t *client,
                   int argc __attribute__ ((unused)),
                   char **argv __attribute__ ((unused)))
 {

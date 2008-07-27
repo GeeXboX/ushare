@@ -21,16 +21,16 @@
 #ifndef _CONTENT_H_
 #define _CONTENT_H_
 
-typedef struct content_list {
+typedef struct content_list_s {
   char **content;
   int count;
-} content_list;
+} content_list_t;
 
-content_list *content_add(content_list *list, const char *item)
+content_list_t *content_add (content_list_t *list, const char *item)
     __attribute__ ((malloc));
-content_list *content_del(content_list *list, int n)
+content_list_t *content_del (content_list_t *list, int n)
     __attribute__ ((nonnull));
-void content_free(content_list *list)
+void content_free (content_list_t *list)
     __attribute__ ((nonnull));
 
 #endif

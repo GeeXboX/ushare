@@ -71,15 +71,12 @@
 #include "ufam.h"
 #endif /* HAVE_FAM */
 
-struct ushare_t *ut = NULL;
+ushare_t *ut = NULL;
 
-static struct ushare_t * ushare_new (void)
-    __attribute__ ((malloc));
-
-static struct ushare_t *
+static ushare_t *
 ushare_new (void)
 {
-  struct ushare_t *ut = (struct ushare_t *) malloc (sizeof (struct ushare_t));
+  ushare_t *ut = malloc (sizeof (ushare_t));
   if (!ut)
     return NULL;
 
@@ -115,7 +112,7 @@ ushare_new (void)
 }
 
 static void
-ushare_free (struct ushare_t *ut)
+ushare_free (ushare_t *ut)
 {
   if (!ut)
     return;
@@ -158,7 +155,7 @@ ushare_signal_exit (void)
 }
 
 static int
-finish_upnp (struct ushare_t *ut)
+finish_upnp (ushare_t *ut)
 {
   if (!ut)
     return -1;
@@ -173,7 +170,7 @@ finish_upnp (struct ushare_t *ut)
 }
 
 static int
-init_upnp (struct ushare_t *ut)
+init_upnp (ushare_t *ut)
 {
   int res;
   //extern dlna_http_callback_t ushare_http_callbacks;
@@ -408,7 +405,7 @@ create_udn (char *interface)
 }
 
 static int
-restart_upnp (struct ushare_t *ut)
+restart_upnp (ushare_t *ut)
 {
   finish_upnp (ut);
 
@@ -430,7 +427,7 @@ UPnPBreak (int s __attribute__ ((unused)))
 static void
 reload_config (int s __attribute__ ((unused)))
 {
-  struct ushare_t *ut2;
+  ushare_t *ut2;
   bool reload = false;
 
   log_info (_("Reloading configuration...\n"));
@@ -525,7 +522,7 @@ setup_i18n(void)
 #define SHUTDOWN_MSG _("Server is shutting down: other clients will be notified soon, Bye bye ...\n")
 
 static void
-ushare_kill (ctrl_telnet_client *client,
+ushare_kill (ctrl_telnet_client_t *client,
              int argc __attribute__((unused)),
              char **argv __attribute__((unused)))
 {
@@ -629,9 +626,9 @@ main (int argc, char **argv)
   build_metadata_list (ut);
 
   /* Let main sleep until it's time to die... */
-  //pthread_mutex_lock (&ut->termination_mutex);
-  //pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
-  //pthread_mutex_unlock (&ut->termination_mutex);
+  pthread_mutex_lock (&ut->termination_mutex);
+  pthread_cond_wait (&ut->termination_cond, &ut->termination_mutex);
+  pthread_mutex_unlock (&ut->termination_mutex);
 
   if (ut->use_telnet)
     ctrl_telnet_stop ();

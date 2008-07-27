@@ -25,7 +25,7 @@
 #define PRESENTATION_PAGE_CONTENT_TYPE "text/html"
 #define USHARE_CGI "/web/ushare.cgi"
 
-int process_cgi (struct ushare_t *ut, char *cgiargs);
-int build_presentation_page (struct ushare_t *ut);
+int process_cgi (ushare_t *ut, char *cgiargs);
+int build_presentation_page (ushare_t *ut);
 
 #endif /* _PRESENTATION_H_ */
