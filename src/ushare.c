@@ -561,17 +561,6 @@ main (int argc, char **argv)
              ut->cfg_file ? ut->cfg_file : SYSCONFDIR "/" USHARE_CONFIG_FILE);
   }
 
-  if (ut->caps == DLNA_CAPABILITY_UPNP_AV_XBOX)
-  {
-    char *name;
-
-    name = malloc (strlen (XBOX_MODEL_NAME) + strlen (ut->model_name) + 4);
-    sprintf (name, "%s (%s)", XBOX_MODEL_NAME, ut->model_name);
-    free (ut->model_name);
-    ut->model_name = strdup (name);
-    free (name);
-  }
-
   if (ut->daemon)
   {
     /* starting syslog feature as soon as possible */
