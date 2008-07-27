@@ -32,6 +32,7 @@ show_help(){
   echo "  --sysconfdir=DIR            configuration files DIR [PREFIX/etc]"
   echo "  --datadir=DIR               arch-independent data DIR [PREFIX/share]"
   echo "  --localedir=DIR             use locales from DIR [DATADIR/locale]"
+  echo "  --mandir=DIR                man documentation DIR [DATADIR/man]"
   echo ""
   echo "Extended options:"
   echo "  --disable-nls               do not use Native Language Support"
@@ -294,6 +295,7 @@ bindir='${PREFIX}/bin'
 sysconfdir='${PREFIX}/etc'
 datadir='${PREFIX}/share'
 localedir='${datadir}/locale'
+mandir='${datadir}/man'
 fam="no"
 nls="yes"
 cc="gcc"
@@ -412,6 +414,8 @@ for opt do
   --datadir=*) datadir="$optval";
   ;;
   --localedir=*) localedir="$optval";
+  ;;
+  --mandir=*) mandir="$optval";
   ;;
   --with-libdlna-dir=*) libdlnadir="$optval";
   ;;
@@ -665,6 +669,7 @@ echolog "  install prefix     $PREFIX"
 echolog "  configuration dir  $sysconfdir"
 echolog "  data dir           $datadir"
 echolog "  locales dir        $localedir"
+echolog "  mans dir           $mandir"
 echolog "  NLS support        $nls"
 echolog "  C compiler         $cc"
 echolog "  STRIP              $strip"

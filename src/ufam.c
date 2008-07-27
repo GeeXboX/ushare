@@ -36,7 +36,7 @@
 #include "ufam.h"
 
 
-/*
+/**
  * ufam_entry_new : return a malloc'd ufam_entry_t struct
  */
 ufam_entry_t *
@@ -54,7 +54,7 @@ ufam_entry_new (ufam_t *ufam, struct upnp_entry_t *entry)
   return ufam_entry;
 }
 
-/*
+/**
  * ufam_entry_free: destroy ufam_entry
  */
 void
@@ -67,7 +67,7 @@ ufam_entry_free (ufam_entry_t *ufam_entry)
 }
 
 
-/*
+/**
  * ufam_thread: new thread to monitor changes in FAM Events
  *  @arg: is a struct ushare_t* var
  */
@@ -123,7 +123,7 @@ ufam_thread (void *arg)
 }
 
 
-/*
+/**
  * ufam_init: initialize a new FAM instance
  */
 ufam_t *
@@ -154,7 +154,7 @@ ufam_init (void)
 }
 
 
-/*
+/**
  * ufam_start: start the FAM instance - launch the new thread
  */
 void
@@ -173,7 +173,7 @@ ufam_start (ushare_t *ut)
   pthread_mutex_unlock (&ut->ufam->startstop_lock);
 }
 
-/*
+/**
  * ufam_stop: stop the FAM instance and wait thread to finish
  */
 void
@@ -191,7 +191,7 @@ ufam_stop (ufam_t *ufam)
   pthread_mutex_unlock (&ufam->startstop_lock);
 }
 
-/*
+/**
  * ufam_free: free and close the FAM instance
  */
 void
@@ -211,7 +211,7 @@ ufam_free (ufam_t *ufam)
 }
 
 
-/*
+/**
  * ufam_add_monitor: add a new monitor for this entry
  *  note: should only be a Directory to monitor
  * TODO: check that entry is a directory
@@ -240,7 +240,7 @@ ufam_add_monitor (ufam_t *ufam, struct upnp_entry_t *entry)
   return ufam_entry;
 }
 
-/*
+/**
  * ufam_remove_monitor: remove this entry from the FAM instance
  */
 void

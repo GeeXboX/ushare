@@ -2,23 +2,27 @@
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/langpack.mk
+include /usr/share/cdbs/1/class/makefile.mk
 
-DEB_INSTALL_DIRS_ushare:=/usr/share/ushare
+DEB_INSTALL_CHANGELOGS_ALL := ChangeLog
+DEB_INSTALL_DIRS_ushare := /usr/share/ushare
+DEB_INSTALL_MANPAGES_ushare := src/ushare.1
+USHARE_INIT := $(CURDIR)/debian/ushare.init
+
+# make targets
+DEB_MAKE_CLEAN_TARGET    := distclean
+DEB_MAKE_BUILD_TARGET    := 
+DEB_MAKE_INSTALL_TARGET  := install DESTDIR=$(DEB_DESTDIR)
+
+# configure options
 DEB_CONFIGURE_NORMAL_ARGS += --enable-debug
 DEB_CONFIGURE_NORMAL_ARGS += --enable-dlna
-DEB_CONFIGURE_PREFIXS += --prefix=/usr
-DEB_CONFIGURE_PREFIXS += --sysconfdir=/etc
+DEB_CONFIGURE_PREFIXS     += --prefix=/usr
+DEB_CONFIGURE_PREFIXS     += --sysconfdir=/etc
 
-USHARE_INIT:=$(CURDIR)/debian/ushare.init
 
 configure/ushare::
-	./configure $(DEB_CONFIGURE_NORMAL_ARGS) $(DEB_CONFIGURE_PREFIXS)
-
-build/ushare::
-	$(MAKE)
-
-install/ushare::
-	$(MAKE) install DESTDIR=$(DEB_DESTDIR)
+	[ -f config.mak ] || ./configure $(DEB_CONFIGURE_NORMAL_ARGS) $(DEB_CONFIGURE_PREFIXS)
 
 # copy init script, to use with dh_installinit
 install/ushare::
@@ -29,15 +33,7 @@ install/ushare::
 
 
 clean::
-	[ ! -f config.mak ] || $(MAKE) distclean
 	debconf-updatepo
 
 cleanbuilddir::
 	-$(RM) $(USHARE_INIT)
-
-# used to build a debian package
-#  run 'debian/rules dpkg-buildpackage'
-dpkg-buildpackage:
-	dpkg-buildpackage -rfakeroot -i"\.hg|.*\.kdevelop.*"
-
-.PHONY: dpkg-buildpackage

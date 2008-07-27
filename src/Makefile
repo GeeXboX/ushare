@@ -4,8 +4,9 @@ endif
 include ../config.mak
 
 PROG = ushare
+MANS = ushare.1
 
-EXTRADIST = ushare.1 \
+EXTRADIST = \
 	presentation.h \
 	metadata.h \
 	mime.h \
@@ -55,18 +56,25 @@ clean:
 
 distclean:
 
-install: $(PROG)
+install: $(PROG) install-man
 	$(INSTALL) -d $(DESTDIR)$(bindir)
 	$(INSTALL) $(PROG) $(DESTDIR)$(bindir)
 	$(STRIP) $(INSTALLSTRIP) $(DESTDIR)$(bindir)/$(PROG)
 
+install-man: $(MANS)
+	for m in $(MANS); do \
+		section=`echo $$m | sed -e 's/^.*\\.//'`; \
+		$(INSTALL) -d $(DESTDIR)$(mandir)/man$$section; \
+		$(INSTALL) $$m $(DESTDIR)$(mandir)/man$$section; \
+	done
+
 depend:
 	$(CC) -I.. -MM $(CFLAGS) $(SRCS) 1>.depend
 
-.PHONY: clean distclean install depend
+.PHONY: clean distclean install depend install-man
 
 dist-all:
-	cp $(EXTRADIST) $(SRCS) Makefile $(DIST)
+	cp $(EXTRADIST) $(SRCS) Makefile $(DIST) $(MANS)
 
 .PHONY: dist-all
 
