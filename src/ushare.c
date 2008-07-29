@@ -190,16 +190,16 @@ init_upnp (ushare_t *ut)
   dlna_set_extension_check (ut->dlna, 0);
   dlna_register_all_media_profiles (ut->dlna);
   
-  dlna_set_device_friendly_name (ut->dlna, ut->name);
-  dlna_set_device_manufacturer (ut->dlna, "GeeXboX Team");
-  dlna_set_device_manufacturer_url (ut->dlna, "http://ushare.geexbox.org/");
-  dlna_set_device_model_description (ut->dlna, "uShare : DLNA Media Server");
-  dlna_set_device_model_name (ut->dlna, ut->model_name);
-  dlna_set_device_model_number (ut->dlna, "001");
-  dlna_set_device_model_url (ut->dlna, "http://ushare.geexbox.org/");
-  dlna_set_device_serial_number (ut->dlna, "USHARE-01");
-  dlna_set_device_uuid (ut->dlna, ut->udn);
-  dlna_set_device_presentation_url (ut->dlna, "ushare.html");
+  dlna_device_set_friendly_name (ut->dlna, ut->name);
+  dlna_device_set_manufacturer (ut->dlna, "GeeXboX Team");
+  dlna_device_set_manufacturer_url (ut->dlna, "http://ushare.geexbox.org/");
+  dlna_device_set_model_description (ut->dlna, "uShare : DLNA Media Server");
+  dlna_device_set_model_name (ut->dlna, ut->model_name);
+  dlna_device_set_model_number (ut->dlna, "001");
+  dlna_device_set_model_url (ut->dlna, "http://ushare.geexbox.org/");
+  dlna_device_set_serial_number (ut->dlna, "USHARE-01");
+  dlna_device_set_uuid (ut->dlna, ut->udn);
+  dlna_device_set_presentation_url (ut->dlna, "ushare.html");
 
   dlna_set_capability_mode (ut->dlna, ut->caps);
   if (ut->caps == DLNA_CAPABILITY_DLNA)
