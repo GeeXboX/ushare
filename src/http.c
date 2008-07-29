@@ -69,16 +69,19 @@ http_get_info (const char *filename, dlna_http_file_info_t *info)
     if (build_presentation_page (ut) < 0)
       return 1;
 
-    set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
+    set_info_file (info, ut->presentation->len,
+                   PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
 
-  if (ut->use_presentation && !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
+  if (ut->use_presentation &&
+      !strncmp (filename, USHARE_CGI, strlen (USHARE_CGI)))
   {
     if (process_cgi (ut, (char *) (filename + strlen (USHARE_CGI) + 1)) < 0)
       return 1;
 
-   set_info_file (info, ut->presentation->len, PRESENTATION_PAGE_CONTENT_TYPE);
+    set_info_file (info, ut->presentation->len,
+                   PRESENTATION_PAGE_CONTENT_TYPE);
     return 0;
   }
 
