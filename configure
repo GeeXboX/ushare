@@ -635,7 +635,7 @@ check_lib iconv.h iconv "" && add_cflags -DHAVE_ICONV
 #################################################
 #   check for libdlna (mandatory)
 #################################################
-libdlna_min_version="0.2.1"
+libdlna_min_version="0.3.0"
 echolog "Checking for libdlna >= $libdlna_min_version ..."
 if [ -n "$libdlnadir" ]; then
   check_cflags -I$libdlnadir
