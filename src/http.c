@@ -88,10 +88,11 @@ http_get_info (const char *filename, dlna_http_file_info_t *info)
   return 1;
 }
 
-static dlna_http_file_handler_t
+static dlna_http_file_handler_t *
 get_file_memory (const char *fullpath, const char *description,
                  const size_t length)
 {
+  dlna_http_file_handler_t *dhdl;
   web_file_t *file;
 
   file = malloc (sizeof (web_file_t));
@@ -100,10 +101,14 @@ get_file_memory (const char *fullpath, const char *description,
   file->contents = strdup (description);
   file->len = length;
 
-  return ((dlna_http_file_handler_t) file);
+  dhdl                       = malloc (sizeof (dlna_http_file_handler_t));
+  dhdl->external             = 1;
+  dhdl->priv                 = file;
+  
+  return ((dlna_http_file_handler_t *) dhdl);
 }
 
-static dlna_http_file_handler_t
+static dlna_http_file_handler_t *
 http_open (const char *filename)
 {
   extern ushare_t *ut;
@@ -122,7 +127,7 @@ http_open (const char *filename)
 }
 
 static int
-http_read (dlna_http_file_handler_t hdl, char *buf, size_t buflen)
+http_read (void *hdl, char *buf, size_t buflen)
 {
   web_file_t *file = (web_file_t *) hdl;
   ssize_t len = -1;
@@ -144,7 +149,7 @@ http_read (dlna_http_file_handler_t hdl, char *buf, size_t buflen)
 }
 
 static int
-http_seek (dlna_http_file_handler_t hdl, off_t offset, int origin)
+http_seek (void *hdl, off_t offset, int origin)
 {
   web_file_t *file = (web_file_t *) hdl;
   off_t newpos = -1;
@@ -186,7 +191,7 @@ http_seek (dlna_http_file_handler_t hdl, off_t offset, int origin)
 }
 
 static int
-http_close (dlna_http_file_handler_t hdl)
+http_close (void *hdl)
 {
   web_file_t *file = (web_file_t *) hdl;
 

@@ -173,7 +173,7 @@ static int
 init_upnp (ushare_t *ut)
 {
   int res;
-  //extern dlna_http_callback_t ushare_http_callbacks;
+  extern dlna_http_callback_t ushare_http_callbacks;
   dlna_org_flags_t flags;
   
   if (!ut || !ut->name || !ut->udn)
@@ -218,7 +218,7 @@ init_upnp (ushare_t *ut)
     return -1;
   }
 
-  //dlna_set_http_callback (ut->dlna, &ushare_http_callbacks);
+  dlna_set_http_callback (ut->dlna, &ushare_http_callbacks);
 
   log_info (_("Listening for control point connections ...\n"));
 
