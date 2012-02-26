@@ -60,25 +60,34 @@ static struct service_t services[] = {
 };
 
 bool
-find_service_action (struct Upnp_Action_Request *request,
+find_service_action (UpnpActionRequest *request,
                      struct service_t **service,
                      struct service_action_t **action)
 {
   int c, d;
+  const char *an, *sid;
 
   *service = NULL;
   *action = NULL;
 
-  if (!request || !request->ActionName)
+  if (!request)
+    return false;
+
+  an = UpnpActionRequest_get_ActionName_cstr (request);
+  if (!an)
+    return false;
+
+  sid = UpnpActionRequest_get_ServiceID_cstr (request);
+  if (!sid)
     return false;
 
   for (c = 0; services[c].id != NULL; c++)
-    if (!strcmp (services[c].id, request->ServiceID))
+    if (!strcmp (services[c].id, sid))
     {
       *service = &services[c];
       for (d = 0; services[c].actions[d].name; d++)
       {
-        if (!strcmp (services[c].actions[d].name, request->ActionName))
+        if (!strcmp (services[c].actions[d].name, an))
         {
           *action = &services[c].actions[d];
           return true;
@@ -95,6 +104,8 @@ upnp_add_response (struct action_event_t *event, char *key, const char *value)
 {
   char *val;
   int res;
+  const char *an;
+  IXML_Document *ar;
 
   if (!event || !event->status || !key || !value)
     return false;
@@ -103,10 +114,15 @@ upnp_add_response (struct action_event_t *event, char *key, const char *value)
   if (!val)
     return false;
 
-  res = UpnpAddToActionResponse (&event->request->ActionResult,
-                                 event->request->ActionName,
-                                 event->service->type, key, val);
+  an = UpnpActionRequest_get_ActionName_cstr (event->request);
+  if (!an)
+    return false;
 
+  ar = UpnpActionRequest_get_ActionResult (event->request);
+  if (!ar)
+    return false;
+
+  res = UpnpAddToActionResponse (ar, an, event->service->type, key, val);
   if (res != UPNP_E_SUCCESS)
     {
       free (val);
@@ -118,14 +134,14 @@ upnp_add_response (struct action_event_t *event, char *key, const char *value)
 }
 
 char *
-upnp_get_string (struct Upnp_Action_Request *request, const char *key)
+upnp_get_string (UpnpActionRequest *request, const char *key)
 {
   IXML_Node *node = NULL;
 
-  if (!request || !request->ActionRequest || !key)
+  if (!request || !key)
     return NULL;
 
-  node = (IXML_Node *) request->ActionRequest;
+  node = (IXML_Node *) UpnpActionRequest_get_ActionRequest (request);
   if (!node)
   {
     log_verbose ("Invalid action request document\n");
@@ -155,7 +171,7 @@ upnp_get_string (struct Upnp_Action_Request *request, const char *key)
 }
 
 int
-upnp_get_ui4 (struct Upnp_Action_Request *request, const char *key)
+upnp_get_ui4 (UpnpActionRequest *request, const char *key)
 {
   char *value;
   int val;

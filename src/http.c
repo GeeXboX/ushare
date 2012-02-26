@@ -67,18 +67,18 @@ struct web_file_t {
 
 
 static inline void
-set_info_file (struct File_Info *info, const size_t length,
+set_info_file (UpnpFileInfo *info, const off_t length,
                const char *content_type)
 {
-  info->file_length = length;
-  info->last_modified = 0;
-  info->is_directory = 0;
-  info->is_readable = 1;
-  info->content_type = ixmlCloneDOMString (content_type);
+  UpnpFileInfo_set_FileLength (info, length);
+  UpnpFileInfo_set_LastModified (info, 0);
+  UpnpFileInfo_set_IsDirectory (info, 0);
+  UpnpFileInfo_set_IsReadable (info, 1);
+  UpnpFileInfo_set_ContentType (info, ixmlCloneDOMString (content_type));
 }
 
 static int
-http_get_info (const char *filename, struct File_Info *info)
+http_get_info (const char *filename, UpnpFileInfo *info)
 {
   extern struct ushare_t *ut;
   struct upnp_entry_t *entry = NULL;
@@ -143,15 +143,15 @@ http_get_info (const char *filename, struct File_Info *info)
   {
     if (errno != EACCES)
       return -1;
-    info->is_readable = 0;
+    UpnpFileInfo_set_IsReadable (info, 0);
   }
   else
-    info->is_readable = 1;
+    UpnpFileInfo_set_IsReadable (info, 1);
 
   /* file exist and can be read */
-  info->file_length = st.st_size;
-  info->last_modified = st.st_mtime;
-  info->is_directory = S_ISDIR (st.st_mode);
+  UpnpFileInfo_set_FileLength (info, st.st_size);
+  UpnpFileInfo_set_LastModified (info, st.st_mtime);
+  UpnpFileInfo_set_IsDirectory (info, S_ISDIR (st.st_mode));
 
   protocol = 
 #ifdef HAVE_DLNA
@@ -172,11 +172,11 @@ http_get_info (const char *filename, struct File_Info *info)
 
   if (content_type)
   {
-    info->content_type = ixmlCloneDOMString (content_type);
+    UpnpFileInfo_set_ContentType (info, ixmlCloneDOMString (content_type));
     free (content_type);
   }
   else
-    info->content_type = ixmlCloneDOMString ("");
+    UpnpFileInfo_set_ContentType (info, ixmlCloneDOMString (""));
 
   return 0;
 }
@@ -403,12 +403,15 @@ http_close (UpnpWebFileHandle fh)
   return 0;
 }
 
-struct UpnpVirtualDirCallbacks virtual_dir_callbacks =
-  {
-    http_get_info,
-    http_open,
-    http_read,
-    http_write,
-    http_seek,
-    http_close
-  };
+int
+http_register_callbacks (void)
+{
+  UpnpVirtualDir_set_GetInfoCallback(http_get_info);
+  UpnpVirtualDir_set_OpenCallback (http_open);
+  UpnpVirtualDir_set_ReadCallback (http_read);
+  UpnpVirtualDir_set_WriteCallback (http_write);
+  UpnpVirtualDir_set_SeekCallback (http_seek);
+  UpnpVirtualDir_set_CloseCallback (http_close);
+
+  return UPNP_E_SUCCESS;
+};

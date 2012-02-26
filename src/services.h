@@ -39,15 +39,15 @@ struct service_t {
 
 #define SERVICE_CONTENT_TYPE "text/xml"
 
-bool find_service_action (struct Upnp_Action_Request *request,
+bool find_service_action (UpnpActionRequest *request,
                           struct service_t **service,
                           struct service_action_t **action);
 
 bool upnp_add_response (struct action_event_t *event,
                         char *key, const char *value);
 
-char * upnp_get_string (struct Upnp_Action_Request *request, const char *key);
+char * upnp_get_string (UpnpActionRequest *request, const char *key);
 
-int upnp_get_ui4 (struct Upnp_Action_Request *request, const char *key);
+int upnp_get_ui4 (UpnpActionRequest *request, const char *key);
 
 #endif /* _SERVICES_H_ */
