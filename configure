@@ -647,15 +647,15 @@ if [ -n "$libupnpdir" ]; then
 fi
 
 echolog "Checking for libixml ..."
-check_lib upnp/ixml.h ixmlRelaxParser -lixml || die "Error, can't find libixml !"
+check_lib upnp/ixml.h ixmlRelaxParser -lixml4 || die "Error, can't find libixml !"
 
 echolog "Checking for libthreadutil ..."
-check_lib upnp/ThreadPool.h ThreadPoolAdd "-lthreadutil -lpthread" || die "Error, can't find libthreadutil !"
+check_lib upnp/ThreadPool.h ThreadPoolAdd "-lthreadutil4 -lpthread" || die "Error, can't find libthreadutil !"
 add_extralibs -lpthread
 
 libupnp_min_version="1.4.2"
 echolog "Checking for libupnp >= $libupnp_min_version ..."
-check_lib upnp/upnp.h UpnpSetMaxContentLength -lupnp || die "Error, can't find libupnp !"
+check_lib upnp/upnp.h UpnpSetMaxContentLength -lupnp4 || die "Error, can't find libupnp !"
 check_lib_version libupnp $libupnp_min_version || die "Error, libupnp < $libupnp_min_version !"
 add_cflags `pkg-config libupnp --cflags`
 add_extralibs `pkg-config libupnp --libs`
