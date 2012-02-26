@@ -19,6 +19,8 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #if HAVE_LANGINFO_CODESET
 # include <langinfo.h>

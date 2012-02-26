@@ -20,6 +20,8 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 
@@ -266,7 +268,7 @@ didl_add_param (struct buffer_t *out, char *param, char *value)
 static void
 didl_add_value (struct buffer_t *out, char *param, off_t value)
 {
-  buffer_appendf (out, " %s=\"%lld\"", param, value);
+  buffer_appendf (out, " %s=\"%jd\"", param, value);
 }
 
 static void

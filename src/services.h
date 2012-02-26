@@ -46,8 +46,8 @@ bool find_service_action (UpnpActionRequest *request,
 bool upnp_add_response (struct action_event_t *event,
                         char *key, const char *value);
 
-char * upnp_get_string (UpnpActionRequest *request, const char *key);
+char * upnp_get_string (const UpnpActionRequest *request, const char *key);
 
-int upnp_get_ui4 (UpnpActionRequest *request, const char *key);
+int upnp_get_ui4 (const UpnpActionRequest *request, const char *key);
 
 #endif /* _SERVICES_H_ */

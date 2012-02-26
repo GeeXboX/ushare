@@ -125,7 +125,7 @@ struct ushare_t {
 };
 
 struct action_event_t {
-  struct UpnpActionRequest *request;
+  const struct UpnpActionRequest *request;
   bool status;
   struct service_t *service;
 };

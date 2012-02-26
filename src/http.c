@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -150,7 +151,7 @@ http_get_info (const char *filename, UpnpFileInfo *info)
 
   /* file exist and can be read */
   UpnpFileInfo_set_FileLength (info, st.st_size);
-  UpnpFileInfo_set_LastModified (info, st.st_mtime);
+  UpnpFileInfo_set_LastModified (info, (const time_t *) &st.st_mtime);
   UpnpFileInfo_set_IsDirectory (info, S_ISDIR (st.st_mode));
 
   protocol = 
@@ -270,7 +271,7 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
     break;
   case FILE_MEMORY:
     log_verbose ("Read file from memory.\n");
-    len = (size_t) MIN (buflen, file->detail.memory.len - file->pos);
+    len = MIN ((size_t) buflen, file->detail.memory.len - file->pos);
     memcpy (buf, file->detail.memory.contents + file->pos, (size_t) len);
     break;
   default:
@@ -310,17 +311,17 @@ http_seek (UpnpWebFileHandle fh, off_t offset, int origin)
   switch (origin)
   {
   case SEEK_SET:
-    log_verbose ("Attempting to seek to %lld (was at %lld) in %s\n",
+    log_verbose ("Attempting to seek to %jd (was at %jd) in %s\n",
                 offset, file->pos, file->fullpath);
     newpos = offset;
     break;
   case SEEK_CUR:
-    log_verbose ("Attempting to seek by %lld from %lld in %s\n",
+    log_verbose ("Attempting to seek by %jd from %jd in %s\n",
                 offset, file->pos, file->fullpath);
     newpos = file->pos + offset;
     break;
   case SEEK_END:
-    log_verbose ("Attempting to seek by %lld from end (was at %lld) in %s\n",
+    log_verbose ("Attempting to seek by %jd from end (was at %jd) in %s\n",
                 offset, file->pos, file->fullpath);
 
     if (file->type == FILE_LOCAL)

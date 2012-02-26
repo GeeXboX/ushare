@@ -20,6 +20,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 
@@ -118,7 +119,7 @@ upnp_add_response (struct action_event_t *event, char *key, const char *value)
   if (!an)
     return false;
 
-  ar = UpnpActionRequest_get_ActionResult (event->request);
+  ar = UpnpActionRequest_get_ActionResult ((const struct UpnpActionRequest *)event->request);
   if (!ar)
     return false;
 
@@ -134,7 +135,7 @@ upnp_add_response (struct action_event_t *event, char *key, const char *value)
 }
 
 char *
-upnp_get_string (UpnpActionRequest *request, const char *key)
+upnp_get_string (const UpnpActionRequest *request, const char *key)
 {
   IXML_Node *node = NULL;
 
@@ -171,7 +172,7 @@ upnp_get_string (UpnpActionRequest *request, const char *key)
 }
 
 int
-upnp_get_ui4 (UpnpActionRequest *request, const char *key)
+upnp_get_ui4 (const UpnpActionRequest *request, const char *key)
 {
   char *value;
   int val;
