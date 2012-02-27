@@ -119,11 +119,11 @@ upnp_add_response (struct action_event_t *event, char *key, const char *value)
   if (!an)
     return false;
 
-  ar = UpnpActionRequest_get_ActionResult ((const struct UpnpActionRequest *)event->request);
+  ar = UpnpActionRequest_get_ActionResult (event->request);
   if (!ar)
     return false;
 
-  res = UpnpAddToActionResponse (ar, an, event->service->type, key, val);
+  res = UpnpAddToActionResponse (&ar, an, event->service->type, key, val);
   if (res != UPNP_E_SUCCESS)
     {
       free (val);
