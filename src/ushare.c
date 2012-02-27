@@ -192,6 +192,7 @@ handle_action_request (UpnpActionRequest *request)
   int err_code;
   const char *dev_udn;
   const struct sockaddr *ip_addr;
+  struct in_addr *sin_addr;
 
   if (!request || !ut)
     return;
@@ -205,7 +206,8 @@ handle_action_request (UpnpActionRequest *request)
     return;
 
   ip_addr = UpnpActionRequest_get_CtrlPtIPAddr (request);
-  ip = ((struct sockaddr_in *) &ip_addr)->sin_addr.s_addr;
+  sin_addr = &(((struct sockaddr_in *) ip_addr)->sin_addr);
+  ip = sin_addr->s_addr;
   ip = ntohl (ip);
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
