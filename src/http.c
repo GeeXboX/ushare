@@ -72,7 +72,7 @@ set_info_file (UpnpFileInfo *info, const off_t length,
                const char *content_type)
 {
   UpnpFileInfo_set_FileLength (info, length);
-  UpnpFileInfo_set_LastModified (info, 0);
+  UpnpFileInfo_set_LastModified (info, NULL);
   UpnpFileInfo_set_IsDirectory (info, 0);
   UpnpFileInfo_set_IsReadable (info, 1);
   UpnpFileInfo_set_ContentType (info, ixmlCloneDOMString (content_type));
