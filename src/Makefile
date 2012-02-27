@@ -3,6 +3,15 @@ $(error "../config.mak is not present, run configure !")
 endif
 include ../config.mak
 
+ifeq ($(DEVELOPER),yes)
+  ifeq ($(HAVE_ETAGS),yes)
+    BUILD_RULES   += TAGS
+  endif
+  ifeq ($(HAVE_CTAGS),yes)
+    BUILD_RULES   += tags
+  endif
+endif
+
 PROG = ushare
 
 EXTRADIST = ushare.1 \
@@ -52,13 +61,21 @@ OBJS = $(SRCS:.c=.o)
 
 .SUFFIXES: .c .o
 
-all: depend $(PROG)
+all: depend $(BUILD_RULES) $(PROG)
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(OPTFLAGS) -o $@ $<
 
 $(PROG): $(OBJS)
 	$(CC) $(OBJS) $(LDFLAGS) $(EXTRALIBS) -o $@
+
+TAGS:
+	@rm -f $@; \
+	( find -name '*.[chS]' -print ) | xargs etags -a
+
+tags:
+	@rm -f $@; \
+	( find -name '*.[chS]' -print ) | xargs ctags -a;
 
 clean:
 	-$(RM) -f *.o $(PROG)

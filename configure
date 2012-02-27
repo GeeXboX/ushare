@@ -45,6 +45,9 @@ show_help(){
   echo "  --with-libdlna-dir=DIR      check for libdlna installed in DIR"
   echo ""
   echo "Advanced options (experts only):"
+  echo "  --disable-sysconf           disable installation of init files"
+  echo "  --enable-developer          enable developer options"
+  echo "  --disable-developer         disable developer options"
   echo "  --enable-debug              enable debugging symbols"
   echo "  --disable-debug             disable debugging symbols"
   echo "  --disable-strip             disable stripping of executables at installation"
@@ -165,6 +168,11 @@ add_clog(){
 
 add_clog_str(){
     echo "#define $1 \"$2\"" >> $CONFIG_H
+}
+
+check_cmd_exists(){
+    log check_cmd_exists "$@"
+    which "$@" >>$logfile 2>&1
 }
 
 check_cmd(){
@@ -305,6 +313,8 @@ make="make"
 strip="strip"
 cpu=`uname -m`
 optimize="yes"
+sysconf="yes"
+developer="no"
 debug="no"
 dostrip="yes"
 extralibs=""
@@ -430,6 +440,14 @@ for opt do
   --enable-fam) fam="yes"
   ;;
   --disable-fam) fam="no"
+  ;;
+  --enable-sysconf) sysconf="yes"
+  ;;
+  --disable-sysconf) sysconf="no"
+  ;;
+  --enable-developer) developer="yes"
+  ;;
+  --disable-developer) developer="no"
   ;;
   --enable-debug) debug="yes"
   ;;
@@ -598,6 +616,24 @@ check_cflags -D_REENTRANT
 linux && add_cflags -D_GNU_SOURCE
 
 #################################################
+#   check for developer options
+#################################################
+if enabled developer; then
+  add_cflags -Werror
+  add_cflags -DHAVE_DEVELOPER
+
+  have_ctags='no'
+  if check_cmd_exists 'ctags'; then
+    have_ctags='yes'
+  fi
+
+  have_etags='no'
+  if check_cmd_exists 'etags'; then
+       have_etags='yes'
+  fi
+fi
+
+#################################################
 #   check for debug symbols
 #################################################
 if enabled debug; then
@@ -709,6 +745,8 @@ echolog "  C compiler         $cc"
 echolog "  STRIP              $strip"
 echolog "  make               $make"
 echolog "  CPU                $cpu ($tune)"
+echolog "  install sysconf    $sysconf"
+echolog "  developer options  $developer"
 echolog "  debug symbols      $debug"
 echolog "  strip symbols      $dostrip"
 echolog "  optimize           $optimize"
@@ -750,6 +788,10 @@ append_config "OPTFLAGS=$CFLAGS"
 append_config "LDFLAGS=$LDFLAGS"
 append_config "INSTALL=$INSTALL"
 
+append_config "INSTALL_SYSCONF=$sysconf"
+append_config "DEVELOPER=$developer"
+append_config "HAVE_CTAGS=$have_ctags"
+append_config "HAVE_ETAGS=$have_etags"
 append_config "DEBUG=$debug"
 
 

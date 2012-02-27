@@ -3,6 +3,11 @@ $(error "config.mak is not present, run configure !")
 endif
 include ../config.mak
 
+INSTALL_RULES =
+ifeq ($(INSTALL_SYSCONF),yes)
+  INSTALL_RULES   += install-sysconf
+endif
+
 CONF_FILE  = "ushare.conf"
 INITD_FILE = "ushare"
 
@@ -14,7 +19,9 @@ clean:
 
 distclean:
 
-install:
+install: $(INSTALL_RULES)
+
+install-sysconf:
 	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 $(CONF_FILE) $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -d $(DESTDIR)$(sysconfdir)/init.d
