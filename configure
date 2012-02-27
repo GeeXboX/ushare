@@ -321,7 +321,7 @@ extralibs=""
 installstrip="-s"
 cross_compile="no"
 INSTALL="/usr/bin/install -c"
-VERSION="1.1a"
+VERSION="1.2"
 system_name=`uname -s 2>&1`
 
 #################################################
