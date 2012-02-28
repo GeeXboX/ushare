@@ -25,6 +25,6 @@
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 
-int http_register_callbacks (void);
+struct UpnpVirtualDirCallbacks virtual_dir_callbacks;
 
 #endif /* _HTTP_H_ */

@@ -183,47 +183,36 @@ ushare_signal_exit (void)
 }
 
 static void
-handle_action_request (UpnpActionRequest *request)
+handle_action_request (struct Upnp_Action_Request *request)
 {
   struct service_t *service;
   struct service_action_t *action;
   char val[256];
   uint32_t ip;
-  int err_code;
-  const char *dev_udn;
-  const struct sockaddr *ip_addr;
-  struct in_addr *sin_addr;
 
   if (!request || !ut)
     return;
 
-  err_code = UpnpActionRequest_get_ErrCode (request);
-  if (err_code != UPNP_E_SUCCESS)
+  if (request->ErrCode != UPNP_E_SUCCESS)
     return;
 
-  dev_udn = UpnpActionRequest_get_DevUDN_cstr (request);
-  if (strcmp (dev_udn + 5, ut->udn))
+  if (strcmp (request->DevUDN + 5, ut->udn))
     return;
 
-  ip_addr = UpnpActionRequest_get_CtrlPtIPAddr (request);
-  sin_addr = &(((struct sockaddr_in *) ip_addr)->sin_addr);
-  ip = sin_addr->s_addr;
+  ip = request->CtrlPtIPAddr.s_addr;
   ip = ntohl (ip);
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
 
   if (ut->verbose)
   {
-    IXML_Document *doc = UpnpActionRequest_get_ActionRequest (request);
-    DOMString str = ixmlPrintDocument (doc);
-    const char *service_id = UpnpActionRequest_get_ServiceID_cstr (request);
-    const char *an = UpnpActionRequest_get_ActionName_cstr (request);
+    DOMString str = ixmlPrintDocument (request->ActionRequest);
 
     log_verbose ("***************************************************\n");
     log_verbose ("**             New Action Request                **\n");
     log_verbose ("***************************************************\n");
-    log_verbose ("ServiceID: %s\n", service_id);
-    log_verbose ("ActionName: %s\n", an);
+    log_verbose ("ServiceID: %s\n", request->ServiceID);
+    log_verbose ("ActionName: %s\n", request->ActionName);
     log_verbose ("CtrlPtIP: %s\n", val);
     log_verbose ("Action Request:\n%s\n", str);
     ixmlFreeDOMString (str);
@@ -238,12 +227,11 @@ handle_action_request (UpnpActionRequest *request)
       event.service = service;
 
       if (action->function (&event) && event.status)
-        UpnpActionRequest_set_ErrCode (request, UPNP_E_SUCCESS);
+        request->ErrCode = UPNP_E_SUCCESS;
 
       if (ut->verbose)
       {
-        IXML_Document *result = UpnpActionRequest_get_ActionResult (request);
-        DOMString str = ixmlPrintDocument (result);
+        DOMString str = ixmlPrintDocument (request->ActionResult);
 
         log_verbose ("Action Result:\n%s", str);
         log_verbose ("***************************************************\n");
@@ -255,12 +243,12 @@ handle_action_request (UpnpActionRequest *request)
     }
 
   if (service) /* Invalid Action name */
-    UpnpActionRequest_strcpy_ErrStr (request, "Unknown Service Action");
+    strcpy (request->ErrStr, "Unknown Service Action");
   else /* Invalid Service name */
-    UpnpActionRequest_strcpy_ErrStr (request, "Unknown Service ID");
+    strcpy (request->ErrStr, "Unknown Service ID");
 
-  UpnpActionRequest_set_ActionResult (request, NULL);
-  UpnpActionRequest_set_ErrCode (request, UPNP_SOAP_E_INVALID_ACTION);
+  request->ActionResult = NULL;
+  request->ErrCode = UPNP_SOAP_E_INVALID_ACTION;
 }
 
 static int
@@ -270,7 +258,7 @@ device_callback_event_handler (Upnp_EventType type, void *event,
   switch (type)
     {
     case UPNP_CONTROL_ACTION_REQUEST:
-      handle_action_request ((UpnpActionRequest *) event);
+      handle_action_request ((struct Upnp_Action_Request *) event);
       break;
     case UPNP_CONTROL_ACTION_COMPLETE:
     case UPNP_EVENT_SUBSCRIPTION_REQUEST:
@@ -376,7 +364,7 @@ init_upnp (struct ushare_t *ut)
 
   UpnpEnableWebserver (TRUE);
 
-  res = http_register_callbacks ();
+  res = UpnpSetVirtualDirCallbacks (&virtual_dir_callbacks);
   if (res != UPNP_E_SUCCESS)
   {
     log_error (_("Cannot set virtual directory callbacks\n"));
