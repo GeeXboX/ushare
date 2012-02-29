@@ -93,6 +93,42 @@ http_get_info (const char *filename, struct File_Info *info)
 
   log_verbose ("http_get_info, filename : %s\n", filename);
 
+  if (!strcmp (filename, ICON_LOCATION_SM_PNG))
+  {
+    struct stat st;
+
+    stat (ICON_FILE_SM_PNG, &st);
+    set_info_file (info, st.st_size, ICON_MIME_PNG);
+    return 0;
+  }
+
+  if (!strcmp (filename, ICON_LOCATION_SM_JPEG))
+  {
+    struct stat st;
+
+    stat (ICON_FILE_SM_JPEG, &st);
+    set_info_file (info, st.st_size, ICON_MIME_JPEG);
+    return 0;
+  }
+
+  if (!strcmp (filename, ICON_LOCATION_LRG_PNG))
+  {
+    struct stat st;
+
+    stat (ICON_FILE_LRG_PNG, &st);
+    set_info_file (info, st.st_size, ICON_MIME_PNG);
+    return 0;
+  }
+
+  if (!strcmp (filename, ICON_LOCATION_LRG_JPEG))
+  {
+    struct stat st;
+
+    stat (ICON_FILE_LRG_JPEG, &st);
+    set_info_file (info, st.st_size, ICON_MIME_JPEG);
+    return 0;
+  }
+
   if (!strcmp (filename, CDS_LOCATION))
   {
     set_info_file (info, CDS_DESCRIPTION_LEN, SERVICE_CONTENT_TYPE);
@@ -199,6 +235,28 @@ get_file_memory (const char *fullpath, const char *description,
 }
 
 static UpnpWebFileHandle
+get_file_local (const char *fullpath)
+{
+  struct web_file_t *file;
+  int fd;
+
+  log_verbose ("Fullpath : %s\n", fullpath);
+
+  fd = open (fullpath, O_RDONLY | O_NONBLOCK | O_SYNC | O_NDELAY);
+  if (fd < 0)
+    return NULL;
+
+  file = malloc (sizeof (struct web_file_t));
+  file->fullpath = strdup (fullpath);
+  file->pos = 0;
+  file->type = FILE_LOCAL;
+  file->detail.local.entry = NULL;
+  file->detail.local.fd = fd;
+
+  return ((UpnpWebFileHandle) file);
+}
+
+static UpnpWebFileHandle
 http_open (const char *filename, enum UpnpOpenFileMode mode)
 {
   extern struct ushare_t *ut;
@@ -213,6 +271,18 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
 
   if (mode != UPNP_READ)
     return NULL;
+
+  if (!strcmp (filename, ICON_LOCATION_SM_PNG))
+    return get_file_local (ICON_FILE_SM_PNG);
+
+  if (!strcmp (filename, ICON_LOCATION_LRG_PNG))
+    return get_file_local (ICON_FILE_LRG_PNG);
+
+  if (!strcmp (filename, ICON_LOCATION_SM_JPEG))
+    return get_file_local (ICON_FILE_SM_JPEG);
+
+  if (!strcmp (filename, ICON_LOCATION_LRG_JPEG))
+    return get_file_local (ICON_FILE_LRG_JPEG);
 
   if (!strcmp (filename, CDS_LOCATION))
     return get_file_memory (CDS_LOCATION, CDS_DESCRIPTION, CDS_DESCRIPTION_LEN);

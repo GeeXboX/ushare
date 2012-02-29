@@ -31,6 +31,7 @@
 #include <dlna.h>
 #endif /* HAVE_DLNA */
 
+#include "config.h"
 #include "content.h"
 #include "buffer.h"
 #include "redblack.h"
@@ -43,6 +44,24 @@
 
 #define STARTING_ENTRY_ID_DEFAULT 0
 #define STARTING_ENTRY_ID_XBOX360 100000
+
+#define ICON_LOW_RES           "48"
+#define ICON_HIGH_RES          "256"
+#define ICON_DEPTH             "32"
+#define ICON_MIME_PNG          "image/png"
+#define ICON_MIME_JPEG         "image/jpeg"
+
+#define ICON_FILE_SM_PNG       DATADIR"sm.png"
+#define ICON_FILE_LRG_PNG      DATADIR"lrg.png"
+
+#define ICON_FILE_SM_JPEG      DATADIR"sm.jpeg"
+#define ICON_FILE_LRG_JPEG     DATADIR"lrg.jpeg"
+
+#define ICON_LOCATION_SM_PNG   "/web/sm.png"
+#define ICON_LOCATION_LRG_PNG  "/web/lrg.png"
+
+#define ICON_LOCATION_SM_JPEG  "/web/sm.jpeg"
+#define ICON_LOCATION_LRG_JPEG "/web/lrg.jpeg"
 
 #define UPNP_DESCRIPTION \
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>" \
@@ -85,6 +104,36 @@
 "        <eventSubURL>/web/msr_event</eventSubURL>" \
 "      </service>\n" \
 "    </serviceList>" \
+"    <iconList>" \
+"      <icon>" \
+"        <mimetype>"ICON_MIME_PNG"</mimetype>" \
+"        <width>"ICON_LOW_RES"</width>" \
+"        <height>"ICON_LOW_RES"</height>" \
+"        <depth>"ICON_DEPTH"</depth>" \
+"        <url>"ICON_LOCATION_SM_PNG"</url>" \
+"      </icon>" \
+"      <icon>" \
+"        <mimetype>"ICON_MIME_JPEG"</mimetype>" \
+"        <width>"ICON_LOW_RES"</width>" \
+"        <height>"ICON_LOW_RES"</height>" \
+"        <depth>"ICON_DEPTH"</depth>" \
+"        <url>"ICON_LOCATION_SM_JPEG"</url>" \
+"      </icon>" \
+"      <icon>" \
+"        <mimetype>"ICON_MIME_PNG"</mimetype>" \
+"        <width>"ICON_HIGH_RES"</width>" \
+"        <height>"ICON_HIGH_RES"</height>" \
+"        <depth>"ICON_DEPTH"</depth>" \
+"        <url>"ICON_LOCATION_LRG_PNG"</url>" \
+"      </icon>" \
+"      <icon>" \
+"        <mimetype>"ICON_MIME_JPEG"</mimetype>" \
+"        <width>"ICON_HIGH_RES"</width>" \
+"        <height>"ICON_HIGH_RES"</height>" \
+"        <depth>"ICON_DEPTH"</depth>" \
+"        <url>"ICON_LOCATION_LRG_JPEG"</url>" \
+"      </icon>" \
+"    </iconList>"                                         \
 "    <presentationURL>/web/ushare.html</presentationURL>" \
 "  </device>" \
 "</root>"

@@ -16,6 +16,7 @@ EXTRADIST = AUTHORS \
 
 SUBDIRS = po \
 	  scripts \
+	  data \
 	  src \
 
 all:

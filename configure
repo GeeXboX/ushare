@@ -802,6 +802,7 @@ add_clog_str PACKAGE "ushare"
 add_clog_str PACKAGE_NAME "uShare"
 add_clog_str SYSCONFDIR `expand_var "${sysconfdir}"`
 add_clog_str LOCALEDIR `expand_var "${localedir}"`
+add_clog_str DATADIR `expand_var "${datadir}/ushare/"`
 test $nls = yes && add_clog CONFIG_NLS 1
 
 clean
