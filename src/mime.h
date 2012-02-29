@@ -21,6 +21,12 @@
 #ifndef _MIME_H_
 #define _MIME_H_
 
+#define UPNP_VIDEO "object.item.videoItem"
+#define UPNP_AUDIO "object.item.audioItem.musicTrack"
+#define UPNP_PHOTO "object.item.imageItem.photo"
+#define UPNP_PLAYLIST "object.item.playlistItem"
+#define UPNP_TEXT "object.item.textItem"
+
 struct mime_type_t {
   char *extension;
   char *mime_class;

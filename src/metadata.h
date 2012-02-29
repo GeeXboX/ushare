@@ -43,6 +43,7 @@ struct upnp_entry_t {
   char *title;
   char *url;
   off_t size;
+  int cover_id;
   int fd;
 #ifdef HAVE_FAM
   struct ufam_entry_t *ufam_entry;

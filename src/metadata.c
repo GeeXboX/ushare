@@ -50,6 +50,15 @@ struct upnp_entry_lookup_t {
   struct upnp_entry_t *entry_ptr;
 };
 
+struct upnp_entry_lookup_name_t {
+  char *path;
+  struct upnp_entry_t *entry_ptr;
+};
+
+static int
+metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
+                   const char *file, const char *name, struct stat *st_ptr);
+
 static char *
 getExtension (const char *filename)
 {
@@ -167,6 +176,85 @@ convert_xml (const char *title)
 static struct mime_type_t Container_MIME_Type =
   { NULL, "object.container.storageFolder", NULL};
 
+#define ARRAY_NB_ELEMENTS(array) (sizeof (array) / sizeof (array[0]))
+
+static int
+vh_file_exists (const char *file)
+{
+  struct stat st;
+  return !stat (file, &st);
+}
+
+static int
+upnp_audio_get_cover (struct ushare_t *ut, struct upnp_entry_t *entry,
+                      const char *fullpath, const char *class)
+{
+  const char *known_audio_filenames[] =
+    { "cover", "COVER", "front", "FRONT" };
+
+  const char *known_audio_extensions[] =
+    { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "tbn", "TBN" };
+
+  char *s, *dir = NULL, *file = NULL, *cv = NULL, *f = NULL;
+  unsigned int i, j;
+  struct stat st;
+  int cover_id;
+
+  if (!class || strcmp (class, UPNP_AUDIO))
+    goto end;
+
+  /* retrieve directory name */
+  s = strrchr (fullpath, '/');
+  if (!s)
+    goto end;
+  dir = strndup (fullpath, strlen (fullpath) - strlen (s));
+
+  /* retrieve file base name */
+  s = strrchr (fullpath, '.');
+  if (!s)
+    goto end;
+  file = strndup (fullpath + strlen (dir) + 1,
+                  strlen (fullpath) - strlen (dir) - strlen (s) - 1);
+
+  /* try to find a generic cover file for the whole directory */
+  for (i = 0; i < ARRAY_NB_ELEMENTS (known_audio_extensions); i++)
+    for (j = 0; j < ARRAY_NB_ELEMENTS (known_audio_filenames); j++)
+    {
+      char cover[1024] = { 0 };
+      char f2[512] = { 0 };
+
+      snprintf (f2, sizeof (f2), "%s.%s",
+                known_audio_filenames[j], known_audio_extensions[i]);
+      snprintf (cover, sizeof (cover), "%s/%s", dir, f2);
+
+      if (vh_file_exists (cover))
+      {
+        cv = strdup (cover);
+        f = strdup (f2);
+        goto end;
+      }
+    }
+
+end:
+  //printf ("Path: %s\n", fullpath);
+  //printf (" Cover: %s\n", cv);
+
+  stat (fullpath, &st);
+  cover_id = metadata_add_file (ut, entry, cv, f, &st);
+  printf (" Cover ID: %d\n", cover_id);
+
+  if (dir)
+    free (dir);
+  if (file)
+    free (file);
+  if (f)
+    free (f);
+  if (cv)
+    free (cv);
+
+  return cover_id;
+}
+
 static struct upnp_entry_t *
 upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
                 struct upnp_entry_t *parent, off_t size, int dir)
@@ -242,6 +330,10 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
       if (snprintf (url_tmp, MAX_URL_SIZE, "%d.%s",
                     entry->id, getExtension (name)) >= MAX_URL_SIZE)
         log_error ("URL string too long for id %d, truncated!!", entry->id);
+
+      /* look for audio album cover */
+      upnp_audio_get_cover (ut, parent,
+                            fullpath, entry->mime_type->mime_class);
 
       /* Only malloc() what we really need */
       entry->url = strdup (url_tmp);
@@ -445,12 +537,12 @@ upnp_get_entry (struct ushare_t *ut, int id)
   return NULL;
 }
 
-static void
+static int
 metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
                    const char *file, const char *name, struct stat *st_ptr)
 {
   if (!entry || !file || !name)
-    return;
+    return -1;
 
 #ifdef HAVE_DLNA
   if (ut->dlna_enabled || is_valid_extension (getExtension (file)))
@@ -463,7 +555,11 @@ metadata_add_file (struct ushare_t *ut, struct upnp_entry_t *entry,
     child = upnp_entry_new (ut, name, file, entry, st_ptr->st_size, false);
     if (child)
       upnp_entry_add_child (ut, entry, child);
+
+    return child->id;
   }
+
+  return -1;
 }
 
 static void

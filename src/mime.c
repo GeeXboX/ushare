@@ -26,12 +26,6 @@
 #include "mime.h"
 #include "ushare.h"
 
-#define UPNP_VIDEO "object.item.videoItem"
-#define UPNP_AUDIO "object.item.audioItem.musicTrack"
-#define UPNP_PHOTO "object.item.imageItem.photo"
-#define UPNP_PLAYLIST "object.item.playlistItem"
-#define UPNP_TEXT "object.item.textItem"
-
 const struct mime_type_t MIME_Type_List[] = {
   /* Video files */
   { "asf",   UPNP_VIDEO, "http-get:*:video/x-ms-asf:"},
