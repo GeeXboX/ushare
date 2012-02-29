@@ -298,7 +298,7 @@ didl_add_item (struct buffer_t *out, int item_id,
     cover = upnp_get_entry (ut, cover_id);
     if (cover)
     {
-      printf ("**** Cover URL = %s *****\n", cover->url);
+      //printf ("**** Cover URL = %s *****\n", cover->url);
     }
   }
   

@@ -241,7 +241,7 @@ end:
 
   stat (fullpath, &st);
   cover_id = metadata_add_file (ut, entry, cv, f, &st);
-  printf (" Cover ID: %d\n", cover_id);
+  //printf (" Cover ID: %d\n", cover_id);
 
   if (dir)
     free (dir);
